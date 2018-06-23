@@ -1,0 +1,8 @@
+[package]
+name = "senren-backend"
+version = "0.1.0"
+authors = ["xdk78 <xdk78@interia.pl>"]
+
+[dependencies]
+rocket = "0.3.14"
+rocket_codegen = "0.3.14"
