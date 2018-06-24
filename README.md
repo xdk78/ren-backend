@@ -22,4 +22,10 @@ cargo build
 # production
 cargo build --release
 ```
+## Docker
+Install [Docker](https://docs.docker.com/engine/installation/) & [Docker-Compose](https://docs.docker.com/compose/install/)
+then
+```bash
+docker-compose up
+```
 Enjoy!
