@@ -1,31 +1,20 @@
 # senren-backend
 
 ## Install
-### Install Rust with rustup and setup nightly version https://www.rust-lang.org
 ```bash
-rustup default nightly
-# then
-rustup update && cargo update
+npm i typeorm -g
+npm i 
 ```
-### Install MongoDb version [3.2.20](https://www.mongodb.com/download-center?jmp=nav#previous)
+### Install MongoDb version [3.6](https://www.mongodb.com/download-center)
 ## Run
 ```bash
-# db for example C:\Program Files\MongoDB\Server\3.2\bin
+# db for example C:\Program Files\MongoDB\Server\3.6\bin
 mongod
 # then run backend in root repo directory
-cargo run
+npm run dev
 ```
 ## Build
 ```bash
-# development
-cargo build
-# production
-cargo build --release
-```
-## Docker
-Install [Docker](https://docs.docker.com/engine/installation/) & [Docker-Compose](https://docs.docker.com/compose/install/)
-then
-```bash
-docker-compose up
+npm run build
 ```
 Enjoy!

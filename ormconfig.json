@@ -1,0 +1,21 @@
+{
+  "type": "mongodb",
+  "host": "localhost",
+  "database": "senren_dev",
+  "synchronize": true,
+  "logging": false,
+  "entities": [
+    "src/entity/*.ts"
+  ],
+  "subscribers": [
+    "src/subscriber/*.ts"
+  ],
+  "migrations": [
+    "src/migration/*.ts"
+  ],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}
