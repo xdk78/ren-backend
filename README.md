@@ -7,6 +7,7 @@ rustup default nightly
 # then
 rustup update && cargo update
 ```
+### Install MongoDb version [3.2.20](https://www.mongodb.com/download-center?jmp=nav#previous)
 ## Run
 ```bash
 cargo run
@@ -16,6 +17,6 @@ cargo run
 # development
 cargo build
 # production
-cargo build cargo build --release
+cargo build --release
 ```
 Enjoy!
