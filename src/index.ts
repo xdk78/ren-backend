@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5000
 
 server.register(require('./db')).ready()
 server.register(require('fastify-helmet'))
+server.register(require('fastify-compress'))
 
 // API Routing
 server.register(require('./routes/v1/'), { prefix: '/v1' })

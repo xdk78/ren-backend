@@ -7,7 +7,7 @@
         ],
         "ter-arrow-parens": false,
         "import-name": false,
-        "max-line-length":false
+        "max-line-length": false
     },
     "linterOptions": {
         "exclude": [
