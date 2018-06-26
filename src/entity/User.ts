@@ -1,19 +1,19 @@
-import { prop, arrayProp } from 'typegoose'
+import { prop, arrayProp, Typegoose } from 'typegoose'
 import Series from './Series'
 
-export default class User {
+export default class User extends Typegoose {
   @prop({ unique: true })
-    id: string
+  id: string
 
-  @prop({ unique: true })
-    username: string
+  @prop({ unique: true, required: true })
+  username: string
 
-  @prop({ unique: true })
-    email: string
+  @prop({ unique: true, required: true })
+  email: string
 
-  @prop()
-    password: string
+  @prop({ required: true })
+  password: string
 
   @arrayProp({ items: Series })
-    series?: Series[]
+  series?: Series[]
 }

@@ -62,7 +62,7 @@ module.exports = async (fastify, opts, next: nextCallback) => {
       await series.save()
 
       return reply.send({
-        data: 'Added new series ',
+        data: { message: 'Added new series ' },
         error: '',
       })
     } catch (error) {

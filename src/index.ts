@@ -1,7 +1,7 @@
 import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 
-const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify({})
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
 
 const PORT = process.env.PORT || 5000
 
@@ -12,6 +12,7 @@ server.register(require('fastify-compress'))
 // API Routing
 server.register(require('./routes/v1/'), { prefix: '/v1' })
 server.register(require('./routes/v1/series'), { prefix: '/v1' })
+server.register(require('./routes/v1/user'), { prefix: '/v1' })
 
 server.get('/', (request, reply) => {
   reply.redirect(302, '/v1')
