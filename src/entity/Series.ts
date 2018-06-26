@@ -9,6 +9,9 @@ export default class Series extends Typegoose {
   @prop()
   title: string
 
+  @prop()
+  description: string
+
   @arrayProp({ items: Season })
   seasons: Season[]
 
