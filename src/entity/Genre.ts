@@ -1,10 +1,6 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm'
+import { prop, Typegoose } from 'typegoose'
 
-@Entity()
 export class Genre {
-  @ObjectIdColumn()
-  id: ObjectID
-
-  @Column()
+  @prop()
   name: string
 }

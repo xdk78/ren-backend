@@ -1,14 +1,10 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm'
+import { prop, Typegoose, arrayProp, Ref } from 'typegoose'
 import { Episode } from './Episode'
 
-@Entity()
 export class Season {
-  @ObjectIdColumn()
-  id: ObjectID
-
-  @Column()
+  @prop()
   number: number
 
-  @Column(type => Episode)
+  @arrayProp({ items: Episode })
   episodes: Episode[]
 }

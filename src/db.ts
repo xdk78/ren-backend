@@ -1,13 +1,12 @@
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
 import fp from 'fastify-plugin'
 import { FastifyInstance } from 'fastify'
+import mongoose from 'mongoose'
 
 function plugin(fastify: FastifyInstance, options) {
-  return createConnection().then(async connection => {
+  return mongoose.createConnection('mongodb://localhost:27017/senren_dev').then(connection => {
     fastify.decorate('db', connection)
   }).catch(error => console.log(error))
-
 }
 
 module.exports = fp(plugin)

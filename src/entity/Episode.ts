@@ -1,13 +1,9 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm'
+import { prop, Typegoose } from 'typegoose'
 
-@Entity()
 export class Episode {
-  @ObjectIdColumn()
-  id: ObjectID
-
-  @Column()
+  @prop()
   title: string
 
-  @Column()
+  @prop()
   number: number
 }

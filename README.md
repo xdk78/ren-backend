@@ -2,7 +2,6 @@
 
 ## Install
 ```bash
-npm i typeorm -g
 npm i 
 ```
 ### Install MongoDb version [3.6](https://www.mongodb.com/download-center)
