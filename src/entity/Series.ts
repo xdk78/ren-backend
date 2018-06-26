@@ -1,8 +1,8 @@
-import { prop, Typegoose, arrayProp, Ref } from 'typegoose'
-import { Genre } from './Genre'
-import { Season } from './Season'
+import { prop, Typegoose, arrayProp } from 'typegoose'
+import Genre from './Genre'
+import Season from './Season'
 
-export class Series extends Typegoose {
+export default class Series extends Typegoose {
   @prop({ unique: true })
   id: string
 

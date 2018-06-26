@@ -1,6 +1,6 @@
-import { prop, Typegoose } from 'typegoose'
+import { prop } from 'typegoose'
 
-export class Episode {
+export default class Episode {
   @prop()
   title: string
 

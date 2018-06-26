@@ -1,4 +1,4 @@
-import { Series } from '../../../entity/Series'
+import Series from '../../../entity/Series'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerRequest, ServerResponse } from 'http'
 import { nextCallback } from 'fastify-plugin'
