@@ -2,15 +2,13 @@ import Series from '../../../entity/Series'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerRequest, ServerResponse } from 'http'
 import { nextCallback } from 'fastify-plugin'
-// import mongoose from 'mongoose'
 
 module.exports = async (fastify, opts, next: nextCallback) => {
   const db = fastify.db
 
   fastify.get('/series', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
-    reply.header('Content-Type', 'application/json').code(200)
     try {
-      // const loadedSeries = await db.getModelForClass(Series).find()
+      reply.header('Content-Type', 'application/json').code(200)
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
       const loadedSeries = await seriesModel.find()
 
@@ -27,14 +25,35 @@ module.exports = async (fastify, opts, next: nextCallback) => {
       })
     }
   })
-  fastify.post('/series', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
-    reply.header('Content-Type', 'application/json').code(200)
+  fastify.get('/series/:id', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
     try {
+      reply.header('Content-Type', 'application/json').code(200)
+      const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
+      const loadedSeries = await seriesModel.findOne({ _id: request.params.id })
+
+      return reply.send({
+        data: {
+          series: loadedSeries,
+        },
+        error: '',
+      })
+    } catch (error) {
+      return reply.send({
+        data: {},
+        error: error.message,
+      })
+    }
+  })
+  fastify.post('/series', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(200)
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
       const series = new seriesModel(
         {
           title: request.body.title,
+          description: request.body.description,
           seasons: request.body.seasons,
+          category: request.body.category,
           rating: request.body.rating,
           genres: request.body.genres,
         },

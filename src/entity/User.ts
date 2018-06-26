@@ -15,5 +15,5 @@ export default class User {
     password: string
 
   @arrayProp({ items: Series })
-    series: Series[]
+    series?: Series[]
 }
