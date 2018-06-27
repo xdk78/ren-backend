@@ -1,18 +1,22 @@
 import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
+import db from './db'
+import index from './routes/v1/'
+import series from './routes/v1/series'
+import users from './routes/v1/users'
 
 const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
 
 const PORT = process.env.PORT || 5000
 
-server.register(require('./db')).ready()
+server.register(db).ready()
 server.register(require('fastify-helmet'))
 server.register(require('fastify-compress'))
 
 // API Routing
-server.register(require('./routes/v1/'), { prefix: '/v1' })
-server.register(require('./routes/v1/series'), { prefix: '/v1' })
-server.register(require('./routes/v1/users'), { prefix: '/v1' })
+server.register(index, { prefix: '/v1' })
+server.register(series, { prefix: '/v1' })
+server.register(users, { prefix: '/v1' })
 
 server.get('/', (request, reply) => {
   reply.redirect(302, '/v1')

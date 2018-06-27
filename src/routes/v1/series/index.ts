@@ -2,7 +2,7 @@ import Series from '../../../entity/Series'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerRequest, ServerResponse } from 'http'
 
-module.exports = async (fastify, opts, next) => {
+export default async (fastify, opts, next) => {
   const db = fastify.mongo.db
 
   fastify.get('/series', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {

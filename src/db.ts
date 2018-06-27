@@ -16,4 +16,4 @@ function plugin(fastify: FastifyInstance, options, next) {
   }).catch(error => next(error))
 }
 
-module.exports = fp(plugin)
+export default fp(plugin)
