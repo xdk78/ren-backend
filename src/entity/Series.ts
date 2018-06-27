@@ -4,9 +4,6 @@ import Season from './Season'
 import Category from './Category'
 
 export default class Series extends Typegoose {
-  @prop({ unique: true })
-  id: string
-
   @prop()
   title: string
 

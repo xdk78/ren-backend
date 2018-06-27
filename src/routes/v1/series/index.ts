@@ -1,10 +1,9 @@
 import Series from '../../../entity/Series'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerRequest, ServerResponse } from 'http'
-import { nextCallback } from 'fastify-plugin'
 
-module.exports = async (fastify, opts, next: nextCallback) => {
-  const db = fastify.db
+module.exports = async (fastify, opts, next) => {
+  const db = fastify.mongo.db
 
   fastify.get('/series', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -13,14 +12,12 @@ module.exports = async (fastify, opts, next: nextCallback) => {
       const loadedSeries = await seriesModel.find()
 
       return reply.send({
-        data: {
-          series: loadedSeries,
-        },
+        data: loadedSeries,
         error: '',
       })
     } catch (error) {
       return reply.send({
-        data: {},
+        data: [],
         error: error.message,
       })
     }
@@ -32,14 +29,12 @@ module.exports = async (fastify, opts, next: nextCallback) => {
       const loadedSeries = await seriesModel.findOne({ _id: request.params.id })
 
       return reply.send({
-        data: {
-          series: loadedSeries,
-        },
+        data: loadedSeries,
         error: '',
       })
     } catch (error) {
       return reply.send({
-        data: {},
+        data: [],
         error: error.message,
       })
     }

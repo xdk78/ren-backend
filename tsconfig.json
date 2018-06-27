@@ -2,7 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "esModuleInterop": true,
-        "strictNullChecks": true,
+        "strictNullChecks": false,
         "importHelpers": true,
         "target": "es6",
         "noImplicitAny": false,
