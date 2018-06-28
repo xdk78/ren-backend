@@ -1,4 +1,4 @@
-# senren-backend
+# senren-backend  [![Build Status](https://travis-ci.org/xdk78/senren-backend.svg?branch=master)](https://travis-ci.org/xdk78/senren-backend)
 
 ## Install
 ```bash
