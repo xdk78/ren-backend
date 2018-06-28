@@ -7,3 +7,4 @@ install:
 script:
   - npm run tslint
   - npm test
+services: mongodb
