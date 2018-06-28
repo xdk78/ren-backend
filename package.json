@@ -10,7 +10,8 @@
         "serve": "node dist/index.js",
         "build-ts": "tsc",
         "watch-ts": "tsc -w",
-        "tslint": "tslint -c tslint.json -p tsconfig.json"
+        "tslint": "tslint -c tslint.json -p tsconfig.json",
+        "test": "jest --forceExit --verbose"
     },
     "repository": {
         "type": "git",
@@ -37,6 +38,7 @@
         "@types/mongoose": "^5.0.18",
         "@types/node": "^10.3.3",
         "jest": "^23.2.0",
+        "supertest": "^3.1.0",
         "ts-jest": "^22.4.6",
         "ts-node": "^6.1.1",
         "tslint": "^5.10.0",

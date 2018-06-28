@@ -27,4 +27,5 @@ server.listen(PORT as number, '0.0.0.0', (err) => {
   // @ts-ignore
   console.log(`Senren api is listening on ${server.server.address().address}:${server.server.address().port}`)
 })
-module.exports = fastify
+
+export default () => server

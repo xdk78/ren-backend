@@ -1,0 +1,34 @@
+{
+    "title": "Game of Thrones",
+    "description": "7 kingdoms...",
+    "seasons": [
+        {
+            "number": 1,
+            "episodes": [
+                {
+                    "title": "Winter Is Coming",
+                    "number": 1
+                },
+                {
+                    "title": "The Kingsroad",
+                    "number": 2
+                }
+            ]
+        }
+    ],
+    "category": {
+        "name": "tv"
+    },
+    "rating": 9.5,
+    "genres": [
+        {
+            "name": "action"
+        },
+        {
+            "name": "adventure"
+        },
+        {
+            "name": "fantasy"
+        }
+    ]
+}
