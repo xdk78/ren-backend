@@ -6,7 +6,7 @@ import fs from 'fs'
 import path from 'path'
 
 const seriesPostMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPost.json'))
-const seriesResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
+const seriesPostResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
 
 const app = api()
 
@@ -24,7 +24,7 @@ describe('POST /series', () => {
       .send(JSON.parse(seriesPostMock))
       .expect((res) => {
         // @ts-ignore
-        res.body = JSON.parse(seriesResponseMock)
+        res.body = JSON.parse(seriesPostResponseMock)
       })
       .expect(200, done)
   })
