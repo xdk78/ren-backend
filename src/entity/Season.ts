@@ -1,7 +1,7 @@
-import { prop, arrayProp } from 'typegoose'
+import { prop, arrayProp, Typegoose } from 'typegoose'
 import Episode from './Episode'
 
-export default class Season {
+export default class Season extends Typegoose {
   @prop()
   number: number
 
