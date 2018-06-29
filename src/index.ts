@@ -13,7 +13,7 @@ server.register(db).ready()
 server.register(require('fastify-helmet'))
 server.register(require('fastify-compress'))
 server.register(require('fastify-jwt'), {
-  secret: 'supersecret'
+  secret: 'supersecret',
 }), err => {
   if (err) throw err
 }
