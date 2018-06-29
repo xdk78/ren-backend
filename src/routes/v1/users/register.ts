@@ -15,7 +15,7 @@ export default async (fastify, opts, next) => {
         {
           username: request.body.username,
           email: request.body.email,
-          password: await bcrypt.hash(request.body.password, saltRounds), // TODO: hash this
+          password: await bcrypt.hash(request.body.password, saltRounds),
           createdAt: new Date().toISOString(),
         },
       )
@@ -23,7 +23,7 @@ export default async (fastify, opts, next) => {
       await user.save()
 
       return {
-        data: { message: user },
+        data: { message: 'Registered successfully' },
         error: '',
       }
     } catch (error) {
