@@ -12,6 +12,11 @@ const PORT = process.env.PORT || 5000
 server.register(db).ready()
 server.register(require('fastify-helmet'))
 server.register(require('fastify-compress'))
+server.register(require('fastify-jwt'), {
+  secret: 'supersecret',
+}), err => {
+  if (err) throw err
+}
 
 // API Routing
 server.register(index, { prefix: '/v1' })

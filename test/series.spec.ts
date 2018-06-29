@@ -6,7 +6,7 @@ import fs from 'fs'
 import path from 'path'
 
 const seriesPostMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPost.json'))
-const seriesResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
+const seriesPostResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
 
 const app = api()
 
@@ -17,7 +17,6 @@ beforeAll(async () => {
 describe('POST /series', () => {
   it('responds with json', (done) => {
     request(app.server)
-      // @ts-ignore
       .post('/v1/series')
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
@@ -25,7 +24,26 @@ describe('POST /series', () => {
       .send(JSON.parse(seriesPostMock))
       .expect((res) => {
         // @ts-ignore
-        res.body = JSON.parse(seriesResponseMock)
+        res.body = JSON.parse(seriesPostResponseMock)
+      })
+      .expect(200, done)
+  })
+})
+
+describe('GET /series', () => {
+  it('responds with all series json', (done) => {
+    request(app.server)
+      .get('/v1/series')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect((res) => {
+        expect(Array.isArray(res.body.data)).toBeTruthy()
+        expect(res.body.data.title).not.toBeNull()
+        expect(res.body.data.description).not.toBeNull()
+        expect(res.body.data.seasons).not.toBeNull()
+        expect(res.body.data.category).not.toBeNull()
+        expect(res.body.data.genres).not.toBeNull()
+        expect(res.body.data.rating).not.toBeNull()
       })
       .expect(200, done)
   })
