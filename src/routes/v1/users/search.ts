@@ -18,15 +18,15 @@ export default async (fastify, opts, next) => {
         createdAt: user.createdAt,
         series: user.series,
       }
-      return reply.send({
+      return {
         data: output,
         error: '',
-      })
+      }
     } catch (error) {
-      return reply.send({
+      return {
         data: {},
         error: error.message,
-      })
+      }
     }
   })
   next()

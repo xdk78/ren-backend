@@ -1,6 +1,8 @@
 import Series from '../../../entity/Series'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerRequest, ServerResponse } from 'http'
+import createSeriesSchema from '../../../schema/series/createSeriesSchema'
+import getSeriesByIdSchema from '../../../schema/series/getSeriesByIdSchema'
 
 export default async (fastify, opts, next) => {
   const db = fastify.mongo.db
@@ -16,13 +18,13 @@ export default async (fastify, opts, next) => {
         error: '',
       })
     } catch (error) {
-      return reply.send({
+      return {
         data: [],
         error: error.message,
-      })
+      }
     }
   })
-  fastify.get('/series/:id', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+  fastify.get('/series/:id', { schema: getSeriesByIdSchema }, async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
@@ -33,13 +35,13 @@ export default async (fastify, opts, next) => {
         error: '',
       })
     } catch (error) {
-      return reply.send({
+      return {
         data: [],
         error: error.message,
-      })
+      }
     }
   })
-  fastify.post('/series', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/series', { schema: createSeriesSchema }, async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
@@ -56,15 +58,15 @@ export default async (fastify, opts, next) => {
 
       await series.save()
 
-      return reply.send({
+      return {
         data: { message: 'Added new series ' },
         error: '',
-      })
+      }
     } catch (error) {
-      return reply.send({
+      return {
         data: {},
         error: error.message,
-      })
+      }
     }
   })
   next()

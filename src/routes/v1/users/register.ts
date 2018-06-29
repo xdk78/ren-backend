@@ -20,15 +20,15 @@ export default async (fastify, opts, next) => {
 
       await user.save()
 
-      return reply.send({
+      return {
         data: { message: 'Registered new user ' },
         error: '',
-      })
+      }
     } catch (error) {
-      return reply.send({
+      return {
         data: {},
         error: error.message,
-      })
+      }
     }
   })
   next()

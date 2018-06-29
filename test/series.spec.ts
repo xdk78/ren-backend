@@ -5,8 +5,8 @@ import api from '../src/index'
 import fs from 'fs'
 import path from 'path'
 
-const seriesPostMock = fs.readFileSync(path.join(__dirname + '/__mocks__/series.post.json'))
-const seriesResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/series.post.response.json'))
+const seriesPostMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPost.json'))
+const seriesResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
 
 const app = api()
 

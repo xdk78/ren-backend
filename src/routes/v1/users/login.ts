@@ -14,15 +14,15 @@ export default async (fastify, opts, next) => {
         password: request.body.password,
       })
 
-      return reply.send({
+      return {
         data: { message: 'Login success', id: user._id }, // TODO: return token here
         error: '',
-      })
+      }
     } catch (error) {
-      return reply.send({
+      return {
         data: {},
         error: error.message,
-      })
+      }
     }
   })
   next()
