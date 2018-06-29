@@ -24,6 +24,7 @@
     },
     "homepage": "https://github.com/xdk78/senren-backend#readme",
     "dependencies": {
+        "@types/bcrypt": "^2.0.0",
         "fastify": "^1.6.0",
         "fastify-compress": "^0.6.0",
         "fastify-helmet": "^1.0.3",

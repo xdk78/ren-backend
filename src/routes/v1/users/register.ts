@@ -1,9 +1,11 @@
 import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerRequest, ServerResponse } from 'http'
+import * as bcrypt from 'bcrypt'
 
 export default async (fastify, opts, next) => {
   const db = fastify.mongo.db
+  const saltRounds = 10
 
   fastify.post('/users/register', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -13,7 +15,7 @@ export default async (fastify, opts, next) => {
         {
           username: request.body.username,
           email: request.body.email,
-          password: request.body.password, // TODO: hash this
+          password: await bcrypt.hash(request.body.password, saltRounds), // TODO: hash this
           createdAt: new Date().toISOString(),
         },
       )
@@ -21,7 +23,7 @@ export default async (fastify, opts, next) => {
       await user.save()
 
       return {
-        data: { message: 'Registered new user ' },
+        data: { message: user },
         error: '',
       }
     } catch (error) {
