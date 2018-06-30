@@ -5,3 +5,6 @@ build/
 tmp/
 temp/
 dist/
+.env
+.env.development
+.env.production

@@ -7,7 +7,7 @@ import path from 'path'
 
 const seriesPostMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPost.json'))
 const seriesPostResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
-const bearerToken = 'supersecret'
+const bearerToken = process.env.API_BEARER_SECRET_TOKEN
 
 const app = api()
 
