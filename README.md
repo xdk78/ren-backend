@@ -5,7 +5,7 @@
 
 
 ## Create `.env` files (example in repo):
-- for development `.env` or `.env.development`
+- for development `.env`
 - for production `.env.production`
 
 ## Install

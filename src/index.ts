@@ -1,5 +1,14 @@
-import dotenv from 'dotenv-flow'
-dotenv.config()
+import dotenv from 'dotenv-safe'
+let envConfig = {}
+if (process.env.NODE_ENV === 'production') {
+  envConfig = { path: './.env.production' }
+} else if (process.env.NODE_ENV === 'test') {
+  envConfig = { path: './.env.test' }
+} else {
+  envConfig = { path: './.env' }
+}
+dotenv.config(Object.assign({}, { allowEmptyValues: true, example: './.env.example' }, envConfig))
+
 import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import db from './db'
