@@ -7,6 +7,7 @@ import path from 'path'
 
 const seriesPostMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPost.json'))
 const seriesPostResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
+const bearerToken = 'supersecret'
 
 const app = api()
 
@@ -18,6 +19,7 @@ describe('POST /series', () => {
   it('responds with json', (done) => {
     request(app.server)
       .post('/v1/series')
+      .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
       // @ts-ignore
@@ -34,6 +36,7 @@ describe('GET /series', () => {
   it('responds with all series json', (done) => {
     request(app.server)
       .get('/v1/series')
+      .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect((res) => {
