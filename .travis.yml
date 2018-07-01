@@ -13,6 +13,7 @@ env:
     - API_BEARER_SECRET_TOKEN=supersecret
     - API_JWT_SECRET_TOKEN=supersecret
     - API_SESSION_SECRET_TOKEN=supersecretmusthave32orgreaterlength
+    - API_SESSION_COOKIE_SECURE=false
 node_js:
   - "8.11.3"
 install:

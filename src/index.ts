@@ -26,6 +26,15 @@ const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> =
 
 const PORT = process.env.API_PORT || 5000
 const HOST = process.env.API_HOST || '0.0.0.0'
+const secureCookie = () => {
+  let secure = false
+  if (process.env.API_SESSION_COOKIE_SECURE === 'true') {
+    secure = true
+  } else {
+    secure = false
+  }
+  return secure
+}
 
 const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
@@ -33,12 +42,6 @@ server.register(db).ready()
 server.register(helmet)
 server.register(compress)
 server.register(bearerAuth, { keys })
-// @ts-ignore
-server.addHook('onRequest', (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>, next) => {
-  // @ts-ignore
-  request.connection.encrypted = true
-  next()
-})
 server.register(cookie)
 server.register(session, {
   secret: process.env.API_SESSION_SECRET_TOKEN,
@@ -47,6 +50,7 @@ server.register(session, {
     collection: 'sessions',
   }),
   cookie: {
+    secure: secureCookie(),
     maxAge: 1000 * 60 * 60 * 24 * 7,  // 1 week
   },
 })
