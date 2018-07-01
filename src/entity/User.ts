@@ -16,4 +16,7 @@ export default class User extends Typegoose {
 
   @arrayProp({ items: Series })
   series?: Series[]
+
+  @prop()
+  avatar?: string
 }
