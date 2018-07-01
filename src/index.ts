@@ -8,13 +8,16 @@ if (process.env.NODE_ENV === 'production') {
   envConfig = { path: './.env' }
 }
 dotenv.config(Object.assign({}, { allowEmptyValues: true, example: './.env.example' }, envConfig))
-
-import fastify from 'fastify'
-import { Server, IncomingMessage, ServerResponse } from 'http'
+import { dbConnURI } from './utils'
+import fastify, { FastifyRequest, FastifyReply } from 'fastify'
+import { Server, IncomingMessage, ServerResponse, ServerRequest } from 'http'
 import db from './db'
 import helmet from 'fastify-helmet'
 import compress from 'fastify-compress'
 import bearerAuth from 'fastify-bearer-auth'
+import session from 'fastify-session'
+import cookie from 'fastify-cookie'
+const mongoStore = require('connect-mongodb-session')(session)
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
@@ -30,6 +33,23 @@ server.register(db).ready()
 server.register(helmet)
 server.register(compress)
 server.register(bearerAuth, { keys })
+// @ts-ignore
+server.addHook('onRequest', (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>, next) => {
+  // @ts-ignore
+  request.connection.encrypted = true
+  next()
+})
+server.register(cookie)
+server.register(session, {
+  secret: process.env.API_SESSION_SECRET_TOKEN,
+  store: new mongoStore({
+    uri: dbConnURI,
+    collection: 'sessions',
+  }),
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,  // 1 week
+  },
+})
 
 // API Routing
 server.register(index, { prefix: '/v1' })
