@@ -16,7 +16,7 @@ export default async (fastify, opts, next) => {
 
       if (await bcrypt.compare(request.body.password, userFromDb.password)) {
         reply.send({
-          data: { message: 'Login success', id: userFromDb._id }, // TODO: return token here
+          data: { message: 'Login success', _id: userFromDb._id },
           error: '',
         })
       } else {

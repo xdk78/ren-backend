@@ -15,7 +15,6 @@ import db from './db'
 import helmet from 'fastify-helmet'
 import compress from 'fastify-compress'
 import bearerAuth from 'fastify-bearer-auth'
-import jwt from 'fastify-jwt'
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
@@ -31,11 +30,6 @@ server.register(db).ready()
 server.register(helmet)
 server.register(compress)
 server.register(bearerAuth, { keys })
-server.register(jwt, {
-  secret: process.env.API_JWT_SECRET_TOKEN,
-}), err => {
-  if (err) throw err
-}
 
 // API Routing
 server.register(index, { prefix: '/v1' })
