@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm run serve",
         "dev": "cross-env NODE_ENV=development npm run tslint && ts-node src/index.ts",
-        "build": "cross-env NODE_ENV=production npm run tslint && npm run build-ts",
+        "build": "cross-env NODE_ENV=production npm run tslint && shx rm -rf dist && npm run build-ts",
         "serve": "node ./dist/src/index.js",
         "build-ts": "tsc",
         "watch-ts": "tsc -w",
@@ -46,6 +46,7 @@
         "cross-env": "^5.2.0",
         "dotenv-safe": "^6.0.0",
         "jest": "^23.2.0",
+        "shx": "^0.3.1",
         "supertest": "^3.1.0",
         "ts-jest": "^22.4.6",
         "ts-node": "^6.1.1",
