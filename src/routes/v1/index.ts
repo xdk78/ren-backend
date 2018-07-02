@@ -1,13 +1,13 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import { ServerRequest, ServerResponse } from 'http'
+import { ServerResponse, IncomingMessage } from 'http'
 
-export default async (fastify: FastifyInstance, opts, next) => {
-  fastify.get('/', opts, async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+export default async (fastify: FastifyInstance, opts) => {
+  fastify.get('/', opts, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     reply.header('Content-Type', 'application/json').code(200)
-    return reply.send({
+    return {
       data: { message: 'Api say Hello' },
       error: '',
-    })
+    }
   })
-  next()
+  return
 }

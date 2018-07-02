@@ -9,20 +9,21 @@ if (process.env.NODE_ENV === 'production') {
 }
 dotenv.config(Object.assign({}, { allowEmptyValues: true, example: './.env.example' }, envConfig))
 import { dbConnURI } from './utils'
-import fastify, { FastifyRequest, FastifyReply } from 'fastify'
-import { Server, IncomingMessage, ServerResponse, ServerRequest } from 'http'
+import fastify from 'fastify'
+import { Server, IncomingMessage, ServerResponse } from 'http'
 import db from './db'
 import helmet from 'fastify-helmet'
 import compress from 'fastify-compress'
 import bearerAuth from 'fastify-bearer-auth'
 import session from 'fastify-session'
 import cookie from 'fastify-cookie'
-const mongoStore = require('connect-mongodb-session')(session)
+import mongoConnect from 'connect-mongodb-session'
+const mongoStore = mongoConnect(session)
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
 
-const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
+const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
 
 const PORT = process.env.API_PORT || 5000
 const HOST = process.env.API_HOST || '0.0.0.0'
@@ -38,12 +39,12 @@ const secureCookie = () => {
 
 const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
-server.register(db).ready()
-server.register(helmet)
-server.register(compress)
-server.register(bearerAuth, { keys })
-server.register(cookie)
-server.register(session, {
+app.register(db).ready()
+app.register(helmet)
+app.register(compress)
+app.register(bearerAuth, { keys })
+app.register(cookie)
+app.register(session, {
   secret: process.env.API_SESSION_SECRET_TOKEN,
   store: new mongoStore({
     uri: dbConnURI,
@@ -56,18 +57,18 @@ server.register(session, {
 })
 
 // API Routing
-server.register(index, { prefix: '/v1' })
-server.register(series, { prefix: '/v1' })
-server.register(users, { prefix: '/v1' })
+app.register(index, { prefix: '/v1' })
+app.register(series, { prefix: '/v1' })
+app.register(users, { prefix: '/v1' })
 
-server.get('/', (request, reply) => {
+app.get('/', (request, reply) => {
   reply.redirect(302, '/v1')
 })
 
-server.listen(PORT as number, HOST, (err) => {
+app.listen(PORT as number, HOST, (err) => {
   if (err) throw err
   // @ts-ignore
-  console.log(`Senren api is listening on ${server.server.address().address}:${server.server.address().port}`)
+  console.log(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
 })
 
-export default () => server
+export default () => app

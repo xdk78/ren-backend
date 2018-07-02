@@ -1,13 +1,13 @@
 import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { ServerRequest, ServerResponse } from 'http'
+import { ServerResponse, IncomingMessage } from 'http'
 import * as bcrypt from 'bcrypt'
 
-export default async (fastify, opts, next) => {
+export default async (fastify, opts) => {
   const db = fastify.mongo.db
   const saltRounds = 10
 
-  fastify.post('/users/register', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/users/register', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const userModel = new User().getModelForClass(User, { existingConnection: db })
@@ -23,7 +23,7 @@ export default async (fastify, opts, next) => {
       await user.save()
 
       return {
-        data: { message: 'Registered successfully' },
+        data: { message: 'Register success' },
         error: '',
       }
     } catch (error) {
@@ -33,5 +33,5 @@ export default async (fastify, opts, next) => {
       }
     }
   })
-  next()
+  return
 }

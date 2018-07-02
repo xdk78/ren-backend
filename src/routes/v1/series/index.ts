@@ -1,13 +1,13 @@
 import Series from '../../../entity/Series'
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { ServerRequest, ServerResponse } from 'http'
+import { ServerResponse, IncomingMessage } from 'http'
 import createSeriesSchema from '../../../schema/series/createSeriesSchema'
 import getSeriesByIdSchema from '../../../schema/series/getSeriesByIdSchema'
 
-export default async (fastify, opts, next) => {
+export default async (fastify, opts) => {
   const db = fastify.mongo.db
 
-  fastify.get('/series', async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+  fastify.get('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
@@ -24,7 +24,7 @@ export default async (fastify, opts, next) => {
       }
     }
   })
-  fastify.get('/series/:id', { schema: getSeriesByIdSchema }, async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+  fastify.get('/series/:id', { schema: getSeriesByIdSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
@@ -41,7 +41,7 @@ export default async (fastify, opts, next) => {
       }
     }
   })
-  fastify.post('/series', { schema: createSeriesSchema }, async (request: FastifyRequest<ServerRequest>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/series', { schema: createSeriesSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
@@ -69,5 +69,5 @@ export default async (fastify, opts, next) => {
       }
     }
   })
-  next()
+  return
 }
