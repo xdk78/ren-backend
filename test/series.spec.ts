@@ -2,13 +2,10 @@ jest.setTimeout(100000)
 
 import request from 'supertest'
 import api from '../src/index'
-import fs from 'fs'
-import path from 'path'
+import seriesPostMock from './__mocks__/seriesPost.json'
+import seriesPostResponseMock from './__mocks__/seriesPostResponse.json'
 
-const seriesPostMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPost.json'))
-const seriesPostResponseMock = fs.readFileSync(path.join(__dirname + '/__mocks__/seriesPostResponse.json'))
 const bearerToken = process.env.API_BEARER_SECRET_TOKEN
-
 const app = api()
 
 beforeAll(async () => {
@@ -22,11 +19,9 @@ describe('POST /series', () => {
       .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
-      // @ts-ignore
-      .send(JSON.parse(seriesPostMock))
+      .send(seriesPostMock)
       .expect((res) => {
-        // @ts-ignore
-        res.body = JSON.parse(seriesPostResponseMock)
+        res.body = seriesPostResponseMock
       })
       .expect(200, done)
   })

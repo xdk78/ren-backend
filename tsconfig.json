@@ -9,6 +9,7 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "resolveJsonModule": true,
         "outDir": "./dist",
         "lib": [
             "es2017"
