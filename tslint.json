@@ -12,7 +12,8 @@
     },
     "linterOptions": {
         "exclude": [
-            "src/migration/*"
+            "src/migration/*",
+            "test/__mocks__/*"
         ]
     }
 }
