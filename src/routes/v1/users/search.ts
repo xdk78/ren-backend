@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 
 export default async (fastify: FastifyInstance, opts) => {
-    // @ts-ignore
+  // @ts-ignore
   const db = fastify.mongo.db
 
   fastify.get('/users', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {

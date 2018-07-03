@@ -4,7 +4,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 import * as bcrypt from 'bcrypt'
 
 export default async (fastify: FastifyInstance, opts) => {
-    // @ts-ignore
+  // @ts-ignore
   const db = fastify.mongo.db
 
   fastify.post('/users/login', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
