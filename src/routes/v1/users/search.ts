@@ -15,8 +15,8 @@ export default async (fastify: FastifyInstance, opts) => {
         _id: user._id,
         username: user.username,
         createdAt: user.createdAt,
-        series: user.series,
         avatar: user.avatar,
+        watchList: user.watchList,
       }),
       )
 
@@ -42,8 +42,8 @@ export default async (fastify: FastifyInstance, opts) => {
         _id: user._id,
         username: user.username,
         createdAt: user.createdAt,
-        series: user.series,
         avatar: user.avatar,
+        watchList: user.watchList,
       }
 
       return {

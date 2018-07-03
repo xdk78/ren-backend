@@ -1,5 +1,5 @@
-import { prop, arrayProp, Typegoose } from 'typegoose'
-import Series from './Series'
+import { prop, Typegoose } from 'typegoose'
+import WatchList from './WatchList'
 
 export default class User extends Typegoose {
   @prop({ unique: true, required: true })
@@ -14,8 +14,8 @@ export default class User extends Typegoose {
   @prop({ required: true })
   createdAt: string
 
-  @arrayProp({ items: Series })
-  series?: Series[]
+  @prop()
+  watchList?: WatchList
 
   @prop()
   avatar?: string
