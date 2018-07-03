@@ -14,7 +14,11 @@ function plugin(fastify: FastifyInstance, options, next) {
       // @ts-ignore
       fastify.mongo.db.close(done)
     })
-  }).catch(error => next(error))
+    console.log('Succesfully connected to database')
+  }).catch(error => {
+    next(error)
+    process.exit(1)
+  })
 }
 
 export default fp(plugin)

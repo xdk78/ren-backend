@@ -1,10 +1,14 @@
 import Series from '../../../entity/Series'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import createSeriesSchema from '../../../schema/series/createSeriesSchema'
 import getSeriesByIdSchema from '../../../schema/series/getSeriesByIdSchema'
+import bearerAuth from 'fastify-bearer-auth'
+const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
-export default async (fastify, opts) => {
+export default async (fastify: FastifyInstance, opts) => {
+  fastify.register(bearerAuth, { keys })
+  // @ts-ignore
   const db = fastify.mongo.db
 
   fastify.get('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {

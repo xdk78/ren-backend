@@ -1,9 +1,10 @@
 import User from '../../../entity/User'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import * as bcrypt from 'bcrypt'
 
-export default async (fastify, opts) => {
+export default async (fastify: FastifyInstance, opts) => {
+    // @ts-ignore
   const db = fastify.mongo.db
   const saltRounds = 10
 

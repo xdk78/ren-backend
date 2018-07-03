@@ -35,6 +35,14 @@ export default {
         },
       },
     },
+    additionalProperties: false,
   },
-  additionalProperties: false,
+  headers: {
+    type: 'object',
+    properties: {
+      // tslint:disable-next-line:object-literal-key-quotes
+      'Authorization': { type: 'string' },
+    },
+    required: ['Authorization'],
+  },
 } as RouteSchema

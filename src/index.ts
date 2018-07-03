@@ -14,11 +14,11 @@ import { Server, IncomingMessage, ServerResponse } from 'http'
 import db from './db'
 import helmet from 'fastify-helmet'
 import compress from 'fastify-compress'
-import bearerAuth from 'fastify-bearer-auth'
 import session from 'fastify-session'
 import cookie from 'fastify-cookie'
 import mongoConnect from 'connect-mongodb-session'
 const mongoStore = mongoConnect(session)
+import circuitBreaker from 'fastify-circuit-breaker'
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
@@ -37,12 +37,14 @@ const secureCookie = () => {
   return secure
 }
 
-const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
-
 app.register(db).ready()
+app.register(circuitBreaker, {
+  threshold: 5,
+  timeout: 15000,
+  resetTimeout: 15000,
+})
 app.register(helmet)
 app.register(compress)
-app.register(bearerAuth, { keys })
 app.register(cookie)
 app.register(session, {
   secret: process.env.API_SESSION_SECRET_TOKEN,
@@ -60,10 +62,6 @@ app.register(session, {
 app.register(index, { prefix: '/v1' })
 app.register(series, { prefix: '/v1' })
 app.register(users, { prefix: '/v1' })
-
-app.get('/', (request, reply) => {
-  reply.redirect(302, '/v1')
-})
 
 app.listen(PORT as number, HOST, (err) => {
   if (err) throw err
