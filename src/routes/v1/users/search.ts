@@ -38,17 +38,21 @@ export default async (fastify: FastifyInstance, opts) => {
       const user = await userModel.findOne({
         _id: request.params.id,
       })
-      const output = {
-        _id: user._id,
-        username: user.username,
-        createdAt: user.createdAt,
-        avatar: user.avatar,
-        watchList: user.watchList,
-      }
+      if (user) {
+        const output = {
+          _id: user._id,
+          username: user.username,
+          createdAt: user.createdAt,
+          avatar: user.avatar,
+          watchList: user.watchList,
+        }
 
-      return {
-        data: output,
-        error: '',
+        reply.send({
+          data: output,
+          error: '',
+        })
+      } else {
+        throw new Error('Couldn\'t find user')
       }
     } catch (error) {
       return {

@@ -20,13 +20,17 @@ export default async (fastify: FastifyInstance, opts) => {
           createdAt: new Date().toISOString(),
         },
       )
+      if (user) {
+        await user.save()
 
-      await user.save()
-
-      return {
-        data: { message: 'Register success' },
-        error: '',
+        reply.send({
+          data: { message: 'Register success' },
+          error: '',
+        })
+      } else {
+        throw new Error('Wrong credentials')
       }
+
     } catch (error) {
       return {
         data: {},

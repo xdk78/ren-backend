@@ -1,19 +1,19 @@
-import { Typegoose, arrayProp } from 'typegoose'
+import { Typegoose, arrayProp, Ref } from 'typegoose'
 import Series from './Series'
 
 export default class WatchList extends Typegoose {
-  @arrayProp({ items: Series })
-  watching?: Series[]
+  @arrayProp({ itemsRef: Series })
+  watching?: Ref<Series>[]
 
-  @arrayProp({ items: Series })
-  completed?: Series[]
+  @arrayProp({ itemsRef: Series })
+  completed?: Ref<Series>[]
 
-  @arrayProp({ items: Series })
-  onHold?: Series[]
+  @arrayProp({ itemsRef: Series })
+  onHold?: Ref<Series>[]
 
-  @arrayProp({ items: Series })
-  dropped?: Series[]
+  @arrayProp({ itemsRef: Series })
+  dropped?: Ref<Series>[]
 
-  @arrayProp({ items: Series })
-  planToWatch?: Series[]
+  @arrayProp({ itemsRef: Series })
+  planToWatch?: Ref<Series>[]
 }
