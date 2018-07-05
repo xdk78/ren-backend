@@ -1,4 +1,6 @@
 import User from '../../../entity/User'
+import WatchList from '../../../entity/WatchList'
+
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import * as bcrypt from 'bcrypt'
@@ -12,12 +14,14 @@ export default async (fastify: FastifyInstance, opts) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const userModel = new User().getModelForClass(User, { existingConnection: db })
+      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: db })
       const user = new userModel(
         {
           username: request.body.username,
           email: request.body.email,
           password: await bcrypt.hash(request.body.password, saltRounds),
           createdAt: new Date().toISOString(),
+          watchList: await new watchListModel({}).save(),
         },
       )
       if (user) {

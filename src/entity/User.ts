@@ -20,14 +20,4 @@ export default class User extends Typegoose {
 
   @prop()
   avatar?: string
-
-  @staticMethod
-  static addToWatchList(this: ModelType<User> & typeof User, id: ObjectID, watchList: WatchList) {
-    return this.update({ _id: id }, { $set: { watchList: watchList } })
-  }
-
-  @staticMethod
-  static removeFromWatchList(this: ModelType<User> & typeof User, id: ObjectID, watchList: WatchList) {
-    return this.update({ _id: id }, { $unset: { watchList: watchList } })
-  }
 }

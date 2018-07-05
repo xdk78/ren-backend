@@ -8,27 +8,27 @@ export default class WatchList extends Typegoose {
   userId: Ref<User>
 
   @arrayProp({ itemsRef: Series })
-  watching?: Ref<Series>[]
+  watching: Ref<Series>[]
 
   @arrayProp({ itemsRef: Series })
-  completed?: Ref<Series>[]
+  completed: Ref<Series>[]
 
   @arrayProp({ itemsRef: Series })
-  onHold?: Ref<Series>[]
+  onHold: Ref<Series>[]
 
   @arrayProp({ itemsRef: Series })
-  dropped?: Ref<Series>[]
+  dropped: Ref<Series>[]
 
   @arrayProp({ itemsRef: Series })
   planToWatch?: Ref<Series>[]
 
   @staticMethod
-  static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: ObjectID, items: Ref<Series>[]) {
-    return this.update({ _id: id }, { $push: { watching: items } })
+  static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: ObjectID, item: Ref<Series>) {
+    return this.update({ _id: id }, { $push: { watching: item } })
   }
 
   @staticMethod
-  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: ObjectID, items: Ref<Series>[]) {
-    return this.update({ _id: id }, { $pull: { watching: items } })
+  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: ObjectID, item: Ref<Series>) {
+    return this.update({ _id: id }, { $pull: { watching: item } })
   }
 }
