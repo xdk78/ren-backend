@@ -23,3 +23,6 @@ npm run dev
 npm run build
 ```
 Enjoy!
+
+## Docs
+[Docs](docs/index.md)
