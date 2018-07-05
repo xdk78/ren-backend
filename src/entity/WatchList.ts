@@ -1,7 +1,12 @@
-import { Typegoose, arrayProp, Ref } from 'typegoose'
+import { Typegoose, arrayProp, Ref, ModelType, staticMethod, prop } from 'typegoose'
 import Series from './Series'
+import { ObjectID } from 'bson'
+import User from './User'
 
 export default class WatchList extends Typegoose {
+  @prop({ ref: User })
+  userId: Ref<User>
+
   @arrayProp({ itemsRef: Series })
   watching?: Ref<Series>[]
 
@@ -16,4 +21,14 @@ export default class WatchList extends Typegoose {
 
   @arrayProp({ itemsRef: Series })
   planToWatch?: Ref<Series>[]
+
+  @staticMethod
+  static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: ObjectID, items: Ref<Series>[]) {
+    return this.update({ _id: id }, { $push: { watching: items } })
+  }
+
+  @staticMethod
+  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: ObjectID, items: Ref<Series>[]) {
+    return this.update({ _id: id }, { $pull: { watching: items } })
+  }
 }

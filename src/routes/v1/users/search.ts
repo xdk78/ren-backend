@@ -16,7 +16,7 @@ export default async (fastify: FastifyInstance, opts) => {
         username: user.username,
         createdAt: user.createdAt,
         avatar: user.avatar,
-        watchList: user.watchList,
+        watchListId: user.watchList,
       }),
       )
 
@@ -44,7 +44,7 @@ export default async (fastify: FastifyInstance, opts) => {
           username: user.username,
           createdAt: user.createdAt,
           avatar: user.avatar,
-          watchList: user.watchList,
+          watchListId: user.watchList,
         }
 
         reply.send({
