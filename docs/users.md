@@ -11,7 +11,7 @@ Returns all registered users
 `GET /v1/users`
 
 ### Sample response
-```
+```json
 {
 	"data": [
 		{
@@ -41,7 +41,7 @@ Returns user by id
 `GET /v1/users/5b3ea5a2dfbf005dfda1e553`
 
 ### Sample response
-```
+```json
 {
 	"data": {
 		"_id": "5b3ea5a2dfbf005dfda1e553",
@@ -59,12 +59,14 @@ Registers a new user
 
 ### Parameters
 `email` user's email
+
 `password` user's password
+
 `username` user's username
 
 ### Sample request
 `POST /v1/users/register`
-```
+```json
 {
 	"email": "jkm@example.com",
 	"password": "dd476",
@@ -73,7 +75,7 @@ Registers a new user
 ```
 
 ### Sample response
-```
+```json
 {
 	"data": {
 		"message": "Register success"
@@ -88,11 +90,12 @@ Logins a user
 
 ### Parameters
 `password` user's password
+
 `username` user's username
 
 ### Sample request
 `GET /v1/users/login`
-```
+```json
 {
 	"password": "dd476",
 	"username": "krul"
@@ -100,7 +103,7 @@ Logins a user
 ```
 
 ### Sample response
-```
+```json
 {
 	"data": {
 		"message": "Login success",
@@ -121,7 +124,7 @@ Retrieves user's watchlist
 `GET /v1/users/watchlist`
 
 ### Sample response
-```
+```json
 {
 	"data": {
 		"watching": [],
@@ -142,18 +145,29 @@ Adds item to user's watchlist
 
 ### Parameters
 `id` user's id
+
 `seriesId` series id
+
+`status` watchlist status
+```js
+  watching = 1,
+  completed = 2,
+  onHold = 3,
+  dropped = 4,
+  planToWatch = 5
+  ```
 
 ### Sample request
 `POST /v1/users/watchlist`
-```
+```json
 {
-	"seriesId": "5b3e92ce7b770c495c2e42b6"
+	"seriesId": "5b3e92ce7b770c495c2e42b6",
+	"status": 1
 }
 ```
 
 ### Sample response
-```
+```json
 {
 	"data": "5b3eaa26d52cec623ef5631a",
 	"error": ""
@@ -166,18 +180,29 @@ Removes item to user's watchlist
 
 ### Parameters
 `id` user's id
+
 `seriesId` series id
+
+`status` watchlist status
+```js
+  watching = 1,
+  completed = 2,
+  onHold = 3,
+  dropped = 4,
+  planToWatch = 5
+  ```
 
 ### Sample request
 `DELETE /v1/users/watchlist`
-```
+```json
 {
-	"seriesId": "5b3e92ce7b770c495c2e42b6"
+	"seriesId": "5b3e92ce7b770c495c2e42b6",
+	"status": 1
 }
 ```
 
 ### Sample response
-```
+```json
 {
 	"data": "5b3eaa26d52cec623ef5631a",
 	"error": ""

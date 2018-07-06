@@ -1,8 +1,15 @@
 import User from '../../../entity/User'
-import { ObjectId } from 'bson'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import WatchList from '../../../entity/WatchList'
+
+enum StatusNumber {
+  watching = 1,
+  completed = 2,
+  onHold = 3,
+  dropped = 4,
+  planToWatch = 5,
+}
 
 export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
@@ -43,7 +50,28 @@ export default async (fastify: FastifyInstance, opts) => {
 
       const user = await userModel.findOne({ _id: request.params.id })
       if (user) {
-        await watchListModel.addToWatching(user.watchList as any, request.body.seriesId)
+        const status = request.body.status
+        const seriesId = request.body.seriesId
+
+        switch (status) {
+          case StatusNumber.watching:
+            await watchListModel.addToWatching(user.watchList, seriesId)
+            break
+          case StatusNumber.completed:
+            await watchListModel.addToCompleted(user.watchList, seriesId)
+            break
+          case StatusNumber.onHold:
+            await watchListModel.addToOnHold(user.watchList, seriesId)
+            break
+          case StatusNumber.dropped:
+            await watchListModel.addToDropped(user.watchList, seriesId)
+            break
+          case StatusNumber.planToWatch:
+            await watchListModel.addToPlanToWatch(user.watchList, seriesId)
+            break
+          default:
+            throw new Error('Wrong status')
+        }
 
         reply.send({
           data: user.watchList,
@@ -69,7 +97,28 @@ export default async (fastify: FastifyInstance, opts) => {
 
       const user = await userModel.findOne({ _id: request.params.id })
       if (user) {
-        await watchListModel.removeFromWatching(user.watchList as any, request.body.seriesId)
+        const status = request.body.status
+        const seriesId = request.body.seriesId
+
+        switch (status) {
+          case StatusNumber.watching:
+            await watchListModel.removeFromWatching(user.watchList, seriesId)
+            break
+          case StatusNumber.completed:
+            await watchListModel.removeFromCompleted(user.watchList, seriesId)
+            break
+          case StatusNumber.onHold:
+            await watchListModel.removeFromOnHold(user.watchList, seriesId)
+            break
+          case StatusNumber.dropped:
+            await watchListModel.removeFromDropped(user.watchList, seriesId)
+            break
+          case StatusNumber.planToWatch:
+            await watchListModel.removeFromPlanToWatch(user.watchList, seriesId)
+            break
+          default:
+            throw new Error('Wrong status')
+        }
 
         reply.send({
           data: user.watchList,

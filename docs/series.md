@@ -11,7 +11,7 @@ Returns all series
 `GET /v1/series`
 
 ### Sample response
-```
+```json
 {
 	"data": [
 		{
@@ -49,7 +49,7 @@ Returns series by id
 `GET /v1/series/5b3e92ce7b770c495c2e42b6`
 
 ### Sample response
-```
+```json
 {
 	"data": [
 		{
@@ -82,15 +82,20 @@ Adds new series
 ### Parameters
 
 `title` series title
+
 `description` series description
+
 `seasons` list of series seasons
+
 `category` series category
+
 `generes` list of series generes
+
 `rating` series rating
 
 ### Sample request
 `POST /v1/series`
-```
+```json
 {
     "title": "Game of Thrones",
     "description": "7 kingdoms...",
@@ -141,7 +146,7 @@ Adds new series
 ```
 
 ### Sample response
-```
+```json
 {
 	"data": {
 		"message": "Added new series "
