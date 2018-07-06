@@ -1,6 +1,5 @@
 import { Typegoose, arrayProp, Ref, ModelType, staticMethod, prop } from 'typegoose'
 import Series from './Series'
-import { ObjectID } from 'bson'
 import User from './User'
 
 export default class WatchList extends Typegoose {
@@ -28,7 +27,7 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: Object, item: Ref<Series>) {
+  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { watching: item } })
   }
 
@@ -38,7 +37,7 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: Object, item: Ref<Series>) {
+  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { completed: item } })
   }
 
@@ -48,7 +47,7 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromOnHold(this: ModelType<WatchList> & typeof WatchList, id: Object, item: Ref<Series>) {
+  static removeFromOnHold(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { onHold: item } })
   }
 
@@ -58,7 +57,7 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromDropped(this: ModelType<WatchList> & typeof WatchList, id: Object, item: Ref<Series>) {
+  static removeFromDropped(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { dropped: item } })
   }
 
@@ -68,7 +67,7 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: Object, item: Ref<Series>) {
+  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { planToWatch: item } })
   }
 }
