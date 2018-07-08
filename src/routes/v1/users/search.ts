@@ -9,21 +9,20 @@ export default async (fastify: FastifyInstance, opts) => {
   fastify.get('/users', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
-      const userModel = new User().getModelForClass(User, { existingConnection: db })
-      const users = await userModel.find()
-      const output = users.map(user => ({
-        _id: user._id,
-        username: user.username,
-        createdAt: user.createdAt,
-        avatar: user.avatar,
-        watchListId: user.watchList,
-      }),
-      )
+      // @ts-ignore
+      const userId = request.session.userId
 
-      return {
-        data: output,
-        error: '',
+      if (userId) {
+        const userModel = new User().getModelForClass(User, { existingConnection: db })
+        const user = await userModel.findOne({ _id: userId })
+
+        return {
+          data: user,
+          error: '',
+        }
       }
+
+      throw new Error('User not logged in')
     } catch (error) {
       return {
         data: [],

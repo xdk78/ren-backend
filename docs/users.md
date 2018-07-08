@@ -3,7 +3,7 @@
 
 ## GET `/users`
 
-Returns all registered users
+Returns current logged in user
 
 ### Parameters
 
@@ -13,19 +13,11 @@ Returns all registered users
 ### Sample response
 ```json
 {
-	"data": [
-		{
-			"_id": "5b3e92397b770c495c2e42b5",
-			"username": "xdk78",
-			"createdAt": "2018-07-05T21:48:41.795Z"
-		},
-		{
-			"_id": "5b3e9fc9d19347575c991c7a",
-			"username": "feelfreelinux",
-			"createdAt": "2018-07-05T22:46:33.082Z",
-			"watchListId": "5b3e9fc9d19347575c991c79"
-		}
-	],
+	"data":{
+		"_id": "5b3e92397b770c495c2e42b5",
+		"username": "xdk78",
+		"createdAt": "2018-07-05T21:48:41.795Z"
+	},
 	"error": ""
 }
 ```

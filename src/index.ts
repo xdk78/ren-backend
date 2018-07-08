@@ -22,6 +22,7 @@ import circuitBreaker from 'fastify-circuit-breaker'
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
+import auth from './routes/v1/auth'
 
 const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
 
@@ -62,6 +63,7 @@ app.register(session, {
 app.register(index, { prefix: '/v1' })
 app.register(series, { prefix: '/v1' })
 app.register(users, { prefix: '/v1' })
+app.register(auth, { prefix: '/v1' })
 
 app.listen(PORT as number, HOST, (err) => {
   if (err) throw err
