@@ -1,4 +1,4 @@
-# `/v1/users`
+# `/v1/auth`
 
 :lock: - Requires authorization
 
@@ -16,7 +16,7 @@ Registers a new user
 
 ### Sample request
 
-`POST /v1/users/register`
+`POST /v1/auth/register`
 
 ```json
 {
