@@ -45,66 +45,6 @@ Returns user by id
 }
 ```
 
-## POST `/users/register`
-
-Registers a new user
-
-### Parameters
-`email` user's email
-
-`password` user's password
-
-`username` user's username
-
-### Sample request
-`POST /v1/users/register`
-```json
-{
-	"email": "jkm@example.com",
-	"password": "dd476",
-	"username": "krul"
-}
-```
-
-### Sample response
-```json
-{
-	"data": {
-		"message": "Register success"
-	},
-	"error": ""
-}
-```
-
-## POST `/users/login`
-
-Logins a user
-
-### Parameters
-`password` user's password
-
-`username` user's username
-
-### Sample request
-`GET /v1/users/login`
-```json
-{
-	"password": "dd476",
-	"username": "krul"
-}
-```
-
-### Sample response
-```json
-{
-	"data": {
-		"message": "Login success",
-		"_id": "5b3eaa26d52cec623ef5631b"
-	},
-	"error": ""
-}
-```
-
 ## GET `/users/:id/watchlist`
 
 Retrieves user's watchlist
