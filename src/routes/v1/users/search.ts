@@ -16,13 +16,14 @@ export default async (fastify: FastifyInstance, opts) => {
         const userModel = new User().getModelForClass(User, { existingConnection: db })
         const user = await userModel.findOne({ _id: userId })
 
-        return {
+        reply.send({
           data: user,
           error: '',
-        }
+        })
+      } else {
+        throw new Error('User is not logged in')
       }
 
-      throw new Error('User not logged in')
     } catch (error) {
       return {
         data: [],

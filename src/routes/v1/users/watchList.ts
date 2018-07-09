@@ -45,40 +45,47 @@ export default async (fastify: FastifyInstance, opts) => {
   fastify.post('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
-      const userModel = new User().getModelForClass(User, { existingConnection: db })
-      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: db })
+      // @ts-ignore
+      const userId = request.session.userId
 
-      const user = await userModel.findOne({ _id: request.params.id })
-      if (user) {
-        const status = request.body.status
-        const seriesId = request.body.seriesId
+      if (userId) {
+        const userModel = new User().getModelForClass(User, { existingConnection: db })
+        const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: db })
 
-        switch (status) {
-          case StatusNumber.watching:
-            await watchListModel.addToWatching(user.watchList, seriesId)
-            break
-          case StatusNumber.completed:
-            await watchListModel.addToCompleted(user.watchList, seriesId)
-            break
-          case StatusNumber.onHold:
-            await watchListModel.addToOnHold(user.watchList, seriesId)
-            break
-          case StatusNumber.dropped:
-            await watchListModel.addToDropped(user.watchList, seriesId)
-            break
-          case StatusNumber.planToWatch:
-            await watchListModel.addToPlanToWatch(user.watchList, seriesId)
-            break
-          default:
-            throw new Error('Wrong status')
+        const user = await userModel.findOne({ _id: request.params.id })
+        if (user) {
+          const status = request.body.status
+          const seriesId = request.body.seriesId
+
+          switch (status) {
+            case StatusNumber.watching:
+              await watchListModel.addToWatching(user.watchList, seriesId)
+              break
+            case StatusNumber.completed:
+              await watchListModel.addToCompleted(user.watchList, seriesId)
+              break
+            case StatusNumber.onHold:
+              await watchListModel.addToOnHold(user.watchList, seriesId)
+              break
+            case StatusNumber.dropped:
+              await watchListModel.addToDropped(user.watchList, seriesId)
+              break
+            case StatusNumber.planToWatch:
+              await watchListModel.addToPlanToWatch(user.watchList, seriesId)
+              break
+            default:
+              throw new Error('Wrong status')
+          }
+
+          reply.send({
+            data: user.watchList,
+            error: '',
+          })
+        } else {
+          throw new Error('Couldn\'t find user')
         }
-
-        reply.send({
-          data: user.watchList,
-          error: '',
-        })
       } else {
-        throw new Error('Couldn\'t find user')
+        throw new Error('User is not logged in')
       }
 
     } catch (error) {

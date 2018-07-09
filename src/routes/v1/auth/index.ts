@@ -1,7 +1,7 @@
 import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
-import * as bcrypt from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 import bearerAuth from 'fastify-bearer-auth'
 import WatchList from '../../../entity/WatchList'
 const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
@@ -20,7 +20,7 @@ export default async (fastify: FastifyInstance, opts) => {
         username: request.body.username,
       })
 
-      if (await bcrypt.compare(request.body.password, userFromDb.password)) {
+      if (await compare(request.body.password, userFromDb.password)) {
         // @ts-ignore
         request.session.userId = userFromDb.id
         reply.send({
@@ -70,7 +70,7 @@ export default async (fastify: FastifyInstance, opts) => {
         {
           username: request.body.username,
           email: request.body.email,
-          password: await bcrypt.hash(request.body.password, saltRounds),
+          password: await hash(request.body.password, saltRounds),
           createdAt: new Date().toISOString(),
           watchList: await new watchListModel({}).save(),
         },
