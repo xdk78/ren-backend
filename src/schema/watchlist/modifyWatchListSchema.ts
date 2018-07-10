@@ -5,7 +5,7 @@ export default {
     type: 'object',
     properties: {
       status: { type: 'number' },
-      seriesId: { type: 'number' },
+      seriesId: { type: 'string' },
     },
 
     additionalProperties: false,
@@ -14,7 +14,7 @@ export default {
   params: {
     type: 'object',
     properties: {
-      id: { type: 'number' },
+      id: { type: 'string' },
     },
     required: ['id'],
   },
