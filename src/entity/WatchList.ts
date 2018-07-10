@@ -10,8 +10,8 @@ export default class WatchList extends Typegoose {
   @arrayProp({ itemsRef: SeriesState })
   watching: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: SeriesState })
-  completed: Ref<SeriesState>[]
+  @arrayProp({ itemsRef: Series })
+  completed: Ref<Series>[]
 
   @arrayProp({ itemsRef: SeriesState })
   onHold: Ref<SeriesState>[]
@@ -19,8 +19,8 @@ export default class WatchList extends Typegoose {
   @arrayProp({ itemsRef: SeriesState })
   dropped: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: SeriesState })
-  planToWatch?: Ref<SeriesState>[]
+  @arrayProp({ itemsRef: Series })
+  planToWatch?: Ref<Series>[]
 
   @staticMethod
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
