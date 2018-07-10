@@ -6,5 +6,8 @@ export default class SeriesState extends Typegoose {
   seriesId: Ref<Series>
 
   @prop()
-  episodeNumber?: number
+  seasonNumber: number
+
+  @prop()
+  episodeNumber: number
 }
