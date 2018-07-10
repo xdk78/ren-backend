@@ -1,25 +1,26 @@
 import { Typegoose, arrayProp, Ref, ModelType, staticMethod, prop } from 'typegoose'
 import Series from './Series'
 import User from './User'
+import SeriesState from './SeriesState'
 
 export default class WatchList extends Typegoose {
   @prop({ ref: User })
   userId: Ref<User>
 
-  @arrayProp({ itemsRef: Series })
-  watching: Ref<Series>[]
+  @arrayProp({ itemsRef: SeriesState })
+  watching: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: Series })
-  completed: Ref<Series>[]
+  @arrayProp({ itemsRef: SeriesState })
+  completed: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: Series })
-  onHold: Ref<Series>[]
+  @arrayProp({ itemsRef: SeriesState })
+  onHold: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: Series })
-  dropped: Ref<Series>[]
+  @arrayProp({ itemsRef: SeriesState })
+  dropped: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: Series })
-  planToWatch?: Ref<Series>[]
+  @arrayProp({ itemsRef: SeriesState })
+  planToWatch?: Ref<SeriesState>[]
 
   @staticMethod
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
