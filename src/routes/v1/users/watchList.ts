@@ -2,6 +2,7 @@ import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import WatchList from '../../../entity/WatchList'
+import SeriesState from '../../../entity/SeriesState'
 
 enum StatusNumber {
   watching = 1,
@@ -56,19 +57,24 @@ export default async (fastify: FastifyInstance, opts) => {
         if (user) {
           const status = request.body.status
           const seriesId = request.body.seriesId
+          const seriesState = {
+            seriesId: request.body.seriesState.seriesId,
+            seasonNumber: request.body.seriesState.seasonNumber || 0,
+            episodeNumber: request.body.seriesState.episodeNumber || 0,
+          } as SeriesState
 
           switch (status) {
             case StatusNumber.watching:
-              await watchListModel.addToWatching(user.watchList, seriesId)
+              await watchListModel.addToWatching(user.watchList, seriesState)
               break
             case StatusNumber.completed:
               await watchListModel.addToCompleted(user.watchList, seriesId)
               break
             case StatusNumber.onHold:
-              await watchListModel.addToOnHold(user.watchList, seriesId)
+              await watchListModel.addToOnHold(user.watchList, seriesState)
               break
             case StatusNumber.dropped:
-              await watchListModel.addToDropped(user.watchList, seriesId)
+              await watchListModel.addToDropped(user.watchList, seriesState)
               break
             case StatusNumber.planToWatch:
               await watchListModel.addToPlanToWatch(user.watchList, seriesId)
@@ -106,19 +112,24 @@ export default async (fastify: FastifyInstance, opts) => {
       if (user) {
         const status = request.body.status
         const seriesId = request.body.seriesId
+        const seriesState = {
+          seriesId: request.body.seriesState.seriesId,
+          seasonNumber: request.body.seriesState.seasonNumber || 0,
+          episodeNumber: request.body.seriesState.episodeNumber || 0,
+        } as SeriesState
 
         switch (status) {
           case StatusNumber.watching:
-            await watchListModel.removeFromWatching(user.watchList, seriesId)
+            await watchListModel.removeFromWatching(user.watchList, seriesState)
             break
           case StatusNumber.completed:
             await watchListModel.removeFromCompleted(user.watchList, seriesId)
             break
           case StatusNumber.onHold:
-            await watchListModel.removeFromOnHold(user.watchList, seriesId)
+            await watchListModel.removeFromOnHold(user.watchList, seriesState)
             break
           case StatusNumber.dropped:
-            await watchListModel.removeFromDropped(user.watchList, seriesId)
+            await watchListModel.removeFromDropped(user.watchList, seriesState)
             break
           case StatusNumber.planToWatch:
             await watchListModel.removeFromPlanToWatch(user.watchList, seriesId)
