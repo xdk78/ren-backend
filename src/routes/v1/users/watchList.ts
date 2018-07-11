@@ -56,19 +56,19 @@ export default async (fastify: FastifyInstance, opts) => {
         const user = await userModel.findOne({ _id: request.params.id })
         if (user) {
           const status = request.body.status
-          const seriesId = request.body.seriesId
-          const seriesState = {
-            seriesId: request.body.seriesState.seriesId,
-            seasonNumber: request.body.seriesState.seasonNumber || 0,
-            episodeNumber: request.body.seriesState.episodeNumber || 0,
-          } as SeriesState
+          const seriesState = request.body.seriesState
+          // const seriesState = {
+          //   seriesId: request.body.seriesState.seriesId,
+          //   seasonNumber: request.body.seriesState.seasonNumber || 0,
+          //   episodeNumber: request.body.seriesState.episodeNumber || 0,
+          // } as SeriesState
 
           switch (status) {
             case StatusNumber.watching:
               await watchListModel.addToWatching(user.watchList, seriesState)
               break
             case StatusNumber.completed:
-              await watchListModel.addToCompleted(user.watchList, seriesId)
+              await watchListModel.addToCompleted(user.watchList, seriesState)
               break
             case StatusNumber.onHold:
               await watchListModel.addToOnHold(user.watchList, seriesState)
@@ -77,7 +77,7 @@ export default async (fastify: FastifyInstance, opts) => {
               await watchListModel.addToDropped(user.watchList, seriesState)
               break
             case StatusNumber.planToWatch:
-              await watchListModel.addToPlanToWatch(user.watchList, seriesId)
+              await watchListModel.addToPlanToWatch(user.watchList, seriesState)
               break
             default:
               throw new Error('Wrong status')
@@ -111,19 +111,14 @@ export default async (fastify: FastifyInstance, opts) => {
       const user = await userModel.findOne({ _id: request.params.id })
       if (user) {
         const status = request.body.status
-        const seriesId = request.body.seriesId
-        const seriesState = {
-          seriesId: request.body.seriesState.seriesId,
-          seasonNumber: request.body.seriesState.seasonNumber || 0,
-          episodeNumber: request.body.seriesState.episodeNumber || 0,
-        } as SeriesState
+        const seriesState = request.body.seriesState
 
         switch (status) {
           case StatusNumber.watching:
             await watchListModel.removeFromWatching(user.watchList, seriesState)
             break
           case StatusNumber.completed:
-            await watchListModel.removeFromCompleted(user.watchList, seriesId)
+            await watchListModel.removeFromCompleted(user.watchList, seriesState)
             break
           case StatusNumber.onHold:
             await watchListModel.removeFromOnHold(user.watchList, seriesState)
@@ -132,7 +127,7 @@ export default async (fastify: FastifyInstance, opts) => {
             await watchListModel.removeFromDropped(user.watchList, seriesState)
             break
           case StatusNumber.planToWatch:
-            await watchListModel.removeFromPlanToWatch(user.watchList, seriesId)
+            await watchListModel.removeFromPlanToWatch(user.watchList, seriesState)
             break
           default:
             throw new Error('Wrong status')
