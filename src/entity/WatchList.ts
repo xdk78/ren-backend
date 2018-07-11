@@ -1,6 +1,6 @@
 import { Typegoose, arrayProp, Ref, ModelType, staticMethod, prop } from 'typegoose'
 import User from './User'
-import SeriesState from './SeriesState'
+import SeriesState from './series/SeriesState'
 
 export default class WatchList extends Typegoose {
   @prop({ ref: User })

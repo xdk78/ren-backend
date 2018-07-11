@@ -2,7 +2,7 @@ import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import WatchList from '../../../entity/WatchList'
-import SeriesState from '../../../entity/SeriesState'
+import SeriesState from '../../../entity/series/SeriesState'
 
 enum StatusNumber {
   watching = 1,

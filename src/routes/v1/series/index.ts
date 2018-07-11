@@ -1,4 +1,4 @@
-import Series from '../../../entity/Series'
+import Series from '../../../entity/series/Series'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import createSeriesSchema from '../../../schema/series/createSeriesSchema'
