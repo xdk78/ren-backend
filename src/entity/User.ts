@@ -1,4 +1,4 @@
-import { prop, Typegoose, Ref, arrayProp, staticMethod, ModelType } from 'typegoose'
+import { prop, Typegoose, Ref, arrayProp } from 'typegoose'
 import WatchList from './WatchList'
 import SeriesState from './series/SeriesState'
 
