@@ -21,4 +21,9 @@ export default class Series extends Typegoose {
 
   @prop()
   rating: number
+
+  @staticMethod
+  static findSeries(seriesId: number) {
+    return this.findOne({ _id: seriesId })
+  }
 }

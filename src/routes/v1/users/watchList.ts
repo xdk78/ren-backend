@@ -3,12 +3,13 @@ import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import WatchList from '../../../entity/WatchList'
 import SeriesState from '../../../entity/series/SeriesState'
+import Series from '../../../entity/series/Series'
 
 enum StatusNumber {
   watching = 1,
-  completed = 2,
-  onHold = 3,
-  dropped = 4,
+  onHold = 2,
+  dropped = 3,
+  completed = 4,
   planToWatch = 5,
 }
 
@@ -53,21 +54,22 @@ export default async (fastify: FastifyInstance, opts) => {
         const userModel = new User().getModelForClass(User, { existingConnection: db })
         const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: db })
         const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: db })
+        const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
         const user = await userModel.findOne({ _id: request.params.id })
         if (user) {
           const status = request.body.status
+
+          const { seriesId, seasonNumber, episodeNumber } = request.body.seriesState
+
           const seriesState = new seriesStateModel({
-            seriesId: request.body.seriesState.seriesId,
-            seasonNumber: request.body.seriesState.seasonNumber,
-            episodeNumber: request.body.seriesState.episodeNumber,
+            seriesId: seriesId,
+            seasonNumber:seasonNumber,
+            episodeNumber: episodeNumber,
           })
 
           switch (status) {
             case StatusNumber.watching:
               await watchListModel.addToWatching(user.watchList, seriesState)
-              break
-            case StatusNumber.completed:
-              await watchListModel.addToCompleted(user.watchList, seriesState)
               break
             case StatusNumber.onHold:
               await watchListModel.addToOnHold(user.watchList, seriesState)
@@ -75,8 +77,11 @@ export default async (fastify: FastifyInstance, opts) => {
             case StatusNumber.dropped:
               await watchListModel.addToDropped(user.watchList, seriesState)
               break
+            case StatusNumber.completed:
+              await watchListModel.addToCompleted(user.watchList, seriesId)
+              break
             case StatusNumber.planToWatch:
-              await watchListModel.addToPlanToWatch(user.watchList, seriesState)
+              await watchListModel.addToPlanToWatch(user.watchList, seriesId)
               break
             default:
               throw new Error('Wrong status')
@@ -100,7 +105,6 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
-
   fastify.delete('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)

@@ -1,6 +1,7 @@
 import { Typegoose, arrayProp, Ref, ModelType, staticMethod, prop } from 'typegoose'
 import User from './User'
 import SeriesState from './series/SeriesState'
+import Series from './series/Series'
 
 enum StatusNumber {
   watching = 1,
@@ -17,8 +18,8 @@ export default class WatchList extends Typegoose {
   @arrayProp({ itemsRef: SeriesState })
   watching: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: SeriesState })
-  completed: Ref<SeriesState>[]
+  @arrayProp({ itemsRef: Series })
+  completed: Ref<Series>[]
 
   @arrayProp({ itemsRef: SeriesState })
   onHold: Ref<SeriesState>[]
@@ -26,8 +27,8 @@ export default class WatchList extends Typegoose {
   @arrayProp({ itemsRef: SeriesState })
   dropped: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: SeriesState })
-  planToWatch: Ref<SeriesState>[]
+  @arrayProp({ itemsRef: Series })
+  planToWatch: Ref<Series>[]
 
   @staticMethod
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
@@ -42,12 +43,12 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { watching: item } })
   }
 
   @staticMethod
-  static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     // @ts-ignore
     this.findOne({ _id: id }, { completed: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
       if (res) {
@@ -59,7 +60,7 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { completed: item } })
   }
 
@@ -98,19 +99,19 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
-    // @ts-ignore
+  static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     this.findOne({ _id: id }, { planToWatch: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
       if (res) {
         throw new Error('Series is already in planToWatch')
       } else {
+        // @ts-ignore
         return this.update({ _id: id }, { $push: { planToWatch: item } })
       }
     })
   }
 
   @staticMethod
-  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { planToWatch: item } })
   }
 
@@ -118,13 +119,9 @@ export default class WatchList extends Typegoose {
   static addEpisode(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>, modifyType: number) {
     switch (modifyType) {
       case StatusNumber.watching:
-        // @ts-ignore
         return this.update({ _id: id, 'watching.seriesId': item.seriesId }, { $inc: { 'watching.$.episodeNumber': 1 } })
-        break
       case StatusNumber.dropped:
-        // @ts-ignore
         return this.update({ _id: id, 'dropped.seriesId': item.seriesId }, { $inc: { 'dropped.$.episodeNumber': 1 } })
-        break
       default:
         throw new Error('Wrong status')
     }
