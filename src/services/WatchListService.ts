@@ -6,7 +6,7 @@ import SeriesService from './SeriesService'
 export default class WatchListService implements BaseService {
   connection: any
   fastify: FastifyInstance
-  seriesService : SeriesService
+  seriesService: SeriesService
 
   constructor(fastify: FastifyInstance) {
     // @ts-ignore
