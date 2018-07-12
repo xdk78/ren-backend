@@ -20,7 +20,7 @@ export default class SeriesService implements BaseService {
         error: '',
       }
     } catch (error) {
-      return error.message
+      return error
     }
   }
 
@@ -33,7 +33,7 @@ export default class SeriesService implements BaseService {
         error: '',
       }
     } catch (error) {
-      return error.message
+      return error
     }
   }
 
