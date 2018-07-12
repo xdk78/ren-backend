@@ -120,9 +120,9 @@ export default class WatchList extends Typegoose {
     // @ts-ignore
     switch (modifyType) {
       case StatusNumber.watching:
-        return this.update({ _id: id, 'watching.seriesId': item.seriesId }, { $inc: { 'watching.$.episodeNumber': 1 } })
+        return this.update({ _id: id, 'watching.seriesId': item }, { $inc: { 'watching.$.episodeNumber': 1 } })
       case StatusNumber.dropped:
-        return this.update({ _id: id, 'dropped.seriesId': item.seriesId }, { $inc: { 'dropped.$.episodeNumber': 1 } })
+        return this.update({ _id: id, 'dropped.seriesId': item }, { $inc: { 'dropped.$.episodeNumber': 1 } })
       default:
         throw new Error('Wrong status')
     }
