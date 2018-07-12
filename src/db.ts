@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 const objectId = mongoose.Types.ObjectId
 
 function plugin(fastify: FastifyInstance, options, next) {
-  return mongoose.createConnection(dbConnURI).then(connection => {
+  return mongoose.createConnection(dbConnURI, { useNewUrlParser: true }).then(connection => {
     fastify.decorate('mongo', {
       db: connection,
       ObjectId: objectId,
