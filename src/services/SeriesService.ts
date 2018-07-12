@@ -58,7 +58,21 @@ export default class SeriesService implements BaseService {
         error: '',
       }
     } catch (error) {
-      return error.message
+      return error
+    }
+  }
+
+  async fetchAllSeries(refArray): Promise<Object> {
+    try {
+      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+      const series = []
+
+      for (const reference of refArray) {
+        series.push(await seriesModel.findById(reference))
+      }
+      return series
+    } catch (error) {
+      return error
     }
   }
 
