@@ -3,11 +3,11 @@ import User from './User'
 import SeriesState from './series/SeriesState'
 import Series from './series/Series'
 
-enum StatusNumber {
+export enum StatusNumber {
   watching = 1,
-  completed = 2,
-  onHold = 3,
-  dropped = 4,
+  onHold = 2,
+  dropped = 3,
+  completed = 4,
   planToWatch = 5,
 }
 
