@@ -33,7 +33,7 @@ export default class WatchList extends Typegoose {
   @staticMethod
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
     // @ts-ignore
-    this.findOne({ _id: id }, { watching: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
+    this.findOne({ _id: id }, { watching: { $elemMatch: item } }).then(res => {
       if (res) {
         throw new Error('Series is already in watching')
       } else {
@@ -50,7 +50,7 @@ export default class WatchList extends Typegoose {
   @staticMethod
   static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
     // @ts-ignore
-    this.findOne({ _id: id }, { completed: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
+    this.findOne({ _id: id }, { completed: { $elemMatch: item } }).then(res => {
       if (res) {
         throw new Error('Series is already in completed')
       } else {
@@ -67,7 +67,7 @@ export default class WatchList extends Typegoose {
   @staticMethod
   static addToOnHold(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
     // @ts-ignore
-    this.findOne({ _id: id }, { onHold: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
+    this.findOne({ _id: id }, { onHold: { $elemMatch: item } }).then(res => {
       if (res) {
         throw new Error('Series is already in onHold')
       } else {
@@ -84,7 +84,7 @@ export default class WatchList extends Typegoose {
   @staticMethod
   static addToDropped(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
     // @ts-ignore
-    this.findOne({ _id: id }, { dropped: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
+    this.findOne({ _id: id }, { dropped: { $elemMatch: item } }).then(res => {
       if (res) {
         throw new Error('Series is already in dropped')
       } else {
@@ -100,11 +100,11 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
-    this.findOne({ _id: id }, { planToWatch: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
+    // @ts-ignore
+    this.findOne({ _id: id }, { planToWatch: { $elemMatch: item } }).then(res => {
       if (res) {
         throw new Error('Series is already in planToWatch')
       } else {
-        // @ts-ignore
         return this.update({ _id: id }, { $push: { planToWatch: item } })
       }
     })
@@ -117,6 +117,7 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addEpisode(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>, modifyType: number) {
+    // @ts-ignore
     switch (modifyType) {
       case StatusNumber.watching:
         return this.update({ _id: id, 'watching.seriesId': item.seriesId }, { $inc: { 'watching.$.episodeNumber': 1 } })
