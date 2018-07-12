@@ -56,17 +56,12 @@ export default async (fastify: FastifyInstance, opts) => {
         const user = await userModel.findOne({ _id: request.params.id })
         if (user) {
           const status = request.body.status
-          const seriesState = request.body.seriesState
-          // const seriesState = {
-          //   seriesId: request.body.seriesState.seriesId,
-          //   seasonNumber: request.body.seriesState.seasonNumber || 0,
-          //   episodeNumber: request.body.seriesState.episodeNumber || 0,
-          // } as SeriesState
           const seriesState = new seriesStateModel({
             seriesId: request.body.seriesState.seriesId,
-            seasonNumber: requet.body.seriesState.seasonNumber,
+            seasonNumber: request.body.seriesState.seasonNumber,
             episodeNumber: request.body.seriesState.episodeNumber,
           })
+
           switch (status) {
             case StatusNumber.watching:
               await watchListModel.addToWatching(user.watchList, seriesState)

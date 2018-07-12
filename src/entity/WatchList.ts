@@ -31,6 +31,7 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+    // @ts-ignore
     this.findOne({ _id: id }, { watching: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
       if (res) {
         throw new Error('Series is already in watching')
@@ -47,6 +48,7 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+    // @ts-ignore
     this.findOne({ _id: id }, { completed: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
       if (res) {
         throw new Error('Series is already in completed')
@@ -63,6 +65,7 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToOnHold(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+    // @ts-ignore
     this.findOne({ _id: id }, { onHold: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
       if (res) {
         throw new Error('Series is already in onHold')
@@ -79,6 +82,7 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToDropped(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+    // @ts-ignore
     this.findOne({ _id: id }, { dropped: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
       if (res) {
         throw new Error('Series is already in dropped')
@@ -95,6 +99,7 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+    // @ts-ignore
     this.findOne({ _id: id }, { planToWatch: { $elemMatch: { seriesId: item.seriesId } } }).then(res => {
       if (res) {
         throw new Error('Series is already in planToWatch')
@@ -113,10 +118,12 @@ export default class WatchList extends Typegoose {
   static addEpisode(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>, modifyType: number) {
     switch (modifyType) {
       case StatusNumber.watching:
-        return this.update({ _id: id, 'watching.seriesId' : item.seriesId }, { $inc : { 'watching.$.episodeNumber' :1 }  })
+        // @ts-ignore
+        return this.update({ _id: id, 'watching.seriesId': item.seriesId }, { $inc: { 'watching.$.episodeNumber': 1 } })
         break
       case StatusNumber.dropped:
-        return this.update({ _id: id, 'dropped.seriesId' : item.seriesId }, { $inc : { 'dropped.$.episodeNumber' :1 }  })
+        // @ts-ignore
+        return this.update({ _id: id, 'dropped.seriesId': item.seriesId }, { $inc: { 'dropped.$.episodeNumber': 1 } })
         break
       default:
         throw new Error('Wrong status')
