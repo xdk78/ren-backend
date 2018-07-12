@@ -52,7 +52,7 @@ export default async (fastify: FastifyInstance, opts) => {
       if (userId) {
         const userModel = new User().getModelForClass(User, { existingConnection: db })
         const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: db })
-
+        const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: db })
         const user = await userModel.findOne({ _id: request.params.id })
         if (user) {
           const status = request.body.status
@@ -62,7 +62,11 @@ export default async (fastify: FastifyInstance, opts) => {
           //   seasonNumber: request.body.seriesState.seasonNumber || 0,
           //   episodeNumber: request.body.seriesState.episodeNumber || 0,
           // } as SeriesState
-
+          const seriesState = new seriesStateModel({
+            seriesId: request.body.seriesState.seriesId,
+            seasonNumber: requet.body.seriesState.seasonNumber,
+            episodeNumber: request.body.seriesState.episodeNumber,
+          })
           switch (status) {
             case StatusNumber.watching:
               await watchListModel.addToWatching(user.watchList, seriesState)
