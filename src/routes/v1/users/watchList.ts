@@ -37,46 +37,11 @@ export default async (fastify: FastifyInstance, opts) => {
       const userId = request.session.userId
 
       if (userId) {
-        const userModel = new User().getModelForClass(User, { existingConnection: db })
-        const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: db })
-        const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: db })
-        const seriesModel = new Series().getModelForClass(Series, { existingConnection: db })
-        const user = await userModel.findOne({ _id: request.params.id })
-        if (user) {
-          const status = request.body.status
-          const { seriesId, seasonNumber, episodeNumber } = request.body
-          const seriesState = new seriesStateModel({
-            seriesId: seriesId,
-            seasonNumber: seasonNumber,
-            episodeNumber: episodeNumber,
-          })
-          switch (status) {
-            case StatusNumber.watching:
-              await watchListModel.addToWatching(user.watchList, seriesState)
-              break
-            case StatusNumber.onHold:
-              await watchListModel.addToOnHold(user.watchList, seriesState)
-              break
-            case StatusNumber.dropped:
-              await watchListModel.addToDropped(user.watchList, seriesState)
-              break
-            case StatusNumber.completed:
-              await watchListModel.addToCompleted(user.watchList, seriesId)
-              break
-            case StatusNumber.planToWatch:
-              await watchListModel.addToPlanToWatch(user.watchList, seriesId)
-              break
-            default:
-              throw new Error('Wrong status')
-          }
-
-          reply.send({
-            data: user.watchList,
-            error: '',
-          })
-        } else {
-          throw new Error('Couldn\'t find user')
-        }
+        const watchList = await watchListService.addToWatchList(request.body.status, userId, request.body)
+        reply.send({
+          data: watchList,
+          error: '',
+        })
       } else {
         throw new Error('User is not logged in')
       }
