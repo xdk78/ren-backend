@@ -26,6 +26,7 @@
     "dependencies": {
         "bcrypt": "^3.0.0",
         "connect-mongodb-session": "^2.0.3",
+        "cors": "^2.8.4",
         "fastify": "^1.8.0",
         "fastify-bearer-auth": "^3.0.1",
         "fastify-circuit-breaker": "^0.1.0",
