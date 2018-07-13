@@ -73,16 +73,18 @@ export default class WatchListService implements BaseService {
             default:
               throw new Error('Wrong status')
           }
+        } else {
+          throw new Error('Series does not exist')
         }
       } else {
-        throw new Error('Series does not exist')
+        throw new Error('Could not find user')
       }
     } catch (error) {
       return error
     }
   }
 
-  async removeFromWatchList(id: string , status: number, seriesState): Promise<Object> {
+  async removeFromWatchList(id: string , status: number, seriesState): Promise < Object > {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection  })
       const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection  })
@@ -123,8 +125,9 @@ export default class WatchListService implements BaseService {
           default:
             throw new Error('Wrong status')
         }
+      } else {
+        throw new Error('Could not find user')
       }
-
     } catch (error) {
       return error
     }
