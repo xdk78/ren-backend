@@ -53,16 +53,18 @@ export default class WatchListService implements BaseService {
             seasonNumber: seasonNumber,
             episodeNumber: episodeNumber,
           })
-
           switch (status) {
             case StatusNumber.watching:
               await watchListModel.addToWatching(user.watchList, seriesState)
+              await seriesState.save()
               break
             case StatusNumber.onHold:
               await watchListModel.addToOnHold(user.watchList, seriesState)
+              await seriesState.save()
               break
             case StatusNumber.dropped:
               await watchListModel.addToDropped(user.watchList, seriesState)
+              await seriesState.save()
               break
             case StatusNumber.completed:
               await watchListModel.addToCompleted(user.watchList, seriesId)
