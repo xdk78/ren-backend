@@ -1,4 +1,4 @@
-import { prop, Typegoose, arrayProp } from 'typegoose'
+import { prop, Typegoose, arrayProp, staticMethod , ModelType } from 'typegoose'
 import Genre from './Genre'
 import Season from './Season'
 import Category from './Category'
@@ -21,4 +21,9 @@ export default class Series extends Typegoose {
 
   @prop()
   rating: number
+
+  @staticMethod
+  static findSeries(this: ModelType<Series> & typeof Series, seriesId: number) {
+    return this.findOne({ _id: seriesId })
+  }
 }

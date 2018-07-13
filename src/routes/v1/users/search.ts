@@ -16,8 +16,18 @@ export default async (fastify: FastifyInstance, opts) => {
         const userModel = new User().getModelForClass(User, { existingConnection: db })
         const user = await userModel.findOne({ _id: userId })
 
+        const output = {
+          _id: user._id,
+          username: user.username,
+          createdAt: user.createdAt,
+          avatar: user.avatar,
+          gender: user.gender,
+          watchListId: user.watchList,
+          seriesStates: user.seriesStates,
+        }
+
         reply.send({
-          data: user,
+          data: output,
           error: '',
         })
       } else {
@@ -44,7 +54,9 @@ export default async (fastify: FastifyInstance, opts) => {
           username: user.username,
           createdAt: user.createdAt,
           avatar: user.avatar,
+          gender: user.gender,
           watchListId: user.watchList,
+          seriesStates: user.seriesStates,
         }
 
         reply.send({

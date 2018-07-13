@@ -1,5 +1,12 @@
-import { prop, Typegoose, Ref } from 'typegoose'
+import { prop, Typegoose, Ref, arrayProp } from 'typegoose'
 import WatchList from './WatchList'
+import SeriesState from './series/SeriesState'
+
+enum Gender {
+  OTHER = 'other',
+  MALE = 'male',
+  FEMALE = 'female',
+}
 
 export default class User extends Typegoose {
   @prop({ unique: true, required: true })
@@ -15,8 +22,14 @@ export default class User extends Typegoose {
   createdAt: string
 
   @prop({ ref: WatchList })
-  watchList?: Ref<WatchList>
+  watchList: Ref<WatchList>
+
+  @arrayProp({ itemsRef: SeriesState })
+  seriesStates: Ref<SeriesState>[]
 
   @prop()
   avatar?: string
+
+  @prop({ enum: Gender })
+  gender?: Gender
 }

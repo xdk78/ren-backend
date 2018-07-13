@@ -19,6 +19,7 @@ import cookie from 'fastify-cookie'
 import mongoConnect from 'connect-mongodb-session'
 const mongoStore = mongoConnect(session)
 import circuitBreaker from 'fastify-circuit-breaker'
+import cors from 'cors'
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
@@ -45,6 +46,7 @@ app.register(circuitBreaker, {
   resetTimeout: 15000,
 })
 app.register(helmet)
+app.use(cors())
 app.register(compress)
 app.register(cookie)
 app.register(session, {
