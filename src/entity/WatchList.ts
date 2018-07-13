@@ -86,7 +86,9 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static updateEpisode(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref < SeriesState >) {
-
+  static updateEpisode(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref < SeriesState >, modifyTarget: string, modfiyNumber :number) {
+    const findQuery = `${modifyTarget}.seriesId`
+    const updateQuery = `${modifyTarget}.$.episodeNumber`
+    return this.update({ _id: id, [findQuery] :item }, { $set : { [updateQuery]: modfiyNumber } })
   }
 }
