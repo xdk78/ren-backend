@@ -37,6 +37,19 @@ export default class SeriesService implements BaseService {
     }
   }
 
+  async doesExist(id: string): Promise<Object> {
+    try {
+      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+
+      const series = await seriesModel.findById(id)
+
+      if (series) return true
+      return false
+    } catch (error) {
+      return false
+    }
+  }
+
   async createSeries(payload: Series): Promise<Object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })

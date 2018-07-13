@@ -56,55 +56,19 @@ export default async (fastify: FastifyInstance, opts) => {
   fastify.delete('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
-      const userModel = new User().getModelForClass(User, { existingConnection: db })
-      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: db })
+      // @ts-ignore
+      const userId = request.session.userId
 
-      const user = await userModel.findOne({ _id: request.params.id })
-      if (user) {
+      if (userId) {
         const status = request.body.status
         const seriesState = request.body.seriesState
-
-        switch (status) {
-          case StatusNumber.watching:
-            await watchListModel.removeFromWatching(
-              user.watchList,
-              seriesState,
-            )
-            break
-          case StatusNumber.completed:
-            await watchListModel.removeFromCompleted(
-              user.watchList,
-              seriesState,
-            )
-            break
-          case StatusNumber.onHold:
-            await watchListModel.removeFromOnHold(
-              user.watchList,
-              seriesState,
-            )
-            break
-          case StatusNumber.dropped:
-            await watchListModel.removeFromDropped(
-              user.watchList,
-              seriesState,
-            )
-            break
-          case StatusNumber.planToWatch:
-            await watchListModel.removeFromPlanToWatch(
-              user.watchList,
-              seriesState,
-            )
-            break
-          default:
-            throw new Error('Wrong status')
-        }
-
+        const watchList = await watchListService.removeFromWatchList(request.params.id, request.body.status, request.body.seriesState)
         reply.send({
-          data: user.watchList,
+          data: request.body.seriesState,
           error: '',
         })
       } else {
-        throw new Error('Couldn\'t find user')
+        throw new Error('User is not logged in')
       }
     } catch (error) {
       return {
