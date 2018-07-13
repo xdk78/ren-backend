@@ -1,10 +1,8 @@
 import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
-import WatchList, { StatusNumber } from '../../../entity/WatchList'
-import SeriesState from '../../../entity/series/SeriesState'
-import Series from '../../../entity/series/Series'
 import WatchListSerivce from '../../../services/WatchListService'
+import modifyWatchListSchema from '../../../schema/watchlist/modifyWatchListSchema'
 
 export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
