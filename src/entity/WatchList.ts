@@ -37,64 +37,56 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
+  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { watching: item } })
   }
 
   @staticMethod
-  static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
+  static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<Series>) {
     // @ts-ignore
     return this.update({ _id: id }, { $push: { completed: item } })
   }
 
   @staticMethod
-  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
+  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { completed: item } })
   }
 
   @staticMethod
-  static addToOnHold(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static addToOnHold(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<SeriesState>) {
     // @ts-ignore
     return this.update({ _id: id }, { $push: { onHold: item } })
   }
 
   @staticMethod
-  static removeFromOnHold(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static removeFromOnHold(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<SeriesState>) {
     return this.update({ _id: id }, { $pull: { onHold: item } })
   }
 
   @staticMethod
-  static addToDropped(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static addToDropped(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<SeriesState>) {
     // @ts-ignore
     return this.update({ _id: id }, { $push: { dropped: item } })
   }
 
   @staticMethod
-  static removeFromDropped(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<SeriesState>) {
+  static removeFromDropped(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<SeriesState>) {
     return this.update({ _id: id }, { $pull: { dropped: item } })
   }
 
   @staticMethod
-  static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
+  static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<Series>) {
     // @ts-ignore
     return this.update({ _id: id }, { $push: { planToWatch: item } })
   }
 
   @staticMethod
-  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref<Series>) {
+  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref<Series>) {
     return this.update({ _id: id }, { $pull: { planToWatch: item } })
   }
 
   @staticMethod
-  static addEpisode(this: ModelType<WatchList> & typeof WatchList, id: any, item: Ref < SeriesState > , modifyType: number) {
-    // @ts-ignore
-    switch (modifyType) {
-      case StatusNumber.watching:
-        return this.update({ _id: id, 'watching.seriesId': item }, { $inc: { 'watching.$.episodeNumber': 1 } })
-      case StatusNumber.dropped:
-        return this.update({ _id: id, 'dropped.seriesId': item }, { $inc: { 'dropped.$.episodeNumber': 1 } })
-      default:
-        throw new Error('Wrong status')
-    }
+  static updateEpisode(this: ModelType<WatchList> & typeof WatchList, id: string, item: Ref < SeriesState >) {
+
   }
 }
