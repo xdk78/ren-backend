@@ -4,6 +4,9 @@ import { ServerResponse, IncomingMessage } from 'http'
 import { compare, hash } from 'bcrypt'
 import bearerAuth from 'fastify-bearer-auth'
 import WatchList from '../../../entity/WatchList'
+import authLoginSchema from '../../../schema/auth/authLoginSchema'
+import authRegisterSchema from '../../../schema/auth/authRegisterSchema'
+
 const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
 export default async (fastify: FastifyInstance, opts) => {
@@ -12,7 +15,7 @@ export default async (fastify: FastifyInstance, opts) => {
   const db = fastify.mongo.db
   const saltRounds = 10
 
-  fastify.post('/auth/login', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/auth/login', { schema: authLoginSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const userModel = new User().getModelForClass(User, { existingConnection: db })
@@ -61,7 +64,7 @@ export default async (fastify: FastifyInstance, opts) => {
     }
   })
 
-  fastify.post('/auth/register', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/auth/register', { schema: authRegisterSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const userModel = new User().getModelForClass(User, { existingConnection: db })

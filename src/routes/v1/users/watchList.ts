@@ -1,10 +1,8 @@
 import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
-import WatchList, { StatusNumber } from '../../../entity/WatchList'
-import SeriesState from '../../../entity/series/SeriesState'
-import Series from '../../../entity/series/Series'
 import WatchListSerivce from '../../../services/WatchListService'
+import modifyWatchListSchema from '../../../schema/watchlist/modifyWatchListSchema'
 
 export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
@@ -30,7 +28,7 @@ export default async (fastify: FastifyInstance, opts) => {
   },
   )
 
-  fastify.post('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/users/:id/watchlist',  { schema: modifyWatchListSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
@@ -51,9 +49,9 @@ export default async (fastify: FastifyInstance, opts) => {
         error: error.message,
       }
     }
-  },
-  )
-  fastify.delete('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  })
+
+  fastify.delete('/users/:id/watchlist', { schema: modifyWatchListSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
