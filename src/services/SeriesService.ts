@@ -57,9 +57,9 @@ export default class SeriesService implements BaseService {
         {
           title: payload.title,
           description: payload.description,
-          seasons: payload.seasons,
+          seasons: [],
           category: payload.category,
-          rating: payload.rating,
+          rating: 0,
           genres: payload.genres,
         },
       )
