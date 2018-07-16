@@ -1,4 +1,4 @@
-import { prop, Typegoose, arrayProp, staticMethod, ModelType, Ref, instanceMethod } from 'typegoose'
+import { prop, Typegoose, arrayProp, staticMethod, ModelType, Ref } from 'typegoose'
 import Genre from './Genre'
 import Season from './Season'
 import Category from './Category'
@@ -65,6 +65,16 @@ export default class Series extends Typegoose {
   @staticMethod
   static incrementRating(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, incrementSize: number) {
     return this.updateOne({ _id: seriesId }, { $inc: { rating: incrementSize } })
+  }
+
+  @staticMethod
+  static setTitle(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, title: string) {
+    return this.updateOne({ _id: seriesId }, { $set: { title: title } })
+  }
+
+  @staticMethod
+  static setDescription(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, description: string) {
+    return this.updateOne({ _id: seriesId }, { $set: { description: description } })
   }
 
 }
