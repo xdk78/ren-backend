@@ -36,14 +36,26 @@ export default async (fastify: FastifyInstance, opts) => {
   })
   fastify.post('/series', { schema: createSeriesSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(200)
+      reply.header('Content-Type', 'application/json').code(201)
       return await seriesService.createSeries({
         title: request.body.title,
         description: request.body.description,
-        seasons: request.body.seasons,
         category: request.body.category,
-        rating: request.body.rating,
-        genres: request.body.genres,
+      } as Series)
+    } catch (error) {
+      return {
+        data: {},
+        error: error.message,
+      }
+    }
+  })
+  fastify.patch('/series/:id', { schema: createSeriesSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(200)
+      return await seriesService.updateSeries(request.params.id, {
+        title: request.body.title,
+        description: request.body.description,
+        category: request.body.category,
       } as Series)
     } catch (error) {
       return {
