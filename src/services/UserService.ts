@@ -1,9 +1,8 @@
-import { FastifyInstance, FastifyRequest } from 'fastify'
+import { FastifyInstance } from 'fastify'
 import BaseService from './BaseService'
 import User from '../entity/User'
-import { IncomingMessage } from 'http'
 
-export default class AuthService implements BaseService {
+export default class UserService implements BaseService {
   connection: any
   fastify: FastifyInstance
 
