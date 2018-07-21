@@ -1,10 +1,10 @@
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
+import jwt from 'jsonwebtoken'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import { extractToken, decodeToken } from '../../../utils/authUtils'
 import User from '../../../entity/User'
 
-import jwt from 'jsonwebtoken'
-export default (connection) => async function (req: FastifyRequest<IncomingMessage>, res: FastifyReply<ServerResponse>, next: Function) {
+export default (connection) => async function (req: FastifyRequest<IncomingMessage>, res: FastifyReply<ServerResponse>) {
   const token = extractToken(req)
   const payload = decodeToken(token)
 
@@ -25,6 +25,6 @@ export default (connection) => async function (req: FastifyRequest<IncomingMessa
     // @ts-ignore
     req.token = decoded
 
-    return next()
+    return
   })
 }

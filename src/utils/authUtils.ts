@@ -1,13 +1,14 @@
 import jwt from 'jsonwebtoken'
 import base64 from 'base64url'
 import crypto from 'crypto'
-import { FastifyInstance, FastifyRequest } from 'fastify'
+import { FastifyRequest } from 'fastify'
 import { IncomingMessage } from 'http'
 
 /**
  * Generates a JSON Web Token for a given user id and user secret.
  *
- * @param  {Sequelize}  record          User record from database
+ * @param  {string}  userSecret          User secret
+ *  @param {string} id
  * @param  {number}     expires         Expiration date (in ms)
  * @return {string}                     Signed JSON Web Token
  */
@@ -16,7 +17,7 @@ export function generateToken(
   id: string,
   expires: number = 3600,
 ): string {
-  const serverSecret = String(process.env.AUTH_SECRET)
+  const serverSecret = String(process.env.API_JWT_SECRET_TOKEN)
   const tokenSecret = `${userSecret}@${serverSecret}`
 
   return jwt.sign({ id: id }, tokenSecret, {
