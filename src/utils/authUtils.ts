@@ -3,6 +3,7 @@ import base64 from 'base64url'
 import crypto from 'crypto'
 import { FastifyRequest } from 'fastify'
 import { IncomingMessage } from 'http'
+import { resolve } from 'path'
 
 /**
  * Generates a JSON Web Token for a given user id and user secret.
@@ -71,4 +72,22 @@ export function getRandomString(length: number = 32): string {
     .randomBytes(Math.ceil(length / 2))
     .toString('hex')
     .slice(0, length)
+}
+
+/**
+ * Verify token.
+ *
+ * @param   {string}  token     Token that will be verified
+ * @return  {Promise}
+ */
+export function verifyToken(token, secret) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, secret, (err, decodedToken) => {
+      if (err || !decodedToken) {
+        return reject(err)
+      }
+
+      resolve(decodedToken)
+    })
+  })
 }

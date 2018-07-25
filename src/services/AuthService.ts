@@ -37,7 +37,7 @@ export default class AuthService implements BaseService {
     }
   }
 
-  async logout(request: FastifyRequest<IncomingMessage>, id:any): Promise<Object> {
+  async logout(id:any): Promise<Object> {
     try {
       // @ts-ignore
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })

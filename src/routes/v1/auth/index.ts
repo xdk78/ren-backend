@@ -5,11 +5,11 @@ import bearerAuth from 'fastify-bearer-auth'
 import authLoginSchema from '../../../schema/auth/authLoginSchema'
 import authRegisterSchema from '../../../schema/auth/authRegisterSchema'
 import AuthService from '../../../services/AuthService'
-
+import isAuthorized from '../middlewares/isAuthorized'
+import request from 'supertest'
 const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
 export default async (fastify: FastifyInstance, opts) => {
-  fastify.register(bearerAuth, { keys })
   const authService = new AuthService(fastify)
 
   fastify.post('/auth/login', { schema: authLoginSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
@@ -23,16 +23,17 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
-
+  // @ts-ignore
+  fastify.use('/auth/logout', isAuthorized(fastify.mongo.db))
   fastify.get('/auth/logout', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    reply.header('Content-Type', 'application/json').code(200)
     try {
-      reply.header('Content-Type', 'application/json').code(200)
-      return await authService.logout(request)
+        // @ts-ignore
+      const data = await authService.logout(request.raw.root._id)
+
+      return data
     } catch (error) {
-      return {
-        data: {},
-        error: error.message,
-      }
+      throw error
     }
   })
 
