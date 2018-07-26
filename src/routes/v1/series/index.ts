@@ -2,15 +2,14 @@ import Series from '../../../entity/series/Series'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import createSeriesSchema from '../../../schema/series/createSeriesSchema'
-import getSeriesByIdSchema from '../../../schema/series/getSeriesByIdSchema'
-import bearerAuth from 'fastify-bearer-auth'
 import SeriesService from '../../../services/SeriesService'
 import isAuthorized from '../../v1/middlewares/isAuthorized'
 
 export default async (fastify: FastifyInstance, opts) => {
   const seriesService = new SeriesService(fastify)
+
   // @ts-ignore
-  fastify.use('/series', isAuthorized(fastify.mongo.db, ['POST', 'PATCH']))
+  fastify.use('/series', () => isAuthorized(fastify.mongo.db, ['POST', 'PATCH']))
 
   fastify.get('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -23,7 +22,7 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
-  fastify.get('/series/:id', { schema: getSeriesByIdSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.get('/series/:id', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       const id = request.params.id
@@ -36,7 +35,7 @@ export default async (fastify: FastifyInstance, opts) => {
     }
   })
 
-  fastify.post('/series', { schema: createSeriesSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(201)
       return await seriesService.createSeries({
