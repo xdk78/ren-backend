@@ -39,7 +39,7 @@ export function generateToken(
  * @return {Object}               Decoded JSON Web Token
  * @throws {Error}                When cannot decode
  */
-export function decodeToken(token: string): Object {
+export function decodeToken(token: string): object {
   const encodedToken = token.split('.')
 
   return {
