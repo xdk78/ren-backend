@@ -5,8 +5,6 @@ import watchList from './watchList'
 const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
 export default async (fastify: FastifyInstance, opts) => {
-  fastify.register(bearerAuth, { keys })
   fastify.register(search)
   fastify.register(watchList)
-  return
 }

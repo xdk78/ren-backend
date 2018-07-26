@@ -5,11 +5,12 @@ import createSeriesSchema from '../../../schema/series/createSeriesSchema'
 import getSeriesByIdSchema from '../../../schema/series/getSeriesByIdSchema'
 import bearerAuth from 'fastify-bearer-auth'
 import SeriesService from '../../../services/SeriesService'
-const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
+import isAuthorized from '../../v1/middlewares/isAuthorized'
 
 export default async (fastify: FastifyInstance, opts) => {
-  fastify.register(bearerAuth, { keys })
   const seriesService = new SeriesService(fastify)
+  // @ts-ignore
+  fastify.use('/series', isAuthorized(fastify.mongo.db, ['POST', 'PATCH']))
 
   fastify.get('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -34,6 +35,7 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
+
   fastify.post('/series', { schema: createSeriesSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(201)
