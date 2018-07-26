@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken'
 import base64 from 'base64url'
 import crypto from 'crypto'
-import { FastifyRequest } from 'fastify'
 import { IncomingMessage } from 'http'
-import { resolve } from 'path'
 
 /**
  * Generates a JSON Web Token for a given user id and user secret.
@@ -54,12 +52,12 @@ export function decodeToken(token: string): object {
  * - `Authorization` header;
  * - `authorization` query;
  *
- * @param  {FastifyRequest}   req     FastifyRequest
+ * @param  {IncomingMessage}   req     IncomingMessage
  * @return {string}                   Encoded JSON Web Token
  */
-export function extractToken(req: FastifyRequest<IncomingMessage>): string {
+export function extractToken(req: IncomingMessage): string {
 
-  return req.headers.authorization || req.query.authorization
+  return req.headers.authorization
 }
 /**
  * Generates a random string of a given `length`.

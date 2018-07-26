@@ -1,6 +1,5 @@
-import fastify, { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
-import User from '../../../entity/User'
 import UserService from '../../../services/UserService'
 
 export default async (fastify: FastifyInstance, opts) => {

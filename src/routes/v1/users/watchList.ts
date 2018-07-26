@@ -1,4 +1,3 @@
-import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import WatchListSerivce from '../../../services/WatchListService'
@@ -8,7 +7,6 @@ export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
   const db = fastify.mongo.db
   const watchListService = new WatchListSerivce(fastify)
-  // @ts-ignore
   fastify.use('/users/:id/watchlist', isAuthorized(db, ['DELETE', 'POST']))
 
   fastify.get('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {

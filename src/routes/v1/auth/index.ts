@@ -1,15 +1,15 @@
 import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
-import bearerAuth from 'fastify-bearer-auth'
 import authLoginSchema from '../../../schema/auth/authLoginSchema'
 import authRegisterSchema from '../../../schema/auth/authRegisterSchema'
 import AuthService from '../../../services/AuthService'
 import isAuthorized from '../middlewares/isAuthorized'
-const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
 export default async (fastify: FastifyInstance, opts) => {
   const authService = new AuthService(fastify)
+  // @ts-ignore
+  const db = fastify.mongo.db
 
   fastify.post('/auth/login', { schema: authLoginSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -22,12 +22,11 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
-  // @ts-ignore
-  fastify.use('/auth/logout', isAuthorized(fastify.mongo.db))
+  fastify.use('/auth/logout', isAuthorized(db))
   fastify.get('/auth/logout', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     reply.header('Content-Type', 'application/json').code(200)
     try {
-        // @ts-ignore
+      // @ts-ignore
       const data = await authService.logout(request.raw.root._id)
 
       return data

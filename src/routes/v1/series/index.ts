@@ -7,9 +7,9 @@ import isAuthorized from '../../v1/middlewares/isAuthorized'
 
 export default async (fastify: FastifyInstance, opts) => {
   const seriesService = new SeriesService(fastify)
-
   // @ts-ignore
-  fastify.use('/series', () => isAuthorized(fastify.mongo.db, ['POST', 'PATCH']))
+  const db = fastify.mongo.db
+  fastify.use('/series', isAuthorized(db, ['POST', 'PATCH']))
 
   fastify.get('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
