@@ -1,17 +1,19 @@
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import UserService from '../../../services/UserService'
+import isAuthorized from '../middlewares/isAuthorized'
 
 export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
   const db = fastify.mongo.db
   const userService = new UserService(fastify)
 
+  fastify.use('/users', isAuthorized(db))
   fastify.get('/users', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const userId = request.session.userId
+      const userId = request.user._id
 
       if (userId) {
         const result = await userService.fetchUser(userId)

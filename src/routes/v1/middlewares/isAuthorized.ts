@@ -15,7 +15,7 @@ export default (connection, methods = defaultMethods) => async function (this: F
       const secret = `${user.secret}@${String(process.env.API_JWT_SECRET_TOKEN)}`
       const data = await verifyToken(token, secret)
       // @ts-ignore
-      request.root = user
+      request.user = user
       // @ts-ignore
       request.token = data
 

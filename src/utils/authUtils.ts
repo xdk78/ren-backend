@@ -78,7 +78,7 @@ export function getRandomString(length: number = 32): string {
  * @param   {string}  token     Token that will be verified
  * @return  {Promise}
  */
-export function verifyToken(token, secret) {
+export function verifyToken(token: string, secret: string): Promise<any> {
   return new Promise((resolve, reject) => {
     jwt.verify(token, secret, (err, decodedToken) => {
       if (err || !decodedToken) {

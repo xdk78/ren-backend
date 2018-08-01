@@ -31,7 +31,7 @@ export default async (fastify: FastifyInstance, opts) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const userId = request.session.userId
+      const userId = request.user._id
 
       const watchList = await watchListService.addToWatchList(request.body.status, userId, request.body)
       reply.send({
@@ -45,12 +45,12 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
-  // @ts-ignore
+
   fastify.delete('/users/:id/watchlist', { schema: modifyWatchListSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const userId = request.session.userId
+      const userId = request.user._id
 
       const status = request.body.status
       const seriesState = request.body.seriesState
