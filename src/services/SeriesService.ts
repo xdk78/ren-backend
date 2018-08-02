@@ -122,7 +122,7 @@ export default class SeriesService implements BaseService {
         name,
       })
 
-      await category.save()
+      return await category.save()
     } catch (error) {
       return error
     }
@@ -136,7 +136,7 @@ export default class SeriesService implements BaseService {
         number,
       })
 
-      await episode.save()
+      return await episode.save()
     } catch (error) {
       return error
     }
@@ -149,7 +149,7 @@ export default class SeriesService implements BaseService {
         name,
       })
 
-      await genre.save()
+      return await genre.save()
     } catch (error) {
       return error
     }
@@ -163,7 +163,7 @@ export default class SeriesService implements BaseService {
         episodes,
       })
 
-      await season.save()
+      return await season.save()
     } catch (error) {
       return error
     }

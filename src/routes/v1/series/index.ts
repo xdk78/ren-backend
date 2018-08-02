@@ -4,6 +4,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 import createSeriesSchema from '../../../schema/series/createSeriesSchema'
 import SeriesService from '../../../services/SeriesService'
 import isAuthorized from '../../v1/middlewares/isAuthorized'
+import Category from '../../../entity/series/Category'
 
 export default async (fastify: FastifyInstance, opts) => {
   const seriesService = new SeriesService(fastify)
@@ -58,6 +59,61 @@ export default async (fastify: FastifyInstance, opts) => {
         description: request.body.description,
         category: request.body.category,
       } as Series)
+    } catch (error) {
+      return {
+        data: {},
+        error: error.message,
+      }
+    }
+  })
+
+  fastify.post('/series/category', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(201)
+
+      return await seriesService.createCategory(request.body.name)
+
+    } catch (error) {
+      return {
+        data: {},
+        error: error.message,
+      }
+    }
+  })
+
+  fastify.post('/series/episode', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(201)
+
+      return await seriesService.createEpisode(request.body.title, request.body.number)
+
+    } catch (error) {
+      return {
+        data: {},
+        error: error.message,
+      }
+    }
+  })
+
+  fastify.post('/series/season', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(201)
+
+      return await seriesService.createSeason(request.body.number, request.body.episodes)
+
+    } catch (error) {
+      return {
+        data: {},
+        error: error.message,
+      }
+    }
+  })
+
+  fastify.post('/series/genre', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(201)
+
+      return await seriesService.createGenre(request.body.name)
     } catch (error) {
       return {
         data: {},
