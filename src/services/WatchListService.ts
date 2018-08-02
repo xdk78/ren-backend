@@ -28,7 +28,12 @@ export default class WatchListService implements BaseService {
         throw new Error('Could not find user')
       } else {
         const watchListRefs = await watchListModel.findOne({ _id: user.watchList })
-        .populate([{ path: 'completed' , model: seriesModel }, { path: 'planToWatch' , model: seriesModel }])
+          .populate([
+            { path: 'watching', model: seriesModel },
+            { path: 'completed', model: seriesModel },
+            { path: 'onHold', model: seriesModel },
+            { path: 'dropped', model: seriesModel },
+            { path: 'planToWatch', model: seriesModel }])
         return watchListRefs
       }
     } catch (error) {
@@ -38,10 +43,10 @@ export default class WatchListService implements BaseService {
 
   async addToWatchList(status: number, id: string, payload): Promise<Object> {
     try {
-      const userModel = new User().getModelForClass(User, { existingConnection: this.connection  })
-      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection  })
-      const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection  })
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection  })
+      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
+      const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
+      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: id })
       if (user) {
         if (this.seriesService.doesExist(payload.seriesId)) {
@@ -86,10 +91,10 @@ export default class WatchListService implements BaseService {
     }
   }
 
-  async removeFromWatchList(id: string , status: number, seriesState): Promise < Object > {
+  async removeFromWatchList(id: string, status: number, seriesState): Promise<Object> {
     try {
-      const userModel = new User().getModelForClass(User, { existingConnection: this.connection  })
-      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection  })
+      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: id })
 
       if (user) {
