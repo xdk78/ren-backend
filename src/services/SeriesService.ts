@@ -115,7 +115,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createCategory(name: String): Promise<Object> {
+  async createCategory(name: string): Promise<Object> {
     try {
       const categoryModel = new Category().getModelForClass(Category, { existingConnection: this.connection })
       const category = new categoryModel({
@@ -128,7 +128,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createEpisode(title: String, number: Number): Promise<Object> {
+  async createEpisode(title: string, number: number): Promise<Object> {
     try {
       const episodeModel = new Episode().getModelForClass(Episode, { existingConnection: this.connection })
       const episode = new episodeModel({
@@ -142,7 +142,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createGenre(name: String): Promise<Object> {
+  async createGenre(name: string): Promise<Object> {
     try {
       const genreModel = new Genre().getModelForClass(Genre, { existingConnection: this.connection })
       const genre = new genreModel({
@@ -155,7 +155,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createSeason(number: Number, episodes: any[]): Promise<Object> {
+  async createSeason(number: number, episodes: any[]): Promise<Object> {
     try {
       const seasonModel = new Season().getModelForClass(Season, { existingConnection: this.connection })
       const season = new seasonModel({
