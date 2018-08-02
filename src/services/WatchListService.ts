@@ -5,6 +5,7 @@ import BaseService from './BaseService'
 import SeriesService from './SeriesService'
 import Series from '../entity/series/Series'
 import SeriesState from '../entity/series/SeriesState'
+import { Ref } from 'typegoose'
 
 export default class WatchListService implements BaseService {
   connection: any
@@ -18,12 +19,12 @@ export default class WatchListService implements BaseService {
 
   }
 
-  async getWatchList(id: string): Promise<Object> {
+  async getWatchList(userId: Ref<User>): Promise<Object> {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
-      const user = await userModel.findOne({ _id: id })
+      const user = await userModel.findOne({ _id: userId })
       if (!user) {
         throw new Error('Could not find user')
       } else {
@@ -41,13 +42,12 @@ export default class WatchListService implements BaseService {
     }
   }
 
-  async addToWatchList(status: number, id: string, payload): Promise<Object> {
+  async addToWatchList(userId: Ref<User>, status: StatusNumber, payload: SeriesState): Promise<Object> {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
       const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
-      const user = await userModel.findOne({ _id: id })
+      const user = await userModel.findOne({ _id: userId })
       if (user) {
         if (this.seriesService.doesExist(payload.seriesId)) {
 
