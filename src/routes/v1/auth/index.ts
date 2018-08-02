@@ -51,5 +51,14 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
+
+  fastify.use('/auth/verify', isAuthorized(db, ['GET']))
+  fastify.get('/auth/verify', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    reply.header('Content-Type', 'application/json').code(200)
+
+    return {
+      success: true,
+    }
+  })
   return
 }
