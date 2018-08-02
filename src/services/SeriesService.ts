@@ -2,6 +2,10 @@ import BaseService from './BaseService'
 import { FastifyInstance } from 'fastify'
 import Series from '../entity/series/Series'
 import { Ref } from 'typegoose'
+import Category from '../entity/series/Category'
+import Episode from '../entity/series/Episode'
+import Genre from '../entity/series/Genre'
+import Season from '../entity/series/Season'
 
 export default class SeriesService implements BaseService {
   connection: any
@@ -106,6 +110,60 @@ export default class SeriesService implements BaseService {
         data: { message: 'Updated series ' },
         error: '',
       }
+    } catch (error) {
+      return error
+    }
+  }
+
+  async createCategory(name: String): Promise<Object> {
+    try {
+      const categoryModel = new Category().getModelForClass(Category, { existingConnection: this.connection })
+      const category = new categoryModel({
+        name,
+      })
+
+      await category.save()
+    } catch (error) {
+      return error
+    }
+  }
+
+  async createEpisode(title: String, number: Number): Promise<Object> {
+    try {
+      const episodeModel = new Episode().getModelForClass(Episode, { existingConnection: this.connection })
+      const episode = new episodeModel({
+        title,
+        number,
+      })
+
+      await episode.save()
+    } catch (error) {
+      return error
+    }
+  }
+
+  async createGenre(name: String): Promise<Object> {
+    try {
+      const genreModel = new Genre().getModelForClass(Genre, { existingConnection: this.connection })
+      const genre = new genreModel({
+        name,
+      })
+
+      await genre.save()
+    } catch (error) {
+      return error
+    }
+  }
+
+  async createSeason(number: Number, episodes: any[]): Promise<Object> {
+    try {
+      const seasonModel = new Season().getModelForClass(Season, { existingConnection: this.connection })
+      const season = new seasonModel({
+        number,
+        episodes,
+      })
+
+      await season.save()
     } catch (error) {
       return error
     }
