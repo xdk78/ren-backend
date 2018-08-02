@@ -15,17 +15,17 @@ export default (connection, methods = defaultMethods) => async function (this: F
       const secret = `${user.secret}@${String(process.env.API_JWT_SECRET_TOKEN)}`
       const data = await verifyToken(token, secret)
       // @ts-ignore
-      request.user = user
+      req.user = user
       // @ts-ignore
-      request.token = data
+      req.token = data
 
       return next()
     } catch (error) {
       res.setHeader('content-type', 'application/json')
       res.statusCode = 401
-      res.end({
+      res.end(JSON.stringify({
         error: 'Unauthorized',
-      })
+      }))
     }
   }
 

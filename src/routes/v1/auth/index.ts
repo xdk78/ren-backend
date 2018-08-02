@@ -27,6 +27,8 @@ export default async (fastify: FastifyInstance, opts) => {
     reply.header('Content-Type', 'application/json').code(200)
     try {
       // @ts-ignore
+      console.log(request.raw.user)
+      // @ts-ignore
       const data = await authService.logout(request.raw.user._id)
 
       return data
