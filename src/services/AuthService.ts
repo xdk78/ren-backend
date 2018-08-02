@@ -4,6 +4,7 @@ import { compare, hash } from 'bcrypt'
 import User from '../entity/User'
 import { IncomingMessage } from 'http'
 import WatchList from '../entity/WatchList'
+import { getRandomString, generateToken } from '../utils/authUtils'
 
 export default class AuthService implements BaseService {
   connection: any
@@ -23,10 +24,9 @@ export default class AuthService implements BaseService {
       })
 
       if (await compare(password, userFromDb.password)) {
-        // @ts-ignore
-        request.session.userId = userFromDb.id
+        const token = generateToken(userFromDb.secret, userFromDb.id)
         return {
-          data: { message: 'Login success', _id: userFromDb._id },
+          data: {  token , message: 'Login success' },
           error: '',
         }
       }
@@ -37,14 +37,11 @@ export default class AuthService implements BaseService {
     }
   }
 
-  async logout(request: FastifyRequest<IncomingMessage>): Promise<Object> {
+  async logout(id:any): Promise<Object> {
     try {
       // @ts-ignore
-      const session = request.session
-      session.userId = null
-
-      // @ts-ignore
-      request.sessionStore.destroy(session.sessionId, null)
+      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      await userModel.destroySessions(id, getRandomString(32))
       return {
         data: { message: 'Logged out' },
         error: '',
@@ -59,6 +56,7 @@ export default class AuthService implements BaseService {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
+      const userSecret = getRandomString(32)
       const user = new userModel(
         {
           username: payload.username,
@@ -66,6 +64,7 @@ export default class AuthService implements BaseService {
           password: await hash(payload.password, this.saltRounds),
           createdAt: new Date().toISOString(),
           watchList: await new watchListModel({}).save(),
+          secret: userSecret,
         },
       )
       if (user) {

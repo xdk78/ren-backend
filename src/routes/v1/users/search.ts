@@ -1,38 +1,23 @@
-import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
+import UserService from '../../../services/UserService'
+import isAuthorized from '../middlewares/isAuthorized'
 
 export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
   const db = fastify.mongo.db
-
+  const userService = new UserService(fastify)
+  fastify.use('/users', isAuthorized(db, ['GET']))
   fastify.get('/users', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const userId = request.session.userId
+      const result = await userService.fetchUser(request.raw.user._id)
 
-      if (userId) {
-        const userModel = new User().getModelForClass(User, { existingConnection: db })
-        const user = await userModel.findOne({ _id: userId })
-
-        const output = {
-          _id: user._id,
-          username: user.username,
-          createdAt: user.createdAt,
-          avatar: user.avatar,
-          gender: user.gender,
-          watchListId: user.watchList,
-          seriesStates: user.seriesStates,
-        }
-
-        reply.send({
-          data: output,
-          error: '',
-        })
-      } else {
-        throw new Error('User is not logged in')
-      }
+      reply.send({
+        data: result,
+        error: '',
+      })
 
     } catch (error) {
       return {
@@ -44,23 +29,11 @@ export default async (fastify: FastifyInstance, opts) => {
   fastify.get('/users/:id', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
-      const userModel = new User().getModelForClass(User, { existingConnection: db })
-      const user = await userModel.findOne({
-        _id: request.params.id,
-      })
-      if (user) {
-        const output = {
-          _id: user._id,
-          username: user.username,
-          createdAt: user.createdAt,
-          avatar: user.avatar,
-          gender: user.gender,
-          watchListId: user.watchList,
-          seriesStates: user.seriesStates,
-        }
+      const result = await userService.fetchUser(request.params.id)
+      if (result) {
 
         reply.send({
-          data: output,
+          data: result,
           error: '',
         })
       } else {

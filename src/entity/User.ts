@@ -1,4 +1,4 @@
-import { prop, Typegoose, Ref, arrayProp } from 'typegoose'
+import { prop, Typegoose, Ref, arrayProp, ModelType, staticMethod } from 'typegoose'
 import WatchList from './WatchList'
 import SeriesState from './series/SeriesState'
 
@@ -32,4 +32,12 @@ export default class User extends Typegoose {
 
   @prop({ enum: Gender })
   gender?: Gender
+
+  @prop()
+  secret?: string
+
+  @staticMethod
+  static destroySessions(this: ModelType<User> & typeof User, id: any, newSecret: string) {
+    return this.updateOne({ _id: id }, { $set: { secret: newSecret } })
+  }
 }

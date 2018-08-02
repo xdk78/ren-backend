@@ -1,4 +1,4 @@
-import { prop, Typegoose, arrayProp, staticMethod , ModelType } from 'typegoose'
+import { prop, Typegoose, arrayProp, staticMethod, ModelType, Ref } from 'typegoose'
 import Genre from './Genre'
 import Season from './Season'
 import Category from './Category'
@@ -10,20 +10,71 @@ export default class Series extends Typegoose {
   @prop()
   description?: string
 
-  @arrayProp({ items: Season })
-  seasons: Season[]
+  @arrayProp({ itemsRef: Season })
+  seasons: Ref<Season>[]
 
-  @prop()
-  category?: Category
+  @prop({ ref: Category })
+  category?: Ref<Category>
 
-  @arrayProp({ items: Genre })
-  genres?: Genre[]
+  @arrayProp({ itemsRef: Genre })
+  genres?: Ref<Genre>[]
 
   @prop()
   rating: number
 
   @staticMethod
-  static findSeries(this: ModelType<Series> & typeof Series, seriesId: number) {
+  static findSeries(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>) {
     return this.findOne({ _id: seriesId })
   }
+
+  @staticMethod
+  static addSeason(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, seasonId: Ref<Season>) {
+    return this.update({ _id: seriesId }, { $push: { seasons: seasonId } })
+  }
+
+  @staticMethod
+  static removeSeason(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, seasonId: Ref<Season>) {
+    return this.update({ _id: seriesId }, { $pull: { seasons: seasonId } })
+  }
+
+  @staticMethod
+  static setCategory(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, categoryId: Ref<Category>) {
+    return this.updateOne({ _id: seriesId }, { $set: { category: categoryId } })
+  }
+
+  @staticMethod
+  static removeCategory(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, categoryId: Ref<Category>) {
+    return this.updateOne({ _id: seriesId }, { $unset: { category: categoryId } })
+  }
+
+  @staticMethod
+  static addGenre(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, genreId: Ref<Genre>) {
+    return this.update({ _id: seriesId }, { $push: { genres: genreId } })
+  }
+
+  @staticMethod
+  static removeGenre(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, genreId: Ref<Genre>) {
+    return this.update({ _id: seriesId }, { $pull: { genres: genreId } })
+  }
+
+  @staticMethod
+  static setRating(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, rating: number) {
+    return this.updateOne({ _id: seriesId }, { $set: { rating: rating } })
+  }
+
+  @staticMethod
+  static incrementRating(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, incrementSize: number) {
+    return this.updateOne({ _id: seriesId }, { $inc: { rating: incrementSize } })
+  }
+
+  @staticMethod
+  static setTitle(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, title: string) {
+    return this.updateOne({ _id: seriesId }, { $set: { title: title } })
+  }
+
+  @staticMethod
+  static setDescription(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, description: string) {
+    return this.updateOne({ _id: seriesId }, { $set: { description: description } })
+  }
+
 }

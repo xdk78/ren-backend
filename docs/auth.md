@@ -60,12 +60,12 @@ Returns current logged in user
 ### Sample response
 
 ```json
-{
+{ 
   "data": {
-    "message": "Login success",
-    "_id": "5b3e92397b770c495c2e42b5"
-  },
-  "error": ""
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNTkxMmU2OTdlZDU4MWQwNDllNTFmMSIsImlhdCI6MTUzMzIwOTA3NSwiZXhwIjozMDY2NDIxNzUwfQ.qyTlpLLh0iNq0GNiWovzGO5MU9CT0IJEKAhs0MJlISQ",
+    "message":"Login success"
+    },
+    "error":""
 }
 ```
 
@@ -87,5 +87,17 @@ Logs out current user
     "message": "Logged out"
   },
   "error": ""
+}
+```
+
+### GET `/auth/verify`
+
+### Headers 
+
+### Sample response
+
+```json
+{
+  "success" : true
 }
 ```

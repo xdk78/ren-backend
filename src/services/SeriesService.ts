@@ -1,6 +1,7 @@
 import BaseService from './BaseService'
 import { FastifyInstance } from 'fastify'
 import Series from '../entity/series/Series'
+import { Ref } from 'typegoose'
 
 export default class SeriesService implements BaseService {
   connection: any
@@ -24,7 +25,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async getSeriesById(id: any): Promise<Object> {
+  async getSeriesById(id: Ref<Series>): Promise<Object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const loadedSeries = await seriesModel.findOne({ _id: id })
@@ -37,7 +38,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async doesExist(id: string): Promise<Object> {
+  async doesExist(id: Ref<Series>): Promise<Object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
 
@@ -57,9 +58,9 @@ export default class SeriesService implements BaseService {
         {
           title: payload.title,
           description: payload.description,
-          seasons: payload.seasons,
+          seasons: [],
           category: payload.category,
-          rating: payload.rating,
+          rating: 0,
           genres: payload.genres,
         },
       )
@@ -75,7 +76,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async fetchAllSeries(refArray: any[]): Promise<Object> {
+  async fetchAllSeries(refArray: Ref<Series>[]): Promise<Object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const series = []
@@ -84,6 +85,27 @@ export default class SeriesService implements BaseService {
         series.push(await seriesModel.findById(reference))
       }
       return series
+    } catch (error) {
+      return error
+    }
+  }
+
+  async updateSeries(seriesId: Ref<Series>, payload: Series): Promise<Object> {
+    try {
+      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+      await seriesModel.updateOne({ _id: seriesId }, {
+        $set: {
+          title: payload.title,
+          description: payload.description,
+          category: payload.category,
+          rating: payload.rating,
+        },
+      })
+
+      return {
+        data: { message: 'Updated series ' },
+        error: '',
+      }
     } catch (error) {
       return error
     }
