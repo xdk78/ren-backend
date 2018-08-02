@@ -27,7 +27,7 @@ export default async (fastify: FastifyInstance, opts) => {
     }
   },
   )
-  fastify.post('/users/:id/watchlist',  { schema: modifyWatchListSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
@@ -44,7 +44,7 @@ export default async (fastify: FastifyInstance, opts) => {
     }
   })
 
-  fastify.delete('/users/:id/watchlist', { schema: modifyWatchListSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.delete('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
 

@@ -31,7 +31,10 @@ export default async (fastify: FastifyInstance, opts) => {
 
       return data
     } catch (error) {
-      throw error
+      return {
+        data: {},
+        error: error.message,
+      }
     }
   })
 
