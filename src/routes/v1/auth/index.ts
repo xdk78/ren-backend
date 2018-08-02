@@ -22,12 +22,12 @@ export default async (fastify: FastifyInstance, opts) => {
       }
     }
   })
-  fastify.use('/auth/logout', isAuthorized(db))
+  fastify.use('/auth/logout', isAuthorized(db, ['GET']))
   fastify.get('/auth/logout', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     reply.header('Content-Type', 'application/json').code(200)
     try {
       // @ts-ignore
-      const data = await authService.logout(request.raw.root._id)
+      const data = await authService.logout(request.raw.user._id)
 
       return data
     } catch (error) {
