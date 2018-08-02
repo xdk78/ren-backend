@@ -5,12 +5,8 @@ import authLoginSchema from '../../../schema/auth/authLoginSchema'
 import authRegisterSchema from '../../../schema/auth/authRegisterSchema'
 import AuthService from '../../../services/AuthService'
 import isAuthorized from '../middlewares/isAuthorized'
-import bearerAuth from 'fastify-bearer-auth'
-
-const keys = new Set([process.env.API_BEARER_SECRET_TOKEN])
 
 export default async (fastify: FastifyInstance, opts) => {
-  fastify.register(bearerAuth, { keys })
   const authService = new AuthService(fastify)
   // @ts-ignore
   const db = fastify.mongo.db
