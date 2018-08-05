@@ -18,6 +18,7 @@ export default class SeriesService implements BaseService {
       const loadedSeries = await seriesModel.find()
       return {
         data: loadedSeries,
+        success: true,
         error: '',
       }
     } catch (error) {
@@ -31,6 +32,7 @@ export default class SeriesService implements BaseService {
       const loadedSeries = await seriesModel.findOne({ _id: id })
       return {
         data: loadedSeries,
+        success: true,
         error: '',
       }
     } catch (error) {
@@ -68,7 +70,8 @@ export default class SeriesService implements BaseService {
       await series.save()
 
       return {
-        data: { message: 'Added new series ' },
+        data: {},
+        success: true,
         error: '',
       }
     } catch (error) {
@@ -103,7 +106,8 @@ export default class SeriesService implements BaseService {
       })
 
       return {
-        data: { message: 'Updated series ' },
+        data: {},
+        success: true,
         error: '',
       }
     } catch (error) {

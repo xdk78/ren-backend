@@ -49,9 +49,8 @@ export default class WatchListService implements BaseService {
       const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (user) {
-        if (this.seriesService.doesExist(payload.seriesId)) {
-
-          const { seriesId, seasonNumber, episodeNumber } = payload
+        const { seriesId, seasonNumber, episodeNumber } = payload
+        if (this.seriesService.doesExist(seriesId)) {
 
           const seriesState = new seriesStateModel({
             seriesId: seriesId,

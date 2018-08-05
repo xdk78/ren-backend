@@ -5,6 +5,7 @@ import User from '../entity/User'
 import { IncomingMessage } from 'http'
 import WatchList from '../entity/WatchList'
 import { getRandomString, generateToken } from '../utils/authUtils'
+import { Ref } from 'typegoose'
 
 export default class AuthService implements BaseService {
   connection: any
@@ -26,7 +27,8 @@ export default class AuthService implements BaseService {
       if (await compare(password, userFromDb.password)) {
         const token = generateToken(userFromDb.secret, userFromDb.id)
         return {
-          data: {  token , message: 'Login success' },
+          data: { token },
+          success: true,
           error: '',
         }
       }
@@ -37,13 +39,14 @@ export default class AuthService implements BaseService {
     }
   }
 
-  async logout(id:any): Promise<Object> {
+  async logout(id: Ref<User>): Promise<Object> {
     try {
       // @ts-ignore
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       await userModel.destroySessions(id, getRandomString(32))
       return {
-        data: { message: 'Logged out' },
+        data: {},
+        success: true,
         error: '',
       }
 
@@ -71,7 +74,8 @@ export default class AuthService implements BaseService {
         await user.save()
 
         return {
-          data: { message: 'Register success' },
+          data: {},
+          success: true,
           error: '',
         }
       }

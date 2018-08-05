@@ -30,9 +30,8 @@ Registers a new user
 
 ```json
 {
-  "data": {
-    "message": "Register success"
-  },
+  "data": {},
+  "success": true,
   "error": ""
 }
 ```
@@ -50,7 +49,7 @@ Returns current logged in user
 
 `POST /v1/auth/login`
 
-```
+```json
 {
 	"username": "xdk78",
 	"password": "alufers12"
@@ -60,11 +59,11 @@ Returns current logged in user
 ### Sample response
 
 ```json
-{ 
+{
   "data": {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNTkxMmU2OTdlZDU4MWQwNDllNTFmMSIsImlhdCI6MTUzMzIwOTA3NSwiZXhwIjozMDY2NDIxNzUwfQ.qyTlpLLh0iNq0GNiWovzGO5MU9CT0IJEKAhs0MJlISQ",
-    "message":"Login success"
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNTkxMmU2OTdlZDU4MWQwNDllNTFmMSIsImlhdCI6MTUzMzIwOTA3NSwiZXhwIjozMDY2NDIxNzUwfQ.qyTlpLLh0iNq0GNiWovzGO5MU9CT0IJEKAhs0MJlISQ"
     },
+    "success": true,
     "error":""
 }
 ```
@@ -83,21 +82,22 @@ Logs out current user
 
 ```json
 {
-  "data": {
-    "message": "Logged out"
-  },
-  "error": ""
+  "data": {},
+  "success": true,
+  "error":""
 }
 ```
 
 ### GET `/auth/verify`
 
-### Headers 
+### Headers
 
 ### Sample response
 
 ```json
 {
-  "success" : true
+  "data": {},
+  "success": true,
+  "error":""
 }
 ```

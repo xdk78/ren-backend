@@ -33,6 +33,7 @@ Returns all series
 			"__v": 0
 		}
   ],
+  "success": true,
   "error": "",
 }
 ```
@@ -71,6 +72,7 @@ Returns series by id
 			"__v": 0
 		}
   ],
+  "success": true,
   "error": "",
 }
 ```
@@ -148,10 +150,9 @@ Adds new series
 ### Sample response
 ```json
 {
-	"data": {
-		"message": "Added new series "
-	},
-	"error": ""
+  "data": {},
+  "success": true,
+  "error":""
 }
 ```
 
