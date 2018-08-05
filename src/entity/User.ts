@@ -37,7 +37,7 @@ export default class User extends Typegoose {
   secret?: string
 
   @staticMethod
-  static destroySessions(this: ModelType<User> & typeof User, id: any, newSecret: string) {
+  static destroySessions(this: ModelType<User> & typeof User, id: Ref<User>, newSecret: string) {
     return this.updateOne({ _id: id }, { $set: { secret: newSecret } })
   }
 }

@@ -31,9 +31,15 @@ export default async (fastify: FastifyInstance, opts) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const watchList = await watchListService.addToWatchList(request.body.status, request.raw.user._id, request.body)
+      const id = request.raw.user._id
+      const status = request.body.status
+      const seriesState = request.body.seriesState
+
+      await watchListService.addToWatchList(id, status, seriesState)
       reply.send({
-        data: watchList,
+        data: {
+          message: 'success',
+        },
         error: '',
       })
     } catch (error) {
@@ -47,12 +53,14 @@ export default async (fastify: FastifyInstance, opts) => {
   fastify.delete('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
-
+      const id = request.params.id
       const status = request.body.status
       const seriesState = request.body.seriesState
-      const watchList = await watchListService.removeFromWatchList(request.params.id, request.body.status, request.body.seriesState)
+      await watchListService.removeFromWatchList(id, status, seriesState)
       reply.send({
-        data: request.body.seriesState,
+        data: {
+          message: 'success',
+        },
         error: '',
       })
     } catch (error) {
