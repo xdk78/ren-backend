@@ -16,7 +16,7 @@ export default class SeriesService implements BaseService {
     this.connection = fastify.mongo.db
   }
 
-  async getSeries(): Promise<Object> {
+  async getSeries(): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const loadedSeries = await seriesModel.find()
@@ -30,7 +30,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async getSeriesById(id: Ref<Series>): Promise<Object> {
+  async getSeriesById(id: Ref<Series>): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const loadedSeries = await seriesModel.findOne({ _id: id })
@@ -44,7 +44,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async doesExist(id: Ref<Series>): Promise<Object> {
+  async doesExist(id: Ref<Series>): Promise<boolean> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
 
@@ -57,7 +57,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createSeries(payload: Series): Promise<Object> {
+  async createSeries(payload: Series): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const series = new seriesModel(
@@ -83,7 +83,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async fetchAllSeries(refArray: Ref<Series>[]): Promise<Object> {
+  async fetchAllSeries(refArray: Ref<Series>[]): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const series = []
@@ -97,7 +97,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async updateSeries(seriesId: Ref<Series>, payload: Series): Promise<Object> {
+  async updateSeries(seriesId: Ref<Series>, payload: Series): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       await seriesModel.updateOne({ _id: seriesId }, {
@@ -119,7 +119,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createCategory(name: string): Promise<Object> {
+  async createCategory(name: string): Promise<object> {
     try {
       const categoryModel = new Category().getModelForClass(Category, { existingConnection: this.connection })
       const category = new categoryModel({
@@ -132,7 +132,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createEpisode(title: string, number: number): Promise<Object> {
+  async createEpisode(title: string, number: number): Promise<object> {
     try {
       const episodeModel = new Episode().getModelForClass(Episode, { existingConnection: this.connection })
       const episode = new episodeModel({
@@ -146,7 +146,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createGenre(name: string): Promise<Object> {
+  async createGenre(name: string): Promise<object> {
     try {
       const genreModel = new Genre().getModelForClass(Genre, { existingConnection: this.connection })
       const genre = new genreModel({
@@ -159,7 +159,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async createSeason(number: number, episodes: any[]): Promise<Object> {
+  async createSeason(number: number, episodes: any[]): Promise<object> {
     try {
       const seasonModel = new Season().getModelForClass(Season, { existingConnection: this.connection })
       const season = new seasonModel({

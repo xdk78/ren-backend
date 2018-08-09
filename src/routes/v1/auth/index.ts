@@ -14,7 +14,7 @@ export default async (fastify: FastifyInstance, opts) => {
   fastify.post('/auth/login', { schema: authLoginSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
-      return await authService.login(request, request.body.username, request.body.password)
+      return await authService.login(request.body.username, request.body.password)
     } catch (error) {
       return {
         data: {},
@@ -24,8 +24,8 @@ export default async (fastify: FastifyInstance, opts) => {
   })
   fastify.use('/auth/logout', isAuthorized(db, ['GET']))
   fastify.get('/auth/logout', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
-    reply.header('Content-Type', 'application/json').code(200)
     try {
+      reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
       const data = await authService.logout(request.raw.user._id)
 
@@ -60,6 +60,7 @@ export default async (fastify: FastifyInstance, opts) => {
     reply.header('Content-Type', 'application/json').code(200)
 
     return {
+      data: {},
       success: true,
     }
   })

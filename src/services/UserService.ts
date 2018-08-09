@@ -12,7 +12,7 @@ export default class UserService implements BaseService {
     this.connection = fastify.mongo.db
   }
 
-  async fetchUser(userId: Ref<User>) {
+  async fetchUser(userId: Ref<User>): Promise<object> {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
