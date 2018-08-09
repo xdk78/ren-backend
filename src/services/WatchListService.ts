@@ -32,10 +32,10 @@ export default class WatchListService implements BaseService {
         const watchListRefs = await watchListModel.findOne({ _id: user.watchList })
           .populate([
             { path: 'watching', model: seriesStateModel },
-            { path: 'completed', model: seriesStateModel },
+            { path: 'completed', model: seriesModel },
             { path: 'onHold', model: seriesStateModel },
             { path: 'dropped', model: seriesStateModel },
-            { path: 'planToWatch', model: seriesStateModel },
+            { path: 'planToWatch', model: seriesModel },
           ])
         return watchListRefs
       }
