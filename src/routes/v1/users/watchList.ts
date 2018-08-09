@@ -15,13 +15,15 @@ export default async (fastify: FastifyInstance, opts) => {
 
       const watchList = await watchListService.getWatchList(request.params.id)
 
-      reply.send({
+      return {
         data: watchList,
+        success: true,
         error: '',
-      })
+      }
     } catch (error) {
       return {
         data: {},
+        success: false,
         error: error.message,
       }
     }
@@ -36,15 +38,15 @@ export default async (fastify: FastifyInstance, opts) => {
       const seriesState = request.body.seriesState
 
       await watchListService.addToWatchList(id, status, seriesState)
-      reply.send({
-        data: {
-          message: 'success',
-        },
+      return {
+        data: {},
+        success: true,
         error: '',
-      })
+      }
     } catch (error) {
       return {
         data: {},
+        success: false,
         error: error.message,
       }
     }
@@ -57,15 +59,15 @@ export default async (fastify: FastifyInstance, opts) => {
       const status = request.body.status
       const seriesState = request.body.seriesState
       await watchListService.removeFromWatchList(id, status, seriesState)
-      reply.send({
-        data: {
-          message: 'success',
-        },
+      return {
+        data: {},
+        success: true,
         error: '',
-      })
+      }
     } catch (error) {
       return {
         data: {},
+        success: false,
         error: error.message,
       }
     }

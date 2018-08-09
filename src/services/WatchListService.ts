@@ -28,13 +28,15 @@ export default class WatchListService implements BaseService {
       } else {
         const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
         const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+        const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
         const watchListRefs = await watchListModel.findOne({ _id: user.watchList })
           .populate([
-            { path: 'watching', model: seriesModel },
-            { path: 'completed', model: seriesModel },
-            { path: 'onHold', model: seriesModel },
-            { path: 'dropped', model: seriesModel },
-            { path: 'planToWatch', model: seriesModel }])
+            { path: 'watching', model: seriesStateModel },
+            { path: 'completed', model: seriesStateModel },
+            { path: 'onHold', model: seriesStateModel },
+            { path: 'dropped', model: seriesStateModel },
+            { path: 'planToWatch', model: seriesStateModel },
+          ])
         return watchListRefs
       }
     } catch (error) {
@@ -50,35 +52,33 @@ export default class WatchListService implements BaseService {
         const { seriesId, seasonNumber, episodeNumber } = payload
         if (await this.seriesService.doesExist(seriesId)) {
           const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
-          if (await watchListModel.findById(seriesId)) {
-            throw new Error('Series exist on watchlist')
-          } else {
-            const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
-            const seriesState = new seriesStateModel({
-              seriesId: seriesId,
-              seasonNumber: seasonNumber,
-              episodeNumber: episodeNumber,
-            })
-            await seriesState.save()
-            switch (status) {
-              case StatusNumber.watching:
-                await watchListModel.addToWatching(user.watchList, seriesState)
-                break
-              case StatusNumber.onHold:
-                await watchListModel.addToOnHold(user.watchList, seriesState)
-                break
-              case StatusNumber.dropped:
-                await watchListModel.addToDropped(user.watchList, seriesState)
-                break
-              case StatusNumber.completed:
-                await watchListModel.addToCompleted(user.watchList, seriesId)
-                break
-              case StatusNumber.planToWatch:
-                await watchListModel.addToPlanToWatch(user.watchList, seriesId)
-                break
-              default:
-                throw new Error('Wrong status')
-            }
+          const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
+          const seriesState = new seriesStateModel({
+            seriesId: seriesId,
+            seasonNumber: seasonNumber,
+            episodeNumber: episodeNumber,
+          })
+          switch (status) {
+            case StatusNumber.watching:
+              await seriesState.save()
+              await watchListModel.addToWatching(user.watchList, seriesState)
+              break
+            case StatusNumber.onHold:
+              await seriesState.save()
+              await watchListModel.addToOnHold(user.watchList, seriesState)
+              break
+            case StatusNumber.dropped:
+              await seriesState.save()
+              await watchListModel.addToDropped(user.watchList, seriesState)
+              break
+            case StatusNumber.completed:
+              await watchListModel.addToCompleted(user.watchList, seriesId)
+              break
+            case StatusNumber.planToWatch:
+              await watchListModel.addToPlanToWatch(user.watchList, seriesId)
+              break
+            default:
+              throw new Error('Wrong status')
           }
         } else {
           throw new Error('Series does not exist')

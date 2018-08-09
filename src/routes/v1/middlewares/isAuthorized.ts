@@ -24,6 +24,8 @@ export default (connection, methods = defaultMethods) => async function (this: F
       res.setHeader('content-type', 'application/json')
       res.statusCode = 401
       res.end(JSON.stringify({
+        data: {},
+        success: false,
         error: 'Unauthorized',
       }))
     }

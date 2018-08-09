@@ -83,7 +83,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async fetchAllSeries(refArray: Ref<Series>[]): Promise<object> {
+  async getAllSeries(refArray: Ref<Series>[]): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const series = []
