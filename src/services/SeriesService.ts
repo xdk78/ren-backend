@@ -26,7 +26,7 @@ export default class SeriesService implements BaseService {
         error: '',
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -40,7 +40,7 @@ export default class SeriesService implements BaseService {
         error: '',
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -79,7 +79,7 @@ export default class SeriesService implements BaseService {
         error: '',
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -93,7 +93,7 @@ export default class SeriesService implements BaseService {
       }
       return series
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -115,7 +115,7 @@ export default class SeriesService implements BaseService {
         error: '',
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -128,7 +128,7 @@ export default class SeriesService implements BaseService {
 
       return await category.save()
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -142,7 +142,7 @@ export default class SeriesService implements BaseService {
 
       return await episode.save()
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -155,7 +155,7 @@ export default class SeriesService implements BaseService {
 
       return await genre.save()
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -169,7 +169,7 @@ export default class SeriesService implements BaseService {
 
       return await season.save()
     } catch (error) {
-      return error
+      throw error
     }
   }
 

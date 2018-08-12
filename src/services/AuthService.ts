@@ -36,7 +36,7 @@ export default class AuthService implements BaseService {
         throw new Error('Could not find user')
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -52,7 +52,7 @@ export default class AuthService implements BaseService {
       }
 
     } catch (error) {
-      return error
+      throw error
     }
   }
 
@@ -86,7 +86,7 @@ export default class AuthService implements BaseService {
         throw new Error('Wrong credentials')
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 

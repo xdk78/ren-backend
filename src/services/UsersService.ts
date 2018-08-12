@@ -36,7 +36,7 @@ export default class UsersService implements BaseService {
       }
 
     } catch (error) {
-      return error
+      throw error
     }
   }
 }

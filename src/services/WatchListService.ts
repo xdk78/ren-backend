@@ -40,11 +40,11 @@ export default class WatchListService implements BaseService {
         return watchListRefs
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 
-  async addToWatchList(userId: Ref<User>, status: StatusNumber, payload: SeriesState): Promise<object> {
+  async addToWatchList(userId: Ref<User>, status: StatusNumber, payload: SeriesState): Promise<any> {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
@@ -53,32 +53,49 @@ export default class WatchListService implements BaseService {
         if (await this.seriesService.doesExist(seriesId)) {
           const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
           const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
+          const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+
           const seriesState = new seriesStateModel({
             seriesId: seriesId,
             seasonNumber: seasonNumber,
             episodeNumber: episodeNumber,
           })
-          switch (status) {
-            case StatusNumber.watching:
-              await seriesState.save()
-              await watchListModel.addToWatching(user.watchList, seriesState)
-              break
-            case StatusNumber.onHold:
-              await seriesState.save()
-              await watchListModel.addToOnHold(user.watchList, seriesState)
-              break
-            case StatusNumber.dropped:
-              await seriesState.save()
-              await watchListModel.addToDropped(user.watchList, seriesState)
-              break
-            case StatusNumber.completed:
-              await watchListModel.addToCompleted(user.watchList, seriesId)
-              break
-            case StatusNumber.planToWatch:
-              await watchListModel.addToPlanToWatch(user.watchList, seriesId)
-              break
-            default:
-              throw new Error('Wrong status')
+
+          const list = await watchListModel.findOne({ _id: user.watchList })
+            .populate([
+              { path: 'watching', model: seriesStateModel, select: { seriesId: seriesId } },
+              { path: 'completed', model: seriesModel, select: { seriesId: seriesId } },
+              { path: 'onHold', model: seriesStateModel, select: { seriesId: seriesId } },
+              { path: 'dropped', model: seriesStateModel, select: { seriesId: seriesId } },
+              { path: 'planToWatch', model: seriesModel, select: { seriesId: seriesId } },
+            ])
+          const reducedList = [].concat(...list.watching, ...list.completed, ...list.onHold, ...list.dropped, ...list.planToWatch)
+
+          if (reducedList.find(item => item.seriesId.toString() === seriesId.toString() ? true : false)) {
+            throw new Error('Series exist on the list')
+          } else {
+            switch (status) {
+              case StatusNumber.watching:
+                await seriesState.save()
+                await watchListModel.addToWatching(user.watchList, seriesState)
+                break
+              case StatusNumber.onHold:
+                await seriesState.save()
+                await watchListModel.addToOnHold(user.watchList, seriesState)
+                break
+              case StatusNumber.dropped:
+                await seriesState.save()
+                await watchListModel.addToDropped(user.watchList, seriesState)
+                break
+              case StatusNumber.completed:
+                await watchListModel.addToCompleted(user.watchList, seriesId)
+                break
+              case StatusNumber.planToWatch:
+                await watchListModel.addToPlanToWatch(user.watchList, seriesId)
+                break
+              default:
+                throw new Error('Wrong status')
+            }
           }
         } else {
           throw new Error('Series does not exist')
@@ -87,11 +104,11 @@ export default class WatchListService implements BaseService {
         throw new Error('Could not find user')
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 
-  async removeFromWatchList(id: string, status: number, seriesState): Promise<object> {
+  async removeFromWatchList(id: string, status: number, seriesState): Promise<any> {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
@@ -136,7 +153,7 @@ export default class WatchListService implements BaseService {
         throw new Error('Could not find user')
       }
     } catch (error) {
-      return error
+      throw error
     }
   }
 }
