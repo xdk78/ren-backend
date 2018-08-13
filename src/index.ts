@@ -15,10 +15,12 @@ import helmet from 'fastify-helmet'
 import compress from 'fastify-compress'
 import circuitBreaker from 'fastify-circuit-breaker'
 import cors from 'cors'
+import consola from 'consola'
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
 import auth from './routes/v1/auth'
+import logger from './routes/v1/middlewares/logger'
 
 const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
 
@@ -34,7 +36,7 @@ app.register(circuitBreaker, {
 app.register(helmet)
 app.use(cors())
 app.register(compress)
-
+app.use(logger())
 // API Routing
 app.register(index, { prefix: '/v1' })
 app.register(series, { prefix: '/v1' })
@@ -44,7 +46,7 @@ app.register(auth, { prefix: '/v1' })
 app.listen(PORT as number, HOST, (err) => {
   if (err) throw err
   // @ts-ignore
-  console.log(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
+  consola.start(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
 })
 
 export default () => app

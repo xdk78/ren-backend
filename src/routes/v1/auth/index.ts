@@ -40,7 +40,7 @@ export default async (fastify: FastifyInstance, opts) => {
 
   fastify.post('/auth/register', { schema: authRegisterSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(200)
+      reply.header('Content-Type', 'application/json').code(201)
       return await authService.register({
         username: request.body.username,
         email: request.body.email,

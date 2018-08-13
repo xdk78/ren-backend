@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import fp from 'fastify-plugin'
 import { FastifyInstance } from 'fastify'
 import mongoose from 'mongoose'
+import consola from 'consola'
 const objectId = mongoose.Types.ObjectId
 
 function plugin(fastify: FastifyInstance, options, next) {
@@ -14,9 +15,9 @@ function plugin(fastify: FastifyInstance, options, next) {
       // @ts-ignore
       fastify.mongo.db.close(done)
     })
-    console.log('Succesfully connected to database')
+    consola.success('Connected to database')
   }).catch(error => {
-    next(error)
+    consola.error(error)
     process.exit(1)
   })
 }

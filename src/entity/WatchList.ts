@@ -31,7 +31,6 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
-    // @ts-ignore
     return this.update({ _id: id }, { $push: { watching: item } })
   }
 
@@ -42,7 +41,6 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
-    // @ts-ignore
     return this.update({ _id: id }, { $push: { completed: item } })
   }
 
@@ -53,7 +51,6 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToOnHold(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
-    // @ts-ignore
     return this.update({ _id: id }, { $push: { onHold: item } })
   }
 
@@ -64,7 +61,6 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToDropped(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
-    // @ts-ignore
     return this.update({ _id: id }, { $push: { dropped: item } })
   }
 
@@ -75,7 +71,6 @@ export default class WatchList extends Typegoose {
 
   @staticMethod
   static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
-    // @ts-ignore
     return this.update({ _id: id }, { $push: { planToWatch: item } })
   }
 

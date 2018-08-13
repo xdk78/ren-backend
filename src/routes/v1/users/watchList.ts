@@ -9,7 +9,7 @@ export default async (fastify: FastifyInstance, opts) => {
   const watchListService = new WatchListSerivce(fastify)
 
   fastify.use('/users/:id/watchlist', isAuthorized(db, ['GET']))
-  fastify.use('/users/watchlist', isAuthorized(db, ['GET', 'DELETE', 'POST']))
+  fastify.use('/users/watchlist', isAuthorized(db, ['GET', 'DELETE', 'POST', 'PATCH']))
 
   fastify.get('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -83,8 +83,8 @@ export default async (fastify: FastifyInstance, opts) => {
       // @ts-ignore
       const id = request.raw.user._id
       const status = request.body.status
-      const seriesState = request.body.seriesState
-      await watchListService.removeFromWatchList(id, status, seriesState)
+      const seriesStateId = request.body.seriesStateId
+      await watchListService.removeFromWatchList(id, status, seriesStateId)
       return {
         data: {},
         success: true,
@@ -99,5 +99,30 @@ export default async (fastify: FastifyInstance, opts) => {
     }
   },
   )
+
+  fastify.patch('/users/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(200)
+      // @ts-ignore
+      const id = request.raw.user._id
+      const status = request.body.status
+      const seriesStateId = request.body.seriesStateId
+      const seriesState = request.body.seriesState
+
+      await watchListService.updateWatchList(id, status, seriesStateId, seriesState)
+      return {
+        data: {},
+        success: true,
+        error: '',
+      }
+    } catch (error) {
+      return {
+        data: {},
+        success: false,
+        error: error.message,
+      }
+    }
+  })
+
   return
 }

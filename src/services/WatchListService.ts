@@ -15,7 +15,6 @@ export default class WatchListService implements BaseService {
     // @ts-ignore
     this.connection = fastify.mongo.db
     this.seriesService = new SeriesService(fastify)
-
   }
 
   async getWatchList(userId: Ref<User>): Promise<object> {
@@ -107,7 +106,7 @@ export default class WatchListService implements BaseService {
     }
   }
 
-  async removeFromWatchList(userId: Ref<User>, status: StatusNumber, payload: SeriesState): Promise<any> {
+  async removeFromWatchList(userId: Ref<User>, status: StatusNumber, seriesStateId: Ref<SeriesState>): Promise<any> {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
@@ -116,40 +115,107 @@ export default class WatchListService implements BaseService {
 
         switch (status) {
           case StatusNumber.watching:
-            if (await watchListModel.findOne({ watching: payload })) {
-              await watchListModel.removeFromWatching(user.watchList, payload)
+            if (await watchListModel.findOne({ watching: seriesStateId })) {
+              await watchListModel.removeFromWatching(user.watchList, seriesStateId)
             } else {
               throw new Error('Could not find seriesState')
             }
             break
           case StatusNumber.onHold:
-            if (await watchListModel.findOne({ onHold: payload })) {
-              await watchListModel.removeFromOnHold(user.watchList, payload)
+            if (await watchListModel.findOne({ onHold: seriesStateId })) {
+              await watchListModel.removeFromOnHold(user.watchList, seriesStateId)
             } else {
               throw new Error('Could not find seriesState')
             }
             break
           case StatusNumber.dropped:
-            if (await watchListModel.findOne({ dropped: payload })) {
-              await watchListModel.removeFromDropped(user.watchList, payload)
+            if (await watchListModel.findOne({ dropped: seriesStateId })) {
+              await watchListModel.removeFromDropped(user.watchList, seriesStateId)
             } else {
               throw new Error('Could not find seriesState')
             }
             break
           case StatusNumber.completed:
-            if (await watchListModel.findOne({ completed: payload })) {
-              await watchListModel.removeFromCompleted(user.watchList, payload)
+            if (await watchListModel.findOne({ completed: seriesStateId })) {
+              await watchListModel.removeFromCompleted(user.watchList, seriesStateId)
             } else {
               throw new Error('Could not find seriesState')
             }
             break
           case StatusNumber.planToWatch:
-            if (await watchListModel.findOne({ planToWatch: payload })) {
-              await watchListModel.removeFromPlanToWatch(user.watchList, payload)
+            if (await watchListModel.findOne({ planToWatch: seriesStateId })) {
+              await watchListModel.removeFromPlanToWatch(user.watchList, seriesStateId)
             } else {
               throw new Error('Could not find seriesState')
             }
             break
+          default:
+            throw new Error('Wrong status')
+        }
+      } else {
+        throw new Error('Could not find user')
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+  // TODO: fix this
+  async updateWatchList(userId: Ref<User>, status: StatusNumber, seriesStateId: Ref<SeriesState>, payload: SeriesState): Promise<any> {
+    try {
+      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const user = await userModel.findOne({ _id: userId })
+      if (user) {
+        const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
+        const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
+        const { seriesId, seasonNumber, episodeNumber } = payload
+
+        const seriesState = new seriesStateModel({
+          seriesId: seriesId,
+          seasonNumber: seasonNumber,
+          episodeNumber: episodeNumber,
+        })
+
+        switch (status) {
+          case StatusNumber.watching:
+            if (await watchListModel.findOne({ watching: seriesStateId })) {
+              await seriesState.save()
+              await watchListModel.findOneAndUpdate({ _id: user.watchList, watching: seriesStateId }, { $set: { watching: seriesState } }, { upsert: true })
+            } else {
+              throw new Error('Could not find seriesState')
+            }
+            break
+          // case StatusNumber.onHold:
+          //   if (await watchListModel.findOne({ onHold: payload })) {
+          //     await seriesState.save()
+          //     await watchListModel.updateOne({ _id: user.watchList, onHold: seriesStateId }, { $set: { onHold: seriesState } })
+          //   } else {
+          //     throw new Error('Could not find seriesState')
+          //   }
+          //   break
+          // case StatusNumber.dropped:
+          //   if (await watchListModel.findOne({ dropped: payload })) {
+          //     await seriesState.save()
+          //     await watchListModel.updateOne({ _id: user.watchList, dropped: seriesStateId }, { $set: { dropped: seriesState } })
+          //   } else {
+          //     throw new Error('Could not find seriesState')
+          //   }
+          //   break
+          // case StatusNumber.completed:
+          //   if (await watchListModel.findOne({ completed: payload })) {
+          //     await seriesState.save()
+          //     await watchListModel.updateOne({ _id: user.watchList, completed: seriesStateId }, { $set: { completed: seriesState } })
+          //   } else {
+          //     throw new Error('Could not find seriesState')
+          //   }
+          //   break
+          // case StatusNumber.planToWatch:
+          //   if (await watchListModel.findOne({ planToWatch: payload })) {
+          //     await seriesState.save()
+          //     await watchListModel.updateOne({ _id: user.watchList, planToWatch: seriesStateId }, { $set: { planToWatch: seriesState } })
+          //   } else {
+          //     throw new Error('Could not find seriesState')
+          //   }
+          //   break
           default:
             throw new Error('Wrong status')
         }
