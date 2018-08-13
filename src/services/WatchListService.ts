@@ -3,7 +3,6 @@ import User from '../entity/User'
 import WatchList, { StatusNumber } from '../entity/WatchList'
 import BaseService from './BaseService'
 import SeriesService from './SeriesService'
-import Series from '../entity/series/Series'
 import SeriesState from '../entity/series/SeriesState'
 import { Ref } from 'typegoose'
 
@@ -27,15 +26,14 @@ export default class WatchListService implements BaseService {
         throw new Error('Could not find user')
       } else {
         const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
-        const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
         const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
         const watchListRefs = await watchListModel.findOne({ _id: user.watchList })
           .populate([
             { path: 'watching', model: seriesStateModel },
-            { path: 'completed', model: seriesModel },
+            { path: 'completed', model: seriesStateModel },
             { path: 'onHold', model: seriesStateModel },
             { path: 'dropped', model: seriesStateModel },
-            { path: 'planToWatch', model: seriesModel },
+            { path: 'planToWatch', model: seriesStateModel },
           ])
         return watchListRefs
       }
@@ -53,7 +51,6 @@ export default class WatchListService implements BaseService {
         if (await this.seriesService.doesExist(seriesId)) {
           const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
           const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
-          const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
 
           const seriesState = new seriesStateModel({
             seriesId: seriesId,
@@ -64,15 +61,15 @@ export default class WatchListService implements BaseService {
           const list = await watchListModel.findOne({ _id: user.watchList })
             .populate([
               { path: 'watching', model: seriesStateModel, select: { seriesId: seriesId } },
-              { path: 'completed', model: seriesModel, select: { seriesId: seriesId } },
+              { path: 'completed', model: seriesStateModel, select: { seriesId: seriesId } },
               { path: 'onHold', model: seriesStateModel, select: { seriesId: seriesId } },
               { path: 'dropped', model: seriesStateModel, select: { seriesId: seriesId } },
-              { path: 'planToWatch', model: seriesModel, select: { seriesId: seriesId } },
+              { path: 'planToWatch', model: seriesStateModel, select: { seriesId: seriesId } },
             ])
           const reducedList = [].concat(...list.watching, ...list.completed, ...list.onHold, ...list.dropped, ...list.planToWatch)
 
           if (reducedList.find(item => item.seriesId.toString() === seriesId.toString() ? true : false)) {
-            throw new Error('Series exist on the list')
+            throw new Error('Series exist on the watchlist')
           } else {
             switch (status) {
               case StatusNumber.watching:
@@ -88,10 +85,12 @@ export default class WatchListService implements BaseService {
                 await watchListModel.addToDropped(user.watchList, seriesState)
                 break
               case StatusNumber.completed:
-                await watchListModel.addToCompleted(user.watchList, seriesId)
+                await seriesState.save()
+                await watchListModel.addToCompleted(user.watchList, seriesState)
                 break
               case StatusNumber.planToWatch:
-                await watchListModel.addToPlanToWatch(user.watchList, seriesId)
+                await seriesState.save()
+                await watchListModel.addToPlanToWatch(user.watchList, seriesState)
                 break
               default:
                 throw new Error('Wrong status')
@@ -108,43 +107,48 @@ export default class WatchListService implements BaseService {
     }
   }
 
-  async removeFromWatchList(id: string, status: number, seriesState): Promise<any> {
+  async removeFromWatchList(userId: Ref<User>, status: StatusNumber, payload: SeriesState): Promise<any> {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
-      const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
-      const user = await userModel.findOne({ _id: id })
-
+      const user = await userModel.findOne({ _id: userId })
       if (user) {
+        const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
+
         switch (status) {
           case StatusNumber.watching:
-            await watchListModel.removeFromWatching(
-              user.watchList,
-              seriesState,
-            )
-            break
-          case StatusNumber.completed:
-            await watchListModel.removeFromCompleted(
-              user.watchList,
-              seriesState,
-            )
+            if (await watchListModel.findOne({ watching: payload })) {
+              await watchListModel.removeFromWatching(user.watchList, payload)
+            } else {
+              throw new Error('Could not find seriesState')
+            }
             break
           case StatusNumber.onHold:
-            await watchListModel.removeFromOnHold(
-              user.watchList,
-              seriesState,
-            )
+            if (await watchListModel.findOne({ onHold: payload })) {
+              await watchListModel.removeFromOnHold(user.watchList, payload)
+            } else {
+              throw new Error('Could not find seriesState')
+            }
             break
           case StatusNumber.dropped:
-            await watchListModel.removeFromDropped(
-              user.watchList,
-              seriesState,
-            )
+            if (await watchListModel.findOne({ dropped: payload })) {
+              await watchListModel.removeFromDropped(user.watchList, payload)
+            } else {
+              throw new Error('Could not find seriesState')
+            }
+            break
+          case StatusNumber.completed:
+            if (await watchListModel.findOne({ completed: payload })) {
+              await watchListModel.removeFromCompleted(user.watchList, payload)
+            } else {
+              throw new Error('Could not find seriesState')
+            }
             break
           case StatusNumber.planToWatch:
-            await watchListModel.removeFromPlanToWatch(
-              user.watchList,
-              seriesState,
-            )
+            if (await watchListModel.findOne({ planToWatch: payload })) {
+              await watchListModel.removeFromPlanToWatch(user.watchList, payload)
+            } else {
+              throw new Error('Could not find seriesState')
+            }
             break
           default:
             throw new Error('Wrong status')

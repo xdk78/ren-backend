@@ -74,7 +74,7 @@ Retrieves user's watchlist
 }
 ```
 
-## POST `/users/:id/watchlist`
+## POST `/users/watchlist`
 
 Adds item to user's watchlist
 
@@ -109,7 +109,7 @@ Adds item to user's watchlist
 }
 ```
 
-## DELETE `/users/:id/watchlist`
+## DELETE `/users/watchlist`
 
 Removes item to user's watchlist
 

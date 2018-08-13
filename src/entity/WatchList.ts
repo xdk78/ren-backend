@@ -1,7 +1,6 @@
 import { Typegoose, arrayProp, Ref, ModelType, staticMethod, prop } from 'typegoose'
 import User from './User'
 import SeriesState from './series/SeriesState'
-import Series from './series/Series'
 
 export enum StatusNumber {
   watching = 1,
@@ -18,8 +17,8 @@ export default class WatchList extends Typegoose {
   @arrayProp({ itemsRef: SeriesState, unique: true  })
   watching: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: Series, unique: true })
-  completed: Ref<Series>[]
+  @arrayProp({ itemsRef: SeriesState, unique: true })
+  completed: Ref<SeriesState>[]
 
   @arrayProp({ itemsRef: SeriesState, unique: true  })
   onHold: Ref<SeriesState>[]
@@ -27,8 +26,8 @@ export default class WatchList extends Typegoose {
   @arrayProp({ itemsRef: SeriesState, unique: true  })
   dropped: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: Series, unique: true })
-  planToWatch: Ref<Series>[]
+  @arrayProp({ itemsRef: SeriesState, unique: true })
+  planToWatch: Ref<SeriesState>[]
 
   @staticMethod
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
@@ -37,18 +36,18 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<Series>) {
+  static removeFromWatching(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
     return this.update({ _id: id }, { $pull: { watching: item } })
   }
 
   @staticMethod
-  static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<Series>) {
+  static addToCompleted(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
     // @ts-ignore
     return this.update({ _id: id }, { $push: { completed: item } })
   }
 
   @staticMethod
-  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<Series>) {
+  static removeFromCompleted(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
     return this.update({ _id: id }, { $pull: { completed: item } })
   }
 
@@ -75,13 +74,13 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<Series>) {
+  static addToPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
     // @ts-ignore
     return this.update({ _id: id }, { $push: { planToWatch: item } })
   }
 
   @staticMethod
-  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<Series>) {
+  static removeFromPlanToWatch(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>) {
     return this.update({ _id: id }, { $pull: { planToWatch: item } })
   }
 
