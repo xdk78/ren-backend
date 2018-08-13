@@ -34,7 +34,7 @@ export function generateToken(
  *          middleware
  *
  * @param  {string}   token       Encoded JSON Web Token
- * @return {Object}               Decoded JSON Web Token
+ * @return  {Object}               Decoded JSON Web Token
  * @throws {Error}                When cannot decode
  */
 export function decodeToken(token: string): object {
@@ -48,21 +48,21 @@ export function decodeToken(token: string): object {
 }
 
 /**
- * Extracts token from Fastify request:
+ * Extracts Bearer token from request:
  * - `Authorization` header;
- * - `authorization` query;
  *
- * @param  {IncomingMessage}   req     IncomingMessage
+ * @param {IncomingMessage}   req     IncomingMessage
  * @return {string}                   Encoded JSON Web Token
  */
 export function extractToken(req: IncomingMessage): string {
-
-  return req.headers.authorization
+  const header = req.headers.authorization.split(' ')
+  const token = header[1]
+  return token
 }
 /**
  * Generates a random string of a given `length`.
  *
- * @param   {number}  length    Length of the random string to generate
+ * @param  {number}  length    Length of the random string to generate
  * @return  {string}            Generated random string
  */
 export function getRandomString(length: number = 32): string {
@@ -75,7 +75,7 @@ export function getRandomString(length: number = 32): string {
 /**
  * Verify token.
  *
- * @param   {string}  token     Token that will be verified
+ * @param  {string}  token     Token that will be verified
  * @return  {Promise}
  */
 export function verifyToken(token: string, secret: string): Promise<any> {

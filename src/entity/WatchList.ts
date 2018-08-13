@@ -15,16 +15,16 @@ export default class WatchList extends Typegoose {
   @prop({ ref: User })
   userId: Ref<User>
 
-  @arrayProp({ itemsRef: SeriesState })
+  @arrayProp({ itemsRef: SeriesState, unique: true  })
   watching: Ref<SeriesState>[]
 
   @arrayProp({ itemsRef: Series, unique: true })
   completed: Ref<Series>[]
 
-  @arrayProp({ itemsRef: SeriesState })
+  @arrayProp({ itemsRef: SeriesState, unique: true  })
   onHold: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: SeriesState })
+  @arrayProp({ itemsRef: SeriesState, unique: true  })
   dropped: Ref<SeriesState>[]
 
   @arrayProp({ itemsRef: Series, unique: true })

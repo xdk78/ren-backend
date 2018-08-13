@@ -7,7 +7,8 @@ export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
   const db = fastify.mongo.db
   const watchListService = new WatchListSerivce(fastify)
-  fastify.use('/users/:id/watchlist', isAuthorized(db, ['DELETE', 'POST']))
+
+  fastify.use('/users/:id/watchlist', isAuthorized(db, ['GET', 'DELETE', 'POST']))
 
   fastify.get('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
