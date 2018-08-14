@@ -26,7 +26,6 @@ export default class UsersService implements BaseService {
           avatar: user.avatar,
           gender: user.gender,
           watchListId: user.watchList,
-          seriesStates: user.seriesStates,
         }
         return {
           data: data,

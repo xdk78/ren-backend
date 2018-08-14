@@ -30,8 +30,7 @@ export function generateToken(
  * @note    If a token is invalid, JSON will throw an exception, so don't forget
  *          to catch exceptions
  *
- * @note    At this time, those exceptions should be handled by our inra-error
- *          middleware
+ * @note    At this time, those exceptions should be handled by our middleware
  *
  * @param  {string}   token       Encoded JSON Web Token
  * @return  {Object}               Decoded JSON Web Token
