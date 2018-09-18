@@ -1,42 +1,22 @@
-import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
+import UsersService from '../../../services/UsersService'
+import isAuthorized from '../middlewares/isAuthorized'
 
 export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
   const db = fastify.mongo.db
-
+  const usersService = new UsersService(fastify)
+  fastify.use('/users', isAuthorized(db, ['GET']))
   fastify.get('/users', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const userId = request.session.userId
-
-      if (userId) {
-        const userModel = new User().getModelForClass(User, { existingConnection: db })
-        const user = await userModel.findOne({ _id: userId })
-
-        const output = {
-          _id: user._id,
-          username: user.username,
-          createdAt: user.createdAt,
-          avatar: user.avatar,
-          gender: user.gender,
-          watchListId: user.watchList,
-          seriesStates: user.seriesStates,
-        }
-
-        reply.send({
-          data: output,
-          error: '',
-        })
-      } else {
-        throw new Error('User is not logged in')
-      }
-
+      return await usersService.getUser(request.raw.user._id)
     } catch (error) {
       return {
-        data: [],
+        data: {},
+        success: false,
         error: error.message,
       }
     }
@@ -44,31 +24,11 @@ export default async (fastify: FastifyInstance, opts) => {
   fastify.get('/users/:id', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
-      const userModel = new User().getModelForClass(User, { existingConnection: db })
-      const user = await userModel.findOne({
-        _id: request.params.id,
-      })
-      if (user) {
-        const output = {
-          _id: user._id,
-          username: user.username,
-          createdAt: user.createdAt,
-          avatar: user.avatar,
-          gender: user.gender,
-          watchListId: user.watchList,
-          seriesStates: user.seriesStates,
-        }
-
-        reply.send({
-          data: output,
-          error: '',
-        })
-      } else {
-        throw new Error('Couldn\'t find user')
-      }
+      return await usersService.getUser(request.params.id)
     } catch (error) {
       return {
         data: {},
+        success: false,
         error: error.message,
       }
     }

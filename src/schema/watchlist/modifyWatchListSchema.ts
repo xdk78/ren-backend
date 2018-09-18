@@ -6,6 +6,8 @@ export default {
     properties: {
       status: { type: 'number' },
       seriesId: { type: 'string' },
+      episodeNumber: { type: 'number' },
+      seasonNumber :{ type: 'number' },
     },
 
     additionalProperties: false,

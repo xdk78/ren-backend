@@ -8,36 +8,24 @@ if (process.env.NODE_ENV === 'production') {
   envConfig = { path: './.env' }
 }
 dotenv.config(Object.assign({}, { allowEmptyValues: true, example: './.env.example' }, envConfig))
-import { dbConnURI } from './utils'
 import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import db from './db'
 import helmet from 'fastify-helmet'
 import compress from 'fastify-compress'
-import session from 'fastify-session'
-import cookie from 'fastify-cookie'
-import mongoConnect from 'connect-mongodb-session'
-const mongoStore = mongoConnect(session)
 import circuitBreaker from 'fastify-circuit-breaker'
 import cors from 'cors'
+import consola from 'consola'
 import index from './routes/v1/'
 import series from './routes/v1/series'
 import users from './routes/v1/users'
 import auth from './routes/v1/auth'
+import logger from './routes/v1/middlewares/logger'
 
 const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
 
 const PORT = process.env.API_PORT || 5000
 const HOST = process.env.API_HOST || '0.0.0.0'
-const secureCookie = () => {
-  let secure = false
-  if (process.env.API_SESSION_COOKIE_SECURE === 'true') {
-    secure = true
-  } else {
-    secure = false
-  }
-  return secure
-}
 
 app.register(db).ready()
 app.register(circuitBreaker, {
@@ -48,19 +36,7 @@ app.register(circuitBreaker, {
 app.register(helmet)
 app.use(cors())
 app.register(compress)
-app.register(cookie)
-app.register(session, {
-  secret: process.env.API_SESSION_SECRET_TOKEN,
-  store: new mongoStore({
-    uri: dbConnURI,
-    collection: 'sessions',
-  }),
-  cookie: {
-    secure: secureCookie(),
-    maxAge: 1000 * 60 * 60 * 24 * 7,  // 1 week
-  },
-})
-
+app.use(logger())
 // API Routing
 app.register(index, { prefix: '/v1' })
 app.register(series, { prefix: '/v1' })
@@ -70,7 +46,7 @@ app.register(auth, { prefix: '/v1' })
 app.listen(PORT as number, HOST, (err) => {
   if (err) throw err
   // @ts-ignore
-  console.log(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
+  consola.start(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
 })
 
 export default () => app

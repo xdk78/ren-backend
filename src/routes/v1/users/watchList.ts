@@ -1,13 +1,15 @@
-import User from '../../../entity/User'
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import WatchListSerivce from '../../../services/WatchListService'
 import modifyWatchListSchema from '../../../schema/watchlist/modifyWatchListSchema'
-
+import isAuthorized from '../middlewares/isAuthorized'
 export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
   const db = fastify.mongo.db
   const watchListService = new WatchListSerivce(fastify)
+
+  fastify.use('/users/:id/watchlist', isAuthorized(db, ['GET']))
+  fastify.use('/users/watchlist', isAuthorized(db, ['GET', 'DELETE', 'POST', 'PATCH']))
 
   fastify.get('/users/:id/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -15,66 +17,112 @@ export default async (fastify: FastifyInstance, opts) => {
 
       const watchList = await watchListService.getWatchList(request.params.id)
 
-      reply.send({
+      return {
         data: watchList,
+        success: true,
         error: '',
-      })
+      }
     } catch (error) {
       return {
         data: {},
+        success: false,
         error: error.message,
       }
     }
   },
   )
 
-  fastify.post('/users/:id/watchlist',  { schema: modifyWatchListSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.get('/users/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const userId = request.session.userId
+      const id = request.raw.user._id
+      const watchList = await watchListService.getWatchList(id)
 
-      if (userId) {
-        const watchList = await watchListService.addToWatchList(request.body.status, userId, request.body)
-        reply.send({
-          data: watchList,
-          error: '',
-        })
-      } else {
-        throw new Error('User is not logged in')
+      return {
+        data: watchList,
+        success: true,
+        error: '',
       }
     } catch (error) {
       return {
         data: {},
+        success: false,
+        error: error.message,
+      }
+    }
+  },
+  )
+
+  fastify.post('/users/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(200)
+      // @ts-ignore
+      const id = request.raw.user._id
+      const status = request.body.status
+      const seriesState = request.body.seriesState
+
+      await watchListService.addToWatchList(id, status, seriesState)
+      return {
+        data: {},
+        success: true,
+        error: '',
+      }
+    } catch (error) {
+      return {
+        data: {},
+        success: false,
         error: error.message,
       }
     }
   })
 
-  fastify.delete('/users/:id/watchlist', { schema: modifyWatchListSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.delete('/users/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json').code(200)
       // @ts-ignore
-      const userId = request.session.userId
-
-      if (userId) {
-        const status = request.body.status
-        const seriesState = request.body.seriesState
-        const watchList = await watchListService.removeFromWatchList(request.params.id, request.body.status, request.body.seriesState)
-        reply.send({
-          data: request.body.seriesState,
-          error: '',
-        })
-      } else {
-        throw new Error('User is not logged in')
+      const id = request.raw.user._id
+      const status = request.body.status
+      const seriesStateId = request.body.seriesStateId
+      await watchListService.removeFromWatchList(id, status, seriesStateId)
+      return {
+        data: {},
+        success: true,
+        error: '',
       }
     } catch (error) {
       return {
         data: {},
+        success: false,
         error: error.message,
       }
     }
   },
   )
+
+  fastify.patch('/users/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json').code(200)
+      // @ts-ignore
+      const id = request.raw.user._id
+      const status = request.body.status
+      const seriesStateId = request.body.seriesStateId
+      const seriesState = request.body.seriesState
+
+      await watchListService.updateWatchList(id, status, seriesStateId, seriesState)
+      return {
+        data: {},
+        success: true,
+        error: '',
+      }
+    } catch (error) {
+      return {
+        data: {},
+        success: false,
+        error: error.message,
+      }
+    }
+  })
+
   return
 }
