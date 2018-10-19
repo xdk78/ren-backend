@@ -6,10 +6,10 @@ import { IncomingMessage } from 'http'
 /**
  * Generates a JSON Web Token for a given user id and user secret.
  *
- * @param  {string}  userSecret          User secret
- *  @param {string} id
- * @param  {number}     expires         Expiration date (in ms)
- * @return {string}                     Signed JSON Web Token
+ * @param  {string} userSecret User secret
+ * @param  {string} id
+ * @param  {number} expires    Expiration date (in ms)
+ * @return {string}            Signed JSON Web Token
  */
 export function generateToken(
   userSecret: string,
@@ -27,14 +27,12 @@ export function generateToken(
 /**
  * Decodes a given JWT and returns its header, payload and signature.
  *
- * @note    If a token is invalid, JSON will throw an exception, so don't forget
- *          to catch exceptions
+ * @note   If a token is invalid, JSON will throw an exception, so don't forget to catch exceptions
+ * @note   At this time, those exceptions should be handled by our middleware
  *
- * @note    At this time, those exceptions should be handled by our middleware
- *
- * @param  {string}   token       Encoded JSON Web Token
- * @return  {Object}               Decoded JSON Web Token
- * @throws {Error}                When cannot decode
+ * @param  {string} token Encoded JSON Web Token
+ * @return {Object}       Decoded JSON Web Token
+ * @throws {Error}        When cannot decode
  */
 export function decodeToken(token: string): object {
   const encodedToken = token.split('.')
@@ -50,19 +48,20 @@ export function decodeToken(token: string): object {
  * Extracts Bearer token from request:
  * - `Authorization` header;
  *
- * @param {IncomingMessage}   req     IncomingMessage
- * @return {string}                   Encoded JSON Web Token
+ * @param  {IncomingMessage} req IncomingMessage
+ * @return {string}              Encoded JSON Web Token
  */
 export function extractToken(req: IncomingMessage): string {
   const header = req.headers.authorization.split(' ')
   const token = header[1]
   return token
 }
+
 /**
  * Generates a random string of a given `length`.
  *
- * @param  {number}  length    Length of the random string to generate
- * @return  {string}            Generated random string
+ * @param  {number} length Length of the random string to generate
+ * @return {string}        Generated random string
  */
 export function getRandomString(length: number = 32): string {
   return crypto
@@ -74,8 +73,8 @@ export function getRandomString(length: number = 32): string {
 /**
  * Verify token.
  *
- * @param  {string}  token     Token that will be verified
- * @return  {Promise}
+ * @param  {string}  token Token that will be verified
+ * @return {Promise}
  */
 export function verifyToken(token: string, secret: string): Promise<any> {
   return new Promise((resolve, reject) => {
