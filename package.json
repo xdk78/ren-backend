@@ -1,7 +1,7 @@
 {
   "name": "senren-backend",
   "version": "0.0.1",
-  "description": "senren-backend.",
+  "description": "Senren backend",
   "main": "./dist/src/index",
   "scripts": {
     "start": "npm run serve",
@@ -42,7 +42,10 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.4",
+    "@types/dotenv-safe": "^5.0.1",
     "@types/jest": "^23.3.9",
+    "@types/jsonwebtoken": "^8.3.0",
     "@types/mongoose": "^5.3.0",
     "@types/node": "^10.12.2",
     "cross-env": "^5.2.0",

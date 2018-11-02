@@ -1,5 +1,4 @@
 import { dbConnURI } from './utils'
-import 'reflect-metadata'
 import fp from 'fastify-plugin'
 import { FastifyInstance } from 'fastify'
 import mongoose from 'mongoose'
