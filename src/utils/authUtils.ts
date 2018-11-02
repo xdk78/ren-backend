@@ -11,11 +11,7 @@ import { IncomingMessage } from 'http'
  * @param  {number} expires    Expiration date (in ms)
  * @return {string}            Signed JSON Web Token
  */
-export function generateToken(
-  userSecret: string,
-  id: string,
-  expires: number = 3600,
-): string {
+export function generateToken(userSecret: string, id: string, expires: number = 3600): string {
   const serverSecret = String(process.env.API_JWT_SECRET_TOKEN)
   const tokenSecret = `${userSecret}@${serverSecret}`
 
@@ -34,7 +30,7 @@ export function generateToken(
  * @return {Object}       Decoded JSON Web Token
  * @throws {Error}        When cannot decode
  */
-export function decodeToken(token: string): object {
+export function decodeToken(token: string) {
   const encodedToken = token.split('.')
 
   return {
@@ -76,7 +72,7 @@ export function getRandomString(length: number = 32): string {
  * @param  {string}  token Token that will be verified
  * @return {Promise}
  */
-export function verifyToken(token: string, secret: string): Promise<any> {
+export function verifyToken(token: string, secret: string): Promise<string | object> {
   return new Promise((resolve, reject) => {
     jwt.verify(token, secret, (err, decodedToken) => {
       if (err || !decodedToken) {

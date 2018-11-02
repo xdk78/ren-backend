@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import dotenv from 'dotenv-safe'
 let envConfig = {}
 if (process.env.NODE_ENV === 'production') {
