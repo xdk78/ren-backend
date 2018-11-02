@@ -1,4 +1,5 @@
 # `/v1/users`
+
 :lock: - Requires authorization
 
 ## GET `/users`
@@ -8,15 +9,17 @@ Returns current logged in user
 ### Parameters
 
 ### Sample request
+
 `GET /v1/users`
 
 ### Sample response
+
 ```json
 {
-	"data":{
-		"_id": "5b3e92397b770c495c2e42b5",
-		"username": "xdk78",
-		"createdAt": "2018-07-05T21:48:41.795Z"
+    "data":{
+        "_id": "5b3e92397b770c495c2e42b5",
+        "username": "xdk78",
+        "createdAt": "2018-07-05T21:48:41.795Z"
   }
 }
 ```
@@ -26,19 +29,22 @@ Returns current logged in user
 Returns user by id
 
 ### Parameters
+
 `id` user id
 
 ### Sample request
+
 `GET /v1/users/5b3ea5a2dfbf005dfda1e553`
 
 ### Sample response
+
 ```json
 {
-	"data": {
-		"_id": "5b3ea5a2dfbf005dfda1e553",
-		"username": "dupa2",
-		"createdAt": "2018-07-05T23:11:30.756Z",
-		"watchListId": "5b3ea5a2dfbf005dfda1e552"
+    "data": {
+        "_id": "5b3ea5a2dfbf005dfda1e553",
+        "username": "dupa2",
+        "createdAt": "2018-07-05T23:11:30.756Z",
+        "watchListId": "5b3ea5a2dfbf005dfda1e552"
   }
 }
 ```
@@ -48,22 +54,25 @@ Returns user by id
 Retrieves user's watchlist
 
 ### Parameters
+
 `id` user's id
 
 ### Sample request
+
 `GET /v1/users/watchlist`
 
 ### Sample response
+
 ```json
 {
-	"data": {
-		"watching": [],
-		"completed": [],
-		"onHold": [],
-		"dropped": [],
-		"planToWatch": [],
-		"_id": "5b3eaa26d52cec623ef5631a",
-		"__v": 0
+    "data": {
+        "watching": [],
+        "completed": [],
+        "onHold": [],
+        "dropped": [],
+        "planToWatch": [],
+        "_id": "5b3eaa26d52cec623ef5631a",
+        "__v": 0
   }
 }
 ```
@@ -73,11 +82,13 @@ Retrieves user's watchlist
 Adds item to user's watchlist
 
 ### Parameters
+
 `id` user's id
 
 `seriesId` series id
 
 `status` watchlist status
+
 ```js
   watching = 1,
   completed = 2,
@@ -87,18 +98,21 @@ Adds item to user's watchlist
   ```
 
 ### Sample request
+
 `POST /v1/users/watchlist`
+
 ```json
 {
-	"seriesId": "5b3e92ce7b770c495c2e42b6",
-	"status": 1
+    "seriesId": "5b3e92ce7b770c495c2e42b6",
+        "status": 1
 }
 ```
 
 ### Sample response
+
 ```json
 {
-	"data": "5b3eaa26d52cec623ef5631a"
+    "data": "5b3eaa26d52cec623ef5631a"
 }
 ```
 
@@ -107,11 +121,13 @@ Adds item to user's watchlist
 Removes item to user's watchlist
 
 ### Parameters
+
 `id` user's id
 
 `seriesId` series id
 
 `status` watchlist status
+
 ```js
   watching = 1,
   completed = 2,
@@ -121,15 +137,18 @@ Removes item to user's watchlist
   ```
 
 ### Sample request
+
 `DELETE /v1/users/watchlist`
+
 ```json
 {
-	"seriesId": "5b3e92ce7b770c495c2e42b6",
-	"status": 1
+    "seriesId": "5b3e92ce7b770c495c2e42b6",
+    "status": 1
 }
 ```
 
 ### Sample response
+
 ```json
 {
   "data": "5b3eaa26d52cec623ef5631a"

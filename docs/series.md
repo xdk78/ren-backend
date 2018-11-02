@@ -1,4 +1,5 @@
 # `/v1/series`
+
 :lock: - Requires authorization
 
 ## GET `/series`
@@ -8,30 +9,32 @@ Returns all series
 ### Parameters
 
 ### Sample request
+
 `GET /v1/series`
 
 ### Sample response
+
 ```json
 {
-	"data": [
-		{
-			"_id": "5b3e92ce7b770c495c2e42b6",
-			"title": "Game of Thrones",
-			"description": "7 kingdoms...",
-			"seasons": [],
-			"category": {
-				"_id": "5b3e92ce7b770c495c2e42bd",
-				"name": "tv"
-			},
-			"rating": 9.5,
-			"genres": [
+    "data": [
         {
-					"_id": "5b3e92ce7b770c495c2e42be",
-					"name": "fantasy"
-				}
-			],
-			"__v": 0
-		}
+            "_id": "5b3e92ce7b770c495c2e42b6",
+            "title": "Game of Thrones",
+            "description": "7 kingdoms...",
+            "seasons": [],
+            "category": {
+                "_id": "5b3e92ce7b770c495c2e42bd",
+                "name": "tv"
+            },
+            "rating": 9.5,
+            "genres": [
+        {
+                    "_id": "5b3e92ce7b770c495c2e42be",
+                    "name": "fantasy"
+                }
+            ],
+            "__v": 0
+        }
   ]
 }
 ```
@@ -45,30 +48,32 @@ Returns series by id
 `id` series id
 
 ### Sample request
+
 `GET /v1/series/5b3e92ce7b770c495c2e42b6`
 
 ### Sample response
+
 ```json
 {
-	"data": [
-		{
-			"_id": "5b3e92ce7b770c495c2e42b6",
-			"title": "Game of Thrones",
-			"description": "7 kingdoms...",
-			"seasons": [],
-			"category": {
-				"_id": "5b3e92ce7b770c495c2e42bd",
-				"name": "tv"
-			},
-			"rating": 9.5,
-			"genres": [
+    "data": [
         {
-					"_id": "5b3e92ce7b770c495c2e42be",
-					"name": "fantasy"
-				}
-			],
-			"__v": 0
-		}
+            "_id": "5b3e92ce7b770c495c2e42b6",
+            "title": "Game of Thrones",
+            "description": "7 kingdoms...",
+            "seasons": [],
+            "category": {
+                "_id": "5b3e92ce7b770c495c2e42bd",
+                "name": "tv"
+            },
+            "rating": 9.5,
+            "genres": [
+        {
+                    "_id": "5b3e92ce7b770c495c2e42be",
+                    "name": "fantasy"
+                }
+            ],
+            "__v": 0
+        }
   ]
 }
 ```
@@ -92,7 +97,9 @@ Adds new series
 `rating` series rating
 
 ### Sample request
+
 `POST /v1/series`
+
 ```json
 {
     "title": "Game of Thrones",
@@ -144,6 +151,7 @@ Adds new series
 ```
 
 ### Sample response
+
 ```json
 {
   "data": {}

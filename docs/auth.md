@@ -49,8 +49,8 @@ Returns current logged in user
 
 ```json
 {
-	"username": "xdk78",
-	"password": "alufers12"
+    "username": "xdk78",
+    "password": "alufers12"
 }
 ```
 

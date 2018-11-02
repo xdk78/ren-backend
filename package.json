@@ -1,7 +1,7 @@
 {
   "name": "senren-backend",
   "version": "0.0.1",
-  "description": "senren-backend.",
+  "description": "Senren backend",
   "main": "./dist/src/index",
   "scripts": {
     "start": "npm run serve",
