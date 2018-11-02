@@ -17,9 +17,7 @@ Returns current logged in user
 		"_id": "5b3e92397b770c495c2e42b5",
 		"username": "xdk78",
 		"createdAt": "2018-07-05T21:48:41.795Z"
-  },
-  "success": true,
-	"error": ""
+  }
 }
 ```
 
@@ -41,9 +39,7 @@ Returns user by id
 		"username": "dupa2",
 		"createdAt": "2018-07-05T23:11:30.756Z",
 		"watchListId": "5b3ea5a2dfbf005dfda1e552"
-  },
-  "success": true,
-	"error": ""
+  }
 }
 ```
 
@@ -68,9 +64,7 @@ Retrieves user's watchlist
 		"planToWatch": [],
 		"_id": "5b3eaa26d52cec623ef5631a",
 		"__v": 0
-  },
-  "success": true,
-	"error": ""
+  }
 }
 ```
 
@@ -104,8 +98,7 @@ Adds item to user's watchlist
 ### Sample response
 ```json
 {
-	"data": "5b3eaa26d52cec623ef5631a",
-	"error": ""
+	"data": "5b3eaa26d52cec623ef5631a"
 }
 ```
 
@@ -139,8 +132,6 @@ Removes item to user's watchlist
 ### Sample response
 ```json
 {
-  "data": "5b3eaa26d52cec623ef5631a",
-  "success": true,
-	"error": ""
+  "data": "5b3eaa26d52cec623ef5631a"
 }
 ```

@@ -26,7 +26,7 @@
   "dependencies": {
     "base64url": "^3.0.0",
     "bcrypt": "^3.0.2",
-    "consola": "^1.4.4",
+    "consola": "^2.0.0",
     "cors": "^2.8.4",
     "crypto": "^1.0.1",
     "fastify": "^1.13.0",

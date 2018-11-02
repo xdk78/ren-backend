@@ -19,13 +19,9 @@ export default async (fastify: FastifyInstance, opts) => {
 
       return {
         data: watchList,
-        success: true,
-        error: '',
       }
     } catch (error) {
       return {
-        data: {},
-        success: false,
         error: error.message,
       }
     }
@@ -41,13 +37,9 @@ export default async (fastify: FastifyInstance, opts) => {
 
       return {
         data: watchList,
-        success: true,
-        error: '',
       }
     } catch (error) {
       return {
-        data: {},
-        success: false,
         error: error.message,
       }
     }
@@ -65,13 +57,9 @@ export default async (fastify: FastifyInstance, opts) => {
       await watchListService.addToWatchList(id, status, seriesState)
       return {
         data: {},
-        success: true,
-        error: '',
       }
     } catch (error) {
       return {
-        data: {},
-        success: false,
         error: error.message,
       }
     }
@@ -87,13 +75,9 @@ export default async (fastify: FastifyInstance, opts) => {
       await watchListService.removeFromWatchList(id, status, seriesStateId)
       return {
         data: {},
-        success: true,
-        error: '',
       }
     } catch (error) {
       return {
-        data: {},
-        success: false,
         error: error.message,
       }
     }
@@ -112,13 +96,9 @@ export default async (fastify: FastifyInstance, opts) => {
       await watchListService.updateWatchList(id, status, seriesStateId, seriesState)
       return {
         data: {},
-        success: true,
-        error: '',
       }
     } catch (error) {
       return {
-        data: {},
-        success: false,
         error: error.message,
       }
     }
