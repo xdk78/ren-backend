@@ -61,8 +61,7 @@ export default async (fastify: FastifyInstance, opts) => {
 
     return {
       data: {},
-      success: true,
-      error: '',
+
     }
   })
   return

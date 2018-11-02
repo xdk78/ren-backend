@@ -27,8 +27,6 @@ export default class AuthService implements BaseService {
           const token = generateToken(userFromDb.secret, userFromDb.id)
           return {
             data: { token },
-            success: true,
-            error: '',
           }
         }
         throw new Error('Wrong password')
@@ -47,8 +45,6 @@ export default class AuthService implements BaseService {
       await userModel.destroySessions(id, getRandomString(32))
       return {
         data: {},
-        success: true,
-        error: '',
       }
 
     } catch (error) {
@@ -79,8 +75,6 @@ export default class AuthService implements BaseService {
 
           return {
             data: {},
-            success: true,
-            error: '',
           }
         }
         throw new Error('Wrong credentials')

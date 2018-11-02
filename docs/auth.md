@@ -31,8 +31,6 @@ Registers a new user
 ```json
 {
   "data": {},
-  "success": true,
-  "error": ""
 }
 ```
 
@@ -62,9 +60,7 @@ Returns current logged in user
 {
   "data": {
     "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNTkxMmU2OTdlZDU4MWQwNDllNTFmMSIsImlhdCI6MTUzMzIwOTA3NSwiZXhwIjozMDY2NDIxNzUwfQ.qyTlpLLh0iNq0GNiWovzGO5MU9CT0IJEKAhs0MJlISQ"
-    },
-    "success": true,
-    "error":""
+    }
 }
 ```
 
@@ -82,9 +78,7 @@ Logs out current user
 
 ```json
 {
-  "data": {},
-  "success": true,
-  "error":""
+  "data": {}
 }
 ```
 
@@ -96,8 +90,6 @@ Logs out current user
 
 ```json
 {
-  "data": {},
-  "success": true,
-  "error":""
+  "data": {}
 }
 ```

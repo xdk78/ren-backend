@@ -19,7 +19,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }
@@ -32,7 +32,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }
@@ -49,7 +49,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }
@@ -65,7 +65,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }
@@ -78,7 +78,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }
@@ -91,7 +91,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }
@@ -104,7 +104,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }
@@ -117,7 +117,7 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        success: false,
+
         error: error.message,
       }
     }

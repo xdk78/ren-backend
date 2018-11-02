@@ -6,7 +6,6 @@ export default async (fastify: FastifyInstance, opts) => {
     reply.header('Content-Type', 'application/json').code(200)
     return {
       data: { message: 'Api say Hello' },
-      error: '',
     }
   })
   return

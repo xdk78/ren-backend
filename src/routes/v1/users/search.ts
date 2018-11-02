@@ -15,8 +15,6 @@ export default async (fastify: FastifyInstance, opts) => {
       return await usersService.getUser(request.raw.user._id)
     } catch (error) {
       return {
-        data: {},
-        success: false,
         error: error.message,
       }
     }
@@ -27,8 +25,6 @@ export default async (fastify: FastifyInstance, opts) => {
       return await usersService.getUser(request.params.id)
     } catch (error) {
       return {
-        data: {},
-        success: false,
         error: error.message,
       }
     }

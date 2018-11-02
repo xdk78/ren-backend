@@ -29,8 +29,6 @@ export default class UsersService implements BaseService {
         }
         return {
           data: data,
-          success: true,
-          error: '',
         }
       }
 
