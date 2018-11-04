@@ -93,9 +93,9 @@ export default async (fastify: FastifyInstance, opts) => {
       const seriesStateId = request.body.seriesStateId
       const seriesState = request.body.seriesState
 
-      await watchListService.updateWatchList(id, status, seriesStateId, seriesState)
+      const data = await watchListService.updateWatchList(id, status, seriesStateId, seriesState)
       return {
-        data: {},
+        data: data,
       }
     } catch (error) {
       return {
