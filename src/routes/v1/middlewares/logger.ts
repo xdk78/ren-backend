@@ -35,5 +35,5 @@ function coloredOutput(req: IncomingMessage, res: ServerResponse) {
     statusColor = 'bgRed'
   }
 
-  consola.info(chalk`{${methodColor}.bold [${req.method}]} {italic ${req.url}} {${statusColor}.bold ${res.statusCode.toString()} ${res.statusMessage}} from ${req.connection.remoteAddress}`)
+  consola.info(chalk`{${methodColor}.bold [${req.method}]} {italic ${req.url}} {${statusColor}.bold ${res.statusCode.toString()}} {bold ${res.statusMessage}} from ${req.connection.remoteAddress}`)
 }
