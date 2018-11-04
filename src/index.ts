@@ -23,7 +23,7 @@ import users from './routes/v1/users'
 import auth from './routes/v1/auth'
 import logger from './routes/v1/middlewares/logger'
 
-const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify()
+const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify({ ignoreTrailingSlash: true })
 
 const PORT = process.env.API_PORT || 5000
 const HOST = process.env.API_HOST || '0.0.0.0'
