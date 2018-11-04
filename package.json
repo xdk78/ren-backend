@@ -5,12 +5,12 @@
   "main": "./dist/src/index",
   "scripts": {
     "start": "npm run serve",
-    "dev": "cross-env NODE_ENV=development npm run tslint && ts-node src/index.ts",
-    "build": "cross-env NODE_ENV=production npm run tslint && shx rm -rf dist && npm run build-ts",
+    "dev": "cross-env NODE_ENV=development npm run lint && ts-node src/index.ts",
+    "build": "cross-env NODE_ENV=production npm run lint && shx rm -rf dist && npm run build-ts",
     "serve": "node ./dist/src/index.js",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
     "test": "cross-env NODE_ENV=test jest --forceExit --verbose"
   },
   "repository": {
