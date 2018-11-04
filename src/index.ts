@@ -47,7 +47,7 @@ app.register(auth, { prefix: '/v1' })
 app.listen(PORT as number, HOST, (err) => {
   if (err) throw err
   // @ts-ignore
-  consola.start(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
+  consola.success(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
 })
 
 export default () => app
