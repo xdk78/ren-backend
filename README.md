@@ -1,37 +1,65 @@
-# Senren Backend [![Build Status](https://travis-ci.org/xdk78/senren-backend.svg?branch=master)](https://travis-ci.org/xdk78/senren-backend) [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/badges/shields.svg)](https://github.com/xdk78/senren-backend) [![Discord](https://img.shields.io/discord/367325058353594378.svg)](https://github.com/xdk78/senren-backend)
+# Senren Backend
 
-> Page created by Senren Team
+<img src="https://img.shields.io/github/license/xdk78/senren-backend.svg?style=for-the-badge" alt="GitHub"/> <a href="https://github.com/xdk78/senren-backend/issues"><img src="https://img.shields.io/github/issues/xdk78/senren-backend.svg?style=for-the-badge" alt="GitHub issues" /></a>
+<img src="https://img.shields.io/travis/xdk78/senren-backend.svg?style=for-the-badge" alt="Travis build" /></a>
 
-## Create `.env` files (example in repo)
+## ✋ Contributing
 
-- for development `.env`
-- for production `.env.production`
+If you want to help with the project, you can have a look at some [issues](https://github.com/xdk78/senren-backend/issues). All help is much appreciated 🍻
 
-## Install
+## 🏃 Running application
 
-```bash
-npm i
-```
+### Prerequisites
 
-### Install MongoDb version [3.6](https://www.mongodb.com/download-center)
+- [Node.js](https://nodejs.org/en/download/)
+- [MongoDB v3.6](https://www.mongodb.com/download-center)
 
-## Run
+### 🤘 Let's start
 
-```bash
-# db for example C:\Program Files\MongoDB\Server\3.6\bin
-mongod
-# then run backend in root repo directory
-npm run dev
-```
+- Clone repo</br>
+   - Via https
+    ```
+    git clone https://github.com/xdk78/senren-backend.git
+    ```
+   - Via ssh
+    ```
+    git clone git@github.com:xdk78/senren-backend.git
+    ```
 
-## Build
+- Now enter to app dir
+  ```
+  cd senren-backend
+  ```
+- Install depedencies
+  ```
+  npm i
+  ```
 
-```bash
-npm run build
-```
+- Create `.env` files ([example](.env.example) in repo)
+  - for development `.env`
+  - for production `.env.production`
 
-Enjoy!
+- Running application
+  ```
+  npm run dev
+  ```
+- Running application in production mode
+  ```
+  npm run build && npm start
+  ```
+- Running linter
+  ```
+  npm run lint
+  ```
+- Running tests
+  ```
+  npm test
+  ```
 
 ## Docs
 
 [Docs](docs/index.md)
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
