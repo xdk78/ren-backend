@@ -25,13 +25,12 @@ export default class UsersService implements BaseService {
           createdAt: user.createdAt,
           avatar: user.avatar,
           gender: user.gender,
-          watchListId: user.watchList,
+          watchListId: user.watchList
         }
         return {
-          data: data,
+          data: data
         }
       }
-
     } catch (error) {
       throw error
     }

@@ -4,14 +4,18 @@ import WatchList from './WatchList'
 enum Gender {
   OTHER = 'other',
   MALE = 'male',
-  FEMALE = 'female',
+  FEMALE = 'female'
 }
 
 export default class User extends Typegoose {
   @prop({ unique: true, required: true })
   username: string
 
-  @prop({ unique: true, required: true, match: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ })
+  @prop({
+    unique: true,
+    required: true,
+    match: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  })
   email: string
 
   @prop({ required: true })

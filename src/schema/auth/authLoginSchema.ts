@@ -5,9 +5,9 @@ export default {
     type: 'object',
     properties: {
       password: { type: 'string' },
-      username: { type: 'string' },
+      username: { type: 'string' }
     },
     additionalProperties: false,
-    required: ['password', 'username'],
-  },
+    required: ['password', 'username']
+  }
 } as RouteSchema

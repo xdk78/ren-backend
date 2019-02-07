@@ -11,17 +11,21 @@ export default async (fastify: FastifyInstance, opts) => {
   // @ts-ignore
   const db = fastify.mongo.db
 
-  fastify.post('/auth/login', { schema: authLoginSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
-    try {
-      reply.header('Content-Type', 'application/json').code(200)
-      return await authService.login(request.body.username, request.body.password)
-    } catch (error) {
-      return {
-        data: {},
-        error: error.message,
+  fastify.post(
+    '/auth/login',
+    { schema: authLoginSchema },
+    async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+      try {
+        reply.header('Content-Type', 'application/json').code(200)
+        return await authService.login(request.body.username, request.body.password)
+      } catch (error) {
+        return {
+          data: {},
+          error: error.message
+        }
       }
     }
-  })
+  )
   fastify.use('/auth/logout', isAuthorized(db, ['GET']))
   fastify.get('/auth/logout', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
@@ -33,35 +37,37 @@ export default async (fastify: FastifyInstance, opts) => {
     } catch (error) {
       return {
         data: {},
-        error: error.message,
+        error: error.message
       }
     }
   })
 
-  fastify.post('/auth/register', { schema: authRegisterSchema }, async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
-    try {
-      reply.header('Content-Type', 'application/json').code(201)
-      return await authService.register({
-        username: request.body.username,
-        email: request.body.email,
-        password: request.body.password,
-      } as User)
-
-    } catch (error) {
-      return {
-        data: {},
-        error: error.message,
+  fastify.post(
+    '/auth/register',
+    { schema: authRegisterSchema },
+    async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+      try {
+        reply.header('Content-Type', 'application/json').code(201)
+        return await authService.register({
+          username: request.body.username,
+          email: request.body.email,
+          password: request.body.password
+        } as User)
+      } catch (error) {
+        return {
+          data: {},
+          error: error.message
+        }
       }
     }
-  })
+  )
 
   fastify.use('/auth/verify', isAuthorized(db, ['GET']))
   fastify.get('/auth/verify', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     reply.header('Content-Type', 'application/json').code(200)
 
     return {
-      data: {},
-
+      data: {}
     }
   })
   return

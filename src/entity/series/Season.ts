@@ -17,5 +17,4 @@ export default class Season extends Typegoose {
   static removeEpisode(this: ModelType<Season> & typeof Season, seasonId: Ref<Season>, episodeId: Ref<Season>) {
     return this.updateOne({ _id: seasonId }, { $pull: { episodes: episodeId } })
   }
-
 }

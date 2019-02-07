@@ -76,5 +76,4 @@ export default class Series extends Typegoose {
   static setDescription(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, description: string) {
     return this.updateOne({ _id: seriesId }, { $set: { description: description } })
   }
-
 }

@@ -2,16 +2,17 @@ import { IncomingMessage, ServerResponse } from 'http'
 import consola from 'consola'
 import chalk from 'chalk'
 
-export default () => function (req: IncomingMessage, res: ServerResponse, next) {
-  if (res.headersSent) {
-    coloredOutput(req, res)
-  } else {
-    res.on('finish', () => {
+export default () =>
+  function(req: IncomingMessage, res: ServerResponse, next) {
+    if (res.headersSent) {
       coloredOutput(req, res)
-    })
+    } else {
+      res.on('finish', () => {
+        coloredOutput(req, res)
+      })
+    }
+    next()
   }
-  next()
-}
 
 function coloredOutput(req: IncomingMessage, res: ServerResponse) {
   let methodColor = 'grey'
@@ -35,5 +36,9 @@ function coloredOutput(req: IncomingMessage, res: ServerResponse) {
     statusColor = 'bgRed'
   }
 
-  consola.info(chalk`{${methodColor}.bold [${req.method}]} {italic ${req.url}} {${statusColor}.bold ${res.statusCode.toString()}} {bold ${res.statusMessage}} from ${req.connection.remoteAddress}`)
+  consola.info(
+    chalk`{${methodColor}.bold [${req.method}]} {italic ${
+      req.url
+    }} {${statusColor}.bold ${res.statusCode.toString()}} {bold ${res.statusMessage}} from ${req.connection.remoteAddress}`
+  )
 }

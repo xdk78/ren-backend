@@ -21,7 +21,7 @@ export default class SeriesService implements BaseService {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const loadedSeries = await seriesModel.find()
       return {
-        data: loadedSeries,
+        data: loadedSeries
       }
     } catch (error) {
       throw error
@@ -33,7 +33,7 @@ export default class SeriesService implements BaseService {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
       const loadedSeries = await seriesModel.findOne({ _id: id })
       return {
-        data: loadedSeries,
+        data: loadedSeries
       }
     } catch (error) {
       throw error
@@ -56,21 +56,19 @@ export default class SeriesService implements BaseService {
   async createSeries(payload: Series): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
-      const series = new seriesModel(
-        {
-          title: payload.title,
-          description: payload.description,
-          seasons: [],
-          category: payload.category,
-          rating: 0,
-          genres: payload.genres,
-        },
-      )
+      const series = new seriesModel({
+        title: payload.title,
+        description: payload.description,
+        seasons: [],
+        category: payload.category,
+        rating: 0,
+        genres: payload.genres
+      })
 
       await series.save()
 
       return {
-        data: {},
+        data: {}
       }
     } catch (error) {
       throw error
@@ -94,17 +92,20 @@ export default class SeriesService implements BaseService {
   async updateSeries(seriesId: Ref<Series>, payload: Series): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
-      await seriesModel.updateOne({ _id: seriesId }, {
-        $set: {
-          title: payload.title,
-          description: payload.description,
-          category: payload.category,
-          rating: payload.rating,
-        },
-      })
+      await seriesModel.updateOne(
+        { _id: seriesId },
+        {
+          $set: {
+            title: payload.title,
+            description: payload.description,
+            category: payload.category,
+            rating: payload.rating
+          }
+        }
+      )
 
       return {
-        data: {},
+        data: {}
       }
     } catch (error) {
       throw error
@@ -115,7 +116,7 @@ export default class SeriesService implements BaseService {
     try {
       const categoryModel = new Category().getModelForClass(Category, { existingConnection: this.connection })
       const category = new categoryModel({
-        name,
+        name
       })
 
       return await category.save()
@@ -129,7 +130,7 @@ export default class SeriesService implements BaseService {
       const episodeModel = new Episode().getModelForClass(Episode, { existingConnection: this.connection })
       const episode = new episodeModel({
         title,
-        number,
+        number
       })
 
       return await episode.save()
@@ -142,7 +143,7 @@ export default class SeriesService implements BaseService {
     try {
       const genreModel = new Genre().getModelForClass(Genre, { existingConnection: this.connection })
       const genre = new genreModel({
-        name,
+        name
       })
 
       return await genre.save()
@@ -156,7 +157,7 @@ export default class SeriesService implements BaseService {
       const seasonModel = new Season().getModelForClass(Season, { existingConnection: this.connection })
       const season = new seasonModel({
         number,
-        episodes,
+        episodes
       })
 
       return await season.save()
@@ -164,5 +165,4 @@ export default class SeriesService implements BaseService {
       throw error
     }
   }
-
 }

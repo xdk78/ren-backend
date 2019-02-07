@@ -4,16 +4,16 @@ export default {
   params: {
     type: 'object',
     properties: {
-      id: { type: 'string' },
+      id: { type: 'string' }
     },
-    additionalProperties: false,
+    additionalProperties: false
   },
   headers: {
     type: 'object',
     properties: {
       // tslint:disable-next-line:object-literal-key-quotes
-      'Authorization': { type: 'string' },
+      Authorization: { type: 'string' }
     },
-    required: ['Authorization'],
-  },
+    required: ['Authorization']
+  }
 } as RouteSchema

@@ -7,23 +7,23 @@ export enum StatusNumber {
   onHold = 2,
   dropped = 3,
   completed = 4,
-  planToWatch = 5,
+  planToWatch = 5
 }
 
 export default class WatchList extends Typegoose {
   @prop({ ref: User })
   userId: Ref<User>
 
-  @arrayProp({ itemsRef: SeriesState, unique: true  })
+  @arrayProp({ itemsRef: SeriesState, unique: true })
   watching: Ref<SeriesState>[]
 
   @arrayProp({ itemsRef: SeriesState, unique: true })
   completed: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: SeriesState, unique: true  })
+  @arrayProp({ itemsRef: SeriesState, unique: true })
   onHold: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: SeriesState, unique: true  })
+  @arrayProp({ itemsRef: SeriesState, unique: true })
   dropped: Ref<SeriesState>[]
 
   @arrayProp({ itemsRef: SeriesState, unique: true })
@@ -80,7 +80,13 @@ export default class WatchList extends Typegoose {
   }
 
   @staticMethod
-  static updateEpisode(this: ModelType<WatchList> & typeof WatchList, id: Ref<WatchList>, item: Ref<SeriesState>, modifyTarget, modfiyNumber: number) {
+  static updateEpisode(
+    this: ModelType<WatchList> & typeof WatchList,
+    id: Ref<WatchList>,
+    item: Ref<SeriesState>,
+    modifyTarget,
+    modfiyNumber: number
+  ) {
     const findQuery = `${modifyTarget}.seriesId`
     const updateQuery = `${modifyTarget}.$.episodeNumber`
     return this.update({ _id: id, [findQuery]: item }, { $set: { [updateQuery]: modfiyNumber } })

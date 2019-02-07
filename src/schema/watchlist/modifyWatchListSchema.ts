@@ -7,17 +7,17 @@ export default {
       status: { type: 'number' },
       seriesId: { type: 'string' },
       episodeNumber: { type: 'number' },
-      seasonNumber :{ type: 'number' },
+      seasonNumber: { type: 'number' }
     },
 
     additionalProperties: false,
-    required: ['status', 'seriesId'],
+    required: ['status', 'seriesId']
   },
   params: {
     type: 'object',
     properties: {
-      id: { type: 'string' },
+      id: { type: 'string' }
     },
-    required: ['id'],
-  },
+    required: ['id']
+  }
 } as RouteSchema

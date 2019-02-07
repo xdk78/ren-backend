@@ -20,13 +20,13 @@ export default class AuthService implements BaseService {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const userFromDb = await userModel.findOne({
-        username: username,
+        username: username
       })
       if (userFromDb) {
         if (await compare(password, userFromDb.password)) {
           const token = generateToken(userFromDb.secret, userFromDb.id)
           return {
-            data: { token },
+            data: { token }
           }
         }
         throw new Error('Wrong password')
@@ -44,9 +44,8 @@ export default class AuthService implements BaseService {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       await userModel.destroySessions(id, getRandomString(32))
       return {
-        data: {},
+        data: {}
       }
-
     } catch (error) {
       throw error
     }
@@ -60,21 +59,19 @@ export default class AuthService implements BaseService {
       } else {
         const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
         const userSecret = getRandomString(32)
-        const user = new userModel(
-          {
-            username: payload.username,
-            email: payload.email,
-            password: await hash(payload.password, this.saltRounds),
-            createdAt: new Date().toISOString(),
-            watchList: await new watchListModel({}).save(),
-            secret: userSecret,
-          },
-        )
+        const user = new userModel({
+          username: payload.username,
+          email: payload.email,
+          password: await hash(payload.password, this.saltRounds),
+          createdAt: new Date().toISOString(),
+          watchList: await new watchListModel({}).save(),
+          secret: userSecret
+        })
         if (user) {
           await user.save()
 
           return {
-            data: {},
+            data: {}
           }
         }
         throw new Error('Wrong credentials')
@@ -83,5 +80,4 @@ export default class AuthService implements BaseService {
       throw error
     }
   }
-
 }
