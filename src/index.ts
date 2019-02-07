@@ -1,14 +1,15 @@
-import 'reflect-metadata'
-import dotenv from 'dotenv-safe'
-let envConfig = {}
-if (process.env.NODE_ENV === 'production') {
-  envConfig = { path: './.env.production' }
-} else if (process.env.NODE_ENV === 'test') {
-  envConfig = { path: './.env.test' }
-} else {
-  envConfig = { path: './.env' }
+// load .env file only for development and testing
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  const dotenv = require('dotenv-safe')
+  let envConfig = {}
+  if (process.env.NODE_ENV === 'development') {
+    envConfig = { path: './.env' }
+  } else if (process.env.NODE_ENV === 'test') {
+    envConfig = { path: './.env.test' }
+  }
+  dotenv.config(Object.assign({}, { allowEmptyValues: true, example: './.env.example' }, envConfig))
 }
-dotenv.config(Object.assign({}, { allowEmptyValues: true, example: './.env.example' }, envConfig))
+
 import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import db from './db'
