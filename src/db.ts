@@ -1,13 +1,13 @@
 import { dbConnURI } from './utils'
-import fp from 'fastify-plugin'
+import fp, { nextCallback, PluginOptions } from 'fastify-plugin'
 import { FastifyInstance } from 'fastify'
 import mongoose from 'mongoose'
 import consola from 'consola'
 const objectId = mongoose.Types.ObjectId
 
-function plugin(fastify: FastifyInstance, options, next) {
+function plugin(fastify: FastifyInstance, options: PluginOptions, next: nextCallback) {
   return mongoose
-    .createConnection(dbConnURI, { useNewUrlParser: true })
+    .createConnection(dbConnURI, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true })
     .then(connection => {
       fastify
         .decorate('mongo', {
