@@ -92,6 +92,7 @@ export default class SeriesService implements BaseService {
   async updateSeries(seriesId: Ref<Series>, payload: Series): Promise<object> {
     try {
       const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+
       await seriesModel.updateOne(
         { _id: seriesId },
         {

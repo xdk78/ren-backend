@@ -3,7 +3,7 @@ import Series from './Series'
 
 export default class SeriesState extends Typegoose {
   @prop({ ref: Series, unique: true })
-  seriesId: Ref<Series>
+  series: Ref<Series>
 
   @prop()
   seasonNumber: number

@@ -19,7 +19,7 @@ export default class Series extends Typegoose {
   @arrayProp({ itemsRef: Genre })
   genres?: Ref<Genre>[]
 
-  @prop()
+  @prop({ default: 0 })
   rating: number
 
   @staticMethod
@@ -29,12 +29,12 @@ export default class Series extends Typegoose {
 
   @staticMethod
   static addSeason(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, seasonId: Ref<Season>) {
-    return this.update({ _id: seriesId }, { $push: { seasons: seasonId } })
+    return this.updateOne({ _id: seriesId }, { $push: { seasons: seasonId } })
   }
 
   @staticMethod
   static removeSeason(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, seasonId: Ref<Season>) {
-    return this.update({ _id: seriesId }, { $pull: { seasons: seasonId } })
+    return this.updateOne({ _id: seriesId }, { $pull: { seasons: seasonId } })
   }
 
   @staticMethod
@@ -49,12 +49,12 @@ export default class Series extends Typegoose {
 
   @staticMethod
   static addGenre(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, genreId: Ref<Genre>) {
-    return this.update({ _id: seriesId }, { $push: { genres: genreId } })
+    return this.updateOne({ _id: seriesId }, { $push: { genres: genreId } })
   }
 
   @staticMethod
   static removeGenre(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, genreId: Ref<Genre>) {
-    return this.update({ _id: seriesId }, { $pull: { genres: genreId } })
+    return this.updateOne({ _id: seriesId }, { $pull: { genres: genreId } })
   }
 
   @staticMethod

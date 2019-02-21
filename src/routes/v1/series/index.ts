@@ -53,9 +53,10 @@ export default async (fastify: FastifyInstance) => {
       }
     }
   })
+
   fastify.patch(
     '/series/:id',
-    { schema: createSeriesSchema },
+    // { schema: createSeriesSchema },
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
         reply.header('Content-Type', 'application/json').code(200)

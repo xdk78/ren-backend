@@ -5,6 +5,7 @@ import BaseService from './BaseService'
 import SeriesService from './SeriesService'
 import SeriesState from '../entity/series/SeriesState'
 import { Ref } from 'typegoose'
+import Series from '../entity/series/Series'
 
 export default class WatchListService implements BaseService {
   connection: any
@@ -26,15 +27,50 @@ export default class WatchListService implements BaseService {
       } else {
         const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
         const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
-        const watchListRefs = await watchListModel
-          .findOne({ _id: user.watchList })
-          .populate([
-            { path: 'watching', model: seriesStateModel },
-            { path: 'completed', model: seriesStateModel },
-            { path: 'onHold', model: seriesStateModel },
-            { path: 'dropped', model: seriesStateModel },
-            { path: 'planToWatch', model: seriesStateModel }
-          ])
+        const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+
+        const watchListRefs = await watchListModel.findOne({ _id: user.watchList }).populate([
+          {
+            path: 'watching',
+            model: seriesStateModel,
+            populate: {
+              path: 'series',
+              model: seriesModel
+            }
+          },
+          {
+            path: 'completed',
+            model: seriesStateModel,
+            populate: {
+              path: 'series',
+              model: seriesModel
+            }
+          },
+          {
+            path: 'onHold',
+            model: seriesStateModel,
+            populate: {
+              path: 'series',
+              model: seriesModel
+            }
+          },
+          {
+            path: 'dropped',
+            model: seriesStateModel,
+            populate: {
+              path: 'series',
+              model: seriesModel
+            }
+          },
+          {
+            path: 'planToWatch',
+            model: seriesStateModel,
+            populate: {
+              path: 'series',
+              model: seriesModel
+            }
+          }
+        ])
         return watchListRefs
       }
     } catch (error) {
@@ -47,13 +83,13 @@ export default class WatchListService implements BaseService {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (user) {
-        const { seriesId, seasonNumber, episodeNumber } = payload
-        if (await this.seriesService.doesExist(seriesId)) {
+        const { series, seasonNumber, episodeNumber } = payload
+        if (await this.seriesService.doesExist(series)) {
           const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
           const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
 
           const seriesState = new seriesStateModel({
-            seriesId: seriesId,
+            series: series,
             seasonNumber: seasonNumber,
             episodeNumber: episodeNumber
           })
@@ -61,12 +97,13 @@ export default class WatchListService implements BaseService {
           const list = await watchListModel
             .findOne({ _id: user.watchList })
             .populate([
-              { path: 'watching', model: seriesStateModel, select: { seriesId: seriesId } },
-              { path: 'completed', model: seriesStateModel, select: { seriesId: seriesId } },
-              { path: 'onHold', model: seriesStateModel, select: { seriesId: seriesId } },
-              { path: 'dropped', model: seriesStateModel, select: { seriesId: seriesId } },
-              { path: 'planToWatch', model: seriesStateModel, select: { seriesId: seriesId } }
+              { path: 'watching', model: seriesStateModel, select: { series: series } },
+              { path: 'completed', model: seriesStateModel, select: { series: series } },
+              { path: 'onHold', model: seriesStateModel, select: { series: series } },
+              { path: 'dropped', model: seriesStateModel, select: { series: series } },
+              { path: 'planToWatch', model: seriesStateModel, select: { series: series } }
             ])
+
           const reducedList = [].concat(
             ...list.watching,
             ...list.completed,
@@ -75,7 +112,7 @@ export default class WatchListService implements BaseService {
             ...list.planToWatch
           )
 
-          if (reducedList.find(item => (item.seriesId.toString() === seriesId.toString() ? true : false))) {
+          if (reducedList.find(item => (item.series.toString() === series.toString() ? true : false))) {
             throw new Error('Series exist on the watchlist')
           } else {
             switch (status) {
@@ -180,10 +217,10 @@ export default class WatchListService implements BaseService {
       if (user) {
         const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
         const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
-        const { seriesId, seasonNumber, episodeNumber } = payload
+        const { series, seasonNumber, episodeNumber } = payload
 
         const seriesState = new seriesStateModel({
-          seriesId: seriesId,
+          series: series,
           seasonNumber: seasonNumber,
           episodeNumber: episodeNumber
         })
