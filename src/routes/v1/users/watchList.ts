@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import WatchListSerivce from '../../../services/WatchListService'
-import modifyWatchListSchema from '../../../schema/watchlist/modifyWatchListSchema'
 import isAuthorized from '../middlewares/isAuthorized'
-export default async (fastify: FastifyInstance, opts) => {
+
+export default async (fastify: FastifyInstance) => {
   // @ts-ignore
   const db = fastify.mongo.db
   const watchListService = new WatchListSerivce(fastify)

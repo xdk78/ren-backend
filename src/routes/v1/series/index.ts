@@ -4,9 +4,8 @@ import { ServerResponse, IncomingMessage } from 'http'
 import createSeriesSchema from '../../../schema/series/createSeriesSchema'
 import SeriesService from '../../../services/SeriesService'
 import isAuthorized from '../../v1/middlewares/isAuthorized'
-import Category from '../../../entity/series/Category'
 
-export default async (fastify: FastifyInstance, opts) => {
+export default async (fastify: FastifyInstance) => {
   const seriesService = new SeriesService(fastify)
   // @ts-ignore
   const db = fastify.mongo.db

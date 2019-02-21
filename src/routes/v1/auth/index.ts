@@ -6,7 +6,7 @@ import authRegisterSchema from '../../../schema/auth/authRegisterSchema'
 import AuthService from '../../../services/AuthService'
 import isAuthorized from '../middlewares/isAuthorized'
 
-export default async (fastify: FastifyInstance, opts) => {
+export default async (fastify: FastifyInstance) => {
   const authService = new AuthService(fastify)
   // @ts-ignore
   const db = fastify.mongo.db

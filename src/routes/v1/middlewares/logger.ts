@@ -1,9 +1,10 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import consola from 'consola'
 import chalk from 'chalk'
+import { nextCallback } from 'fastify-plugin'
 
 export default () =>
-  function(req: IncomingMessage, res: ServerResponse, next) {
+  function(req: IncomingMessage, res: ServerResponse, next: nextCallback) {
     if (res.headersSent) {
       coloredOutput(req, res)
     } else {

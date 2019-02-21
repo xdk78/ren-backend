@@ -3,7 +3,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 import UsersService from '../../../services/UsersService'
 import isAuthorized from '../middlewares/isAuthorized'
 
-export default async (fastify: FastifyInstance, opts) => {
+export default async (fastify: FastifyInstance) => {
   // @ts-ignore
   const db = fastify.mongo.db
   const usersService = new UsersService(fastify)

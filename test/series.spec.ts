@@ -28,13 +28,13 @@ beforeAll(async () => {
 // })
 
 describe('GET /series', () => {
-  it('responds with all series json', (done) => {
+  it('responds with all series json', done => {
     request(app.server)
       .get('/v1/series')
       .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect((res) => {
+      .expect(res => {
         expect(Array.isArray(res.body.data)).toBeTruthy()
         expect(res.body.data.title).not.toBeNull()
         expect(res.body.data.description).not.toBeNull()
@@ -48,5 +48,5 @@ describe('GET /series', () => {
 })
 
 afterAll(() => {
-  app.close(() => { })
+  app.close(() => {})
 })

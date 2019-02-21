@@ -2,11 +2,12 @@ import { FastifyInstance } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import { extractToken, decodeToken, verifyToken } from '../../../utils/authUtils'
 import User from '../../../entity/User'
+import { nextCallback } from 'fastify-plugin'
 
 const defaultMethods = ['GET', 'PUT', 'DELETE', 'POST', 'PATCH']
 
 export default (connection, methods = defaultMethods) =>
-  async function(this: FastifyInstance, req: IncomingMessage, res: ServerResponse, next) {
+  async function(this: FastifyInstance, req: IncomingMessage, res: ServerResponse, next: nextCallback) {
     if (methods.includes(req.method)) {
       const userModel = new User().getModelForClass(User, { existingConnection: connection })
       try {
