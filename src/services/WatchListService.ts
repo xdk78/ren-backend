@@ -219,20 +219,25 @@ export default class WatchListService implements BaseService {
         const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
         const { series, seasonNumber, episodeNumber } = payload
 
-        const seriesState = new seriesStateModel({
-          series: series,
-          seasonNumber: seasonNumber,
-          episodeNumber: episodeNumber
-        })
-
         switch (status) {
           case StatusNumber.watching:
             if (await watchListModel.findOne({ watching: seriesStateId })) {
-              const newSeriesState = await seriesState.save()
+              const newSeriesState = await seriesStateModel.findOneAndUpdate(
+                {
+                  _id: seriesStateId
+                },
+                {
+                  $set: {
+                    series: series,
+                    seasonNumber: seasonNumber,
+                    episodeNumber: episodeNumber
+                  }
+                }
+              )
+
               await watchListModel.findOneAndUpdate(
                 { _id: user.watchList, watching: seriesStateId },
-                { $set: { watching: newSeriesState } },
-                { upsert: true }
+                { $set: { watching: newSeriesState } }
               )
               return newSeriesState
             }
@@ -240,8 +245,20 @@ export default class WatchListService implements BaseService {
 
           case StatusNumber.onHold:
             if (await watchListModel.findOne({ onHold: payload })) {
-              const newSeriesState = await seriesState.save()
-              await watchListModel.updateOne(
+              const newSeriesState = await seriesStateModel.findOneAndUpdate(
+                {
+                  _id: seriesStateId
+                },
+                {
+                  $set: {
+                    series: series,
+                    seasonNumber: seasonNumber,
+                    episodeNumber: episodeNumber
+                  }
+                }
+              )
+
+              await watchListModel.findOneAndUpdate(
                 { _id: user.watchList, onHold: seriesStateId },
                 { $set: { onHold: newSeriesState } },
                 { upsert: true }
@@ -252,8 +269,20 @@ export default class WatchListService implements BaseService {
 
           case StatusNumber.dropped:
             if (await watchListModel.findOne({ dropped: payload })) {
-              const newSeriesState = await seriesState.save()
-              await watchListModel.updateOne(
+              const newSeriesState = await seriesStateModel.findOneAndUpdate(
+                {
+                  _id: seriesStateId
+                },
+                {
+                  $set: {
+                    series: series,
+                    seasonNumber: seasonNumber,
+                    episodeNumber: episodeNumber
+                  }
+                }
+              )
+
+              await watchListModel.findOneAndUpdate(
                 { _id: user.watchList, dropped: seriesStateId },
                 { $set: { dropped: newSeriesState } },
                 { upsert: true }
@@ -264,8 +293,20 @@ export default class WatchListService implements BaseService {
 
           case StatusNumber.completed:
             if (await watchListModel.findOne({ completed: payload })) {
-              const newSeriesState = await seriesState.save()
-              await watchListModel.updateOne(
+              const newSeriesState = await seriesStateModel.findOneAndUpdate(
+                {
+                  _id: seriesStateId
+                },
+                {
+                  $set: {
+                    series: series,
+                    seasonNumber: seasonNumber,
+                    episodeNumber: episodeNumber
+                  }
+                }
+              )
+
+              await watchListModel.findOneAndUpdate(
                 { _id: user.watchList, completed: seriesStateId },
                 { $set: { completed: newSeriesState } },
                 { upsert: true }
@@ -276,8 +317,20 @@ export default class WatchListService implements BaseService {
 
           case StatusNumber.planToWatch:
             if (await watchListModel.findOne({ planToWatch: payload })) {
-              const newSeriesState = await seriesState.save()
-              await watchListModel.updateOne(
+              const newSeriesState = await seriesStateModel.findOneAndUpdate(
+                {
+                  _id: seriesStateId
+                },
+                {
+                  $set: {
+                    series: series,
+                    seasonNumber: seasonNumber,
+                    episodeNumber: episodeNumber
+                  }
+                }
+              )
+
+              await watchListModel.findOneAndUpdate(
                 { _id: user.watchList, planToWatch: seriesStateId },
                 { $set: { planToWatch: newSeriesState } },
                 { upsert: true }
