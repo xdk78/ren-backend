@@ -1,4 +1,4 @@
-import { prop, Typegoose, Ref, ModelType, staticMethod } from 'typegoose'
+import { prop, Typegoose, Ref, ModelType, staticMethod } from '@hasezoey/typegoose'
 import WatchList from './WatchList'
 
 enum Gender {

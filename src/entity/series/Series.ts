@@ -1,4 +1,4 @@
-import { prop, Typegoose, arrayProp, staticMethod, ModelType, Ref } from 'typegoose'
+import { prop, Typegoose, arrayProp, staticMethod, ModelType, Ref } from '@hasezoey/typegoose'
 import Genre from './Genre'
 import Season from './Season'
 import Category from './Category'

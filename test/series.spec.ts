@@ -1,5 +1,3 @@
-jest.setTimeout(100000)
-
 import request from 'supertest'
 import api from '../src/index'
 import seriesPostMock from './__mocks__/seriesPost.json'
@@ -28,22 +26,22 @@ beforeAll(async () => {
 // })
 
 describe('GET /series', () => {
-  it('responds with all series json', done => {
-    request(app.server)
+  it('responds with all series json', async () => {
+    await request(app.server)
       .get('/v1/series')
       .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(res => {
         expect(Array.isArray(res.body.data)).toBeTruthy()
-        expect(res.body.data.title).not.toBeNull()
-        expect(res.body.data.description).not.toBeNull()
-        expect(res.body.data.seasons).not.toBeNull()
-        expect(res.body.data.category).not.toBeNull()
-        expect(res.body.data.genres).not.toBeNull()
-        expect(res.body.data.rating).not.toBeNull()
+        expect(res.body.data.title).toBeDefined()
+        expect(res.body.data.description).toBeDefined()
+        expect(res.body.data.seasons).toBeDefined()
+        expect(res.body.data.category).toBeDefined()
+        expect(res.body.data.genres).toBeDefined()
+        expect(res.body.data.rating).toBeDefined()
       })
-      .expect(200, done)
+      .expect(200)
   })
 })
 

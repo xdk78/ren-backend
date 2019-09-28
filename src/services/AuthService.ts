@@ -4,7 +4,7 @@ import { compare, hash } from 'bcrypt'
 import User from '../entity/User'
 import WatchList from '../entity/WatchList'
 import { getRandomString, generateToken } from '../utils/authUtils'
-import { Ref } from 'typegoose'
+import { Ref } from '@hasezoey/typegoose'
 
 export default class AuthService implements BaseService {
   connection: any

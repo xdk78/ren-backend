@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import BaseService from './BaseService'
 import User from '../entity/User'
-import { Ref } from 'typegoose'
+import { Ref } from '@hasezoey/typegoose'
 
 export default class UsersService implements BaseService {
   connection: any

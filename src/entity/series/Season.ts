@@ -1,4 +1,4 @@
-import { prop, arrayProp, Typegoose, Ref, staticMethod, ModelType } from 'typegoose'
+import { prop, arrayProp, Typegoose, Ref, staticMethod, ModelType } from '@hasezoey/typegoose'
 import Episode from './Episode'
 
 export default class Season extends Typegoose {

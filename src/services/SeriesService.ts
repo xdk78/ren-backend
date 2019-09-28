@@ -1,7 +1,7 @@
 import BaseService from './BaseService'
 import { FastifyInstance } from 'fastify'
 import Series from '../entity/series/Series'
-import { Ref } from 'typegoose'
+import { Ref } from '@hasezoey/typegoose'
 import Category from '../entity/series/Category'
 import Episode from '../entity/series/Episode'
 import Genre from '../entity/series/Genre'

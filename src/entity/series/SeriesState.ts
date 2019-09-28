@@ -1,4 +1,4 @@
-import { prop, Typegoose, Ref } from 'typegoose'
+import { prop, Typegoose, Ref } from '@hasezoey/typegoose'
 import Series from './Series'
 
 export default class SeriesState extends Typegoose {

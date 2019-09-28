@@ -4,7 +4,7 @@ import WatchList, { StatusNumber } from '../entity/WatchList'
 import BaseService from './BaseService'
 import SeriesService from './SeriesService'
 import SeriesState from '../entity/series/SeriesState'
-import { Ref } from 'typegoose'
+import { Ref } from '@hasezoey/typegoose'
 import Series from '../entity/series/Series'
 
 export default class WatchListService implements BaseService {
