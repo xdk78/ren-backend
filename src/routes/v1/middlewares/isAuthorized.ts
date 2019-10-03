@@ -23,7 +23,7 @@ export default (connection, methods = defaultMethods) =>
 
         return next()
       } catch (error) {
-        res.setHeader('content-type', 'application/json')
+        res.setHeader('content-type', 'application/json; charset=utf-8')
         res.statusCode = 401
         res.end(
           JSON.stringify({

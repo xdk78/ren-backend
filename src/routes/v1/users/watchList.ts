@@ -15,7 +15,7 @@ export default async (fastify: FastifyInstance) => {
     '/users/:id/watchlist',
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
-        reply.header('Content-Type', 'application/json').code(200)
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
 
         const watchList = await watchListService.getWatchList(request.params.id)
 
@@ -32,7 +32,7 @@ export default async (fastify: FastifyInstance) => {
 
   fastify.get('/users/watchlist', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(200)
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
       // @ts-ignore
       const id = request.raw.user._id
       const watchList = await watchListService.getWatchList(id)
@@ -51,7 +51,7 @@ export default async (fastify: FastifyInstance) => {
     '/users/watchlist',
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
-        reply.header('Content-Type', 'application/json').code(200)
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
         // @ts-ignore
         const id = request.raw.user._id
         const status = request.body.status
@@ -73,7 +73,7 @@ export default async (fastify: FastifyInstance) => {
     '/users/watchlist',
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
-        reply.header('Content-Type', 'application/json').code(200)
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
         // @ts-ignore
         const id = request.raw.user._id
         const status = request.body.status
@@ -94,7 +94,7 @@ export default async (fastify: FastifyInstance) => {
     '/users/watchlist',
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
-        reply.header('Content-Type', 'application/json').code(200)
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
         // @ts-ignore
         const id = request.raw.user._id
         const status = request.body.status
