@@ -13,7 +13,7 @@ export default async (fastify: FastifyInstance) => {
 
   fastify.get('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(200)
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
       return await seriesService.getSeries()
     } catch (error) {
       return {
@@ -25,7 +25,7 @@ export default async (fastify: FastifyInstance) => {
   })
   fastify.get('/series/:id', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(200)
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
       const id = request.params.id
       return await seriesService.getSeriesById(id)
     } catch (error) {
@@ -39,7 +39,7 @@ export default async (fastify: FastifyInstance) => {
 
   fastify.post('/series', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(201)
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
       return await seriesService.createSeries({
         title: request.body.title,
         description: request.body.description,
@@ -59,7 +59,7 @@ export default async (fastify: FastifyInstance) => {
     // { schema: createSeriesSchema },
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
-        reply.header('Content-Type', 'application/json').code(200)
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
         return await seriesService.updateSeries(request.params.id, {
           title: request.body.title,
           description: request.body.description,
@@ -79,12 +79,11 @@ export default async (fastify: FastifyInstance) => {
     '/series/category',
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
-        reply.header('Content-Type', 'application/json').code(201)
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
         return await seriesService.createCategory(request.body.name)
       } catch (error) {
         return {
           data: {},
-
           error: error.message
         }
       }
@@ -93,12 +92,11 @@ export default async (fastify: FastifyInstance) => {
 
   fastify.post('/series/episode', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(201)
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
       return await seriesService.createEpisode(request.body.title, request.body.number)
     } catch (error) {
       return {
         data: {},
-
         error: error.message
       }
     }
@@ -106,7 +104,7 @@ export default async (fastify: FastifyInstance) => {
 
   fastify.post('/series/season', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(201)
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
       return await seriesService.createSeason(request.body.number, request.body.episodes)
     } catch (error) {
       return {
@@ -119,7 +117,7 @@ export default async (fastify: FastifyInstance) => {
 
   fastify.post('/series/genre', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
-      reply.header('Content-Type', 'application/json').code(201)
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
       return await seriesService.createGenre(request.body.name)
     } catch (error) {
       return {
