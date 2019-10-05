@@ -3,11 +3,16 @@ import api from '../src/index'
 import categoryPostMock from './__mocks__/post/category-req.json'
 import categoryPostResponseMock from './__mocks__/post/res.json'
 import { bearerToken } from './utils'
+import Category from '../src/entity/series/Category'
 
 const app = api()
 
 beforeAll(async () => {
   await app.ready()
+  const connection = app.mongo.db
+  const categoryModel = new Category().getModelForClass(Category, { existingConnection: connection })
+
+  await categoryModel.deleteMany({})
 })
 
 describe('POST /series/category', () => {

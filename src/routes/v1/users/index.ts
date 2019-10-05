@@ -1,8 +1,8 @@
 import search from './search'
-import { FastifyInstance } from 'fastify'
 import watchList from './watchList'
+import { AppInstance } from '../../../'
 
-export default async (fastify: FastifyInstance) => {
+export default async (fastify: AppInstance) => {
   fastify.register(search)
   fastify.register(watchList)
 }

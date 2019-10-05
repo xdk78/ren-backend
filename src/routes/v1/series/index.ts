@@ -1,13 +1,12 @@
 import Series from '../../../entity/series/Series'
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
-import createSeriesSchema from '../../../schema/series/createSeriesSchema'
 import SeriesService from '../../../services/SeriesService'
 import isAuthorized from '../../v1/middlewares/isAuthorized'
+import { AppInstance } from '../../../'
 
-export default async (fastify: FastifyInstance) => {
+export default async (fastify: AppInstance) => {
   const seriesService = new SeriesService(fastify)
-  // @ts-ignore
   const db = fastify.mongo.db
   fastify.use('/series', isAuthorized(db, ['POST', 'PATCH']))
 

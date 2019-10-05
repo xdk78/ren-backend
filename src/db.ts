@@ -1,11 +1,11 @@
 import { dbConnURI } from './utils/conn'
 import fp, { nextCallback, PluginOptions } from 'fastify-plugin'
-import { FastifyInstance } from 'fastify'
 import mongoose from 'mongoose'
 import consola from 'consola'
+import { AppInstance } from '../src'
 const objectId = mongoose.Types.ObjectId
 
-function plugin(fastify: FastifyInstance, options: PluginOptions, next: nextCallback) {
+function plugin(fastify: AppInstance, options: PluginOptions, next: nextCallback) {
   return mongoose
     .createConnection(dbConnURI, {
       useNewUrlParser: true,
@@ -19,8 +19,7 @@ function plugin(fastify: FastifyInstance, options: PluginOptions, next: nextCall
           db: connection,
           ObjectId: objectId
         })
-        .addHook('onClose', (fastify, done) => {
-          // @ts-ignore
+        .addHook('onClose', (fastify: AppInstance, done) => {
           fastify.mongo.db.close(done)
         })
       consola.success('Connected to database')

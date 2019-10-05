@@ -1,14 +1,14 @@
-import { FastifyInstance } from 'fastify'
 import BaseService from './BaseService'
 import User from '../entity/User'
 import { Ref } from '@hasezoey/typegoose'
+import { AppInstance } from '../'
+import { Connection } from 'mongoose'
 
 export default class UsersService implements BaseService {
-  connection: any
-  fastify: FastifyInstance
+  connection: Connection
+  fastify: AppInstance
 
-  constructor(fastify: FastifyInstance) {
-    // @ts-ignore
+  constructor(fastify: AppInstance) {
     this.connection = fastify.mongo.db
   }
 

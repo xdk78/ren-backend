@@ -1,10 +1,10 @@
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import UsersService from '../../../services/UsersService'
 import isAuthorized from '../middlewares/isAuthorized'
+import { AppInstance } from '../../../'
 
-export default async (fastify: FastifyInstance) => {
-  // @ts-ignore
+export default async (fastify: AppInstance) => {
   const db = fastify.mongo.db
   const usersService = new UsersService(fastify)
   fastify.use('/users', isAuthorized(db, ['GET']))

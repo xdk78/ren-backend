@@ -1,18 +1,18 @@
 import BaseService from './BaseService'
-import { FastifyInstance } from 'fastify'
 import Series from '../entity/series/Series'
 import { Ref } from '@hasezoey/typegoose'
 import Category from '../entity/series/Category'
 import Episode from '../entity/series/Episode'
 import Genre from '../entity/series/Genre'
 import Season from '../entity/series/Season'
+import { AppInstance } from '../'
+import { Connection } from 'mongoose'
 
 export default class SeriesService implements BaseService {
-  connection: any
-  fastify: FastifyInstance
+  connection: Connection
+  fastify: AppInstance
 
-  constructor(fastify: FastifyInstance) {
-    // @ts-ignore
+  constructor(fastify: AppInstance) {
     this.connection = fastify.mongo.db
   }
 
