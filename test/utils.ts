@@ -4,6 +4,7 @@ import WatchList from '../src/entity/WatchList'
 import { getRandomString } from '../src/utils/authUtils'
 import { hash } from 'bcrypt'
 import request from 'supertest'
+import Category from '../src/entity/series/Category'
 
 const saltRounds = 10
 
@@ -29,6 +30,12 @@ export async function cleanupUsers(app: AppInstance): Promise<void> {
   const connection = app.mongo.db
   const userModel = new User().getModelForClass(User, { existingConnection: connection })
   await userModel.deleteMany({})
+}
+
+export async function cleanupCategories(app: AppInstance): Promise<void> {
+  const connection = app.mongo.db
+  const categoryModel = new Category().getModelForClass(Category, { existingConnection: connection })
+  await categoryModel.deleteMany({})
 }
 
 export async function mockLogin(

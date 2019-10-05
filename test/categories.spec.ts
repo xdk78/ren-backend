@@ -1,28 +1,26 @@
 import request from 'supertest'
 import api from '../src/index'
-import categoryPostMock from './__mocks__/post/category-req.json'
-import { mockUser, cleanupUsers, mockLogin } from './utils'
+import categoryPostMock from './__mocks__/post/categories-req.json'
+import { mockUser, cleanupUsers, mockLogin, cleanupCategories } from './utils'
 import Category from '../src/entity/series/Category'
 
 const app = api()
 
 beforeAll(async () => {
   await app.ready()
-  const connection = app.mongo.db
 
-  const categoryModel = new Category().getModelForClass(Category, { existingConnection: connection })
-  await categoryModel.deleteMany({})
+  await cleanupCategories(app)
   await cleanupUsers(app)
 
   await mockUser(app)
 })
 
-describe('POST /series/category', () => {
+describe('POST /series/categories', () => {
   it('should create new category and respond with json', async () => {
     const { token } = await mockLogin(app)
 
     await request(app.server)
-      .post('/v1/series/category')
+      .post('/v1/series/categories')
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
@@ -33,6 +31,21 @@ describe('POST /series/category', () => {
         expect(data.name).toBeDefined()
       })
       .expect(201)
+  })
+})
+
+describe('GET /series/categories', () => {
+  it('should respond with json with all categories', async () => {
+    await request(app.server)
+      .get('/v1/series/categories')
+      .set('Accept', 'application/json; charset=utf-8')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(res => {
+        const data: Category[] = res.body.data
+        expect(Array.isArray(data)).toBeTruthy()
+        expect(data[0].name).toBeDefined()
+      })
+      .expect(200)
   })
 })
 
