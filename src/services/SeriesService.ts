@@ -163,6 +163,16 @@ export default class SeriesService implements BaseService {
     }
   }
 
+  async getGenres(): Promise<{ data: Genre[] }> {
+    try {
+      const genreModel = new Genre().getModelForClass(Genre, { existingConnection: this.connection })
+
+      return { data: await genreModel.find() }
+    } catch (error) {
+      throw error
+    }
+  }
+
   async createSeason(number: number, episodes: any[]): Promise<object> {
     try {
       const seasonModel = new Season().getModelForClass(Season, { existingConnection: this.connection })

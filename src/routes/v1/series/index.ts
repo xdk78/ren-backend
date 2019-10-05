@@ -144,5 +144,18 @@ export default async (fastify: AppInstance) => {
       }
     }
   })
+
+  fastify.get('/series/genres', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
+      return await seriesService.getGenres()
+    } catch (error) {
+      return {
+        data: {},
+        error: error.message
+      }
+    }
+  })
+
   return
 }
