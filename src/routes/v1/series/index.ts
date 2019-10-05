@@ -75,7 +75,7 @@ export default async (fastify: AppInstance) => {
   )
 
   fastify.post(
-    '/series/category',
+    '/series/categories',
     async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
       try {
         reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
@@ -89,19 +89,37 @@ export default async (fastify: AppInstance) => {
     }
   )
 
-  fastify.post('/series/episode', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
-    try {
-      reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
-      return await seriesService.createEpisode(request.body.title, request.body.number)
-    } catch (error) {
-      return {
-        data: {},
-        error: error.message
+  fastify.get(
+    '/series/categories',
+    async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+      try {
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
+        return await seriesService.getCategories()
+      } catch (error) {
+        return {
+          data: {},
+          error: error.message
+        }
       }
     }
-  })
+  )
 
-  fastify.post('/series/season', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post(
+    '/series/episodes',
+    async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+      try {
+        reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
+        return await seriesService.createEpisode(request.body.title, request.body.number)
+      } catch (error) {
+        return {
+          data: {},
+          error: error.message
+        }
+      }
+    }
+  )
+
+  fastify.post('/series/seasons', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
       return await seriesService.createSeason(request.body.number, request.body.episodes)
@@ -114,7 +132,7 @@ export default async (fastify: AppInstance) => {
     }
   })
 
-  fastify.post('/series/genre', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+  fastify.post('/series/genres', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
     try {
       reply.header('Content-Type', 'application/json; charset=utf-8').code(201)
       return await seriesService.createGenre(request.body.name)
@@ -126,5 +144,18 @@ export default async (fastify: AppInstance) => {
       }
     }
   })
+
+  fastify.get('/series/genres', async (request: FastifyRequest<IncomingMessage>, reply: FastifyReply<ServerResponse>) => {
+    try {
+      reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
+      return await seriesService.getGenres()
+    } catch (error) {
+      return {
+        data: {},
+        error: error.message
+      }
+    }
+  })
+
   return
 }
