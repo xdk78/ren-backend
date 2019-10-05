@@ -1,18 +1,18 @@
-import { FastifyInstance } from 'fastify'
 import BaseService from './BaseService'
 import { compare, hash } from 'bcrypt'
 import User from '../entity/User'
 import WatchList from '../entity/WatchList'
 import { getRandomString, generateToken } from '../utils/authUtils'
 import { Ref } from '@hasezoey/typegoose'
+import { AppInstance } from '../'
+import { Connection } from 'mongoose'
 
 export default class AuthService implements BaseService {
-  connection: any
-  fastify: FastifyInstance
+  connection: Connection
+  fastify: AppInstance
   saltRounds = 10
 
-  constructor(fastify: FastifyInstance) {
-    // @ts-ignore
+  constructor(fastify: AppInstance) {
     this.connection = fastify.mongo.db
   }
 
@@ -40,7 +40,6 @@ export default class AuthService implements BaseService {
 
   async logout(id: Ref<User>): Promise<object> {
     try {
-      // @ts-ignore
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       await userModel.destroySessions(id, getRandomString(32))
       return {

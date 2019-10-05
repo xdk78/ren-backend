@@ -23,8 +23,16 @@ import series from './routes/v1/series'
 import users from './routes/v1/users'
 import auth from './routes/v1/auth'
 import logger from './routes/v1/middlewares/logger'
+import { Connection, Types } from 'mongoose'
 
-const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify({ ignoreTrailingSlash: true })
+export interface AppInstance extends fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> {
+  mongo?: {
+    db: Connection
+    ObjectId: Types.ObjectId
+  }
+}
+
+const app: AppInstance = fastify({ ignoreTrailingSlash: true })
 
 const PORT = process.env.API_PORT || 5000
 const HOST = process.env.API_HOST || '0.0.0.0'

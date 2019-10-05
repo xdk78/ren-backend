@@ -1,6 +1,7 @@
-import { FastifyInstance } from 'fastify'
+import { AppInstance } from '../'
+import { Connection } from 'mongoose'
 
 export default interface BaseService {
-  connection: any
-  fastify: FastifyInstance
+  connection: Connection
+  fastify: AppInstance
 }

@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify'
 import User from '../entity/User'
 import WatchList, { StatusNumber } from '../entity/WatchList'
 import BaseService from './BaseService'
@@ -6,14 +5,15 @@ import SeriesService from './SeriesService'
 import SeriesState from '../entity/series/SeriesState'
 import { Ref } from '@hasezoey/typegoose'
 import Series from '../entity/series/Series'
+import { AppInstance } from '../'
+import { Connection } from 'mongoose'
 
 export default class WatchListService implements BaseService {
-  connection: any
-  fastify: FastifyInstance
+  connection: Connection
+  fastify: AppInstance
   seriesService: SeriesService
 
-  constructor(fastify: FastifyInstance) {
-    // @ts-ignore
+  constructor(fastify: AppInstance) {
     this.connection = fastify.mongo.db
     this.seriesService = new SeriesService(fastify)
   }
