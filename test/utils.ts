@@ -6,13 +6,14 @@ import { hash } from 'bcrypt'
 import request from 'supertest'
 import Category from '../src/entity/series/Category'
 import Genre from '../src/entity/series/Genre'
+import mongoose from 'mongoose'
 
 const saltRounds = 10
 
 const randomUsername = `foo${Math.random() * 100}`
 const randomEmail = `foo${Math.random() * 100}@bar.com`
 
-export async function mockUser(app: AppInstance): Promise<User> {
+export async function mockUser(app: AppInstance): Promise<User & { _id: mongoose.Types.ObjectId }> {
   const connection = app.mongo.db
   const userModel = new User().getModelForClass(User, { existingConnection: connection })
   const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: connection })

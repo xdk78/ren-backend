@@ -3,7 +3,6 @@ import fp, { nextCallback, PluginOptions } from 'fastify-plugin'
 import mongoose from 'mongoose'
 import consola from 'consola'
 import { AppInstance } from '../src'
-const objectId = mongoose.Types.ObjectId
 
 function plugin(fastify: AppInstance, options: PluginOptions, next: nextCallback) {
   return mongoose
@@ -17,7 +16,7 @@ function plugin(fastify: AppInstance, options: PluginOptions, next: nextCallback
       fastify
         .decorate('mongo', {
           db: connection,
-          ObjectId: objectId
+          ObjectId: mongoose.Types.ObjectId
         })
         .addHook('onClose', (fastify: AppInstance, done) => {
           fastify.mongo.db.close(done)
