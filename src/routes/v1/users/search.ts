@@ -3,6 +3,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 import UsersService from '../../../services/UsersService'
 import isAuthorized from '../middlewares/isAuthorized'
 import { AppInstance } from '../../../'
+import { USER_404_MESSAGE } from '../../../utils/error_messages'
 
 export default async (fastify: AppInstance) => {
   const db = fastify.mongo.db
@@ -24,6 +25,9 @@ export default async (fastify: AppInstance) => {
       reply.header('Content-Type', 'application/json; charset=utf-8').code(200)
       return await usersService.getUser(request.params.id)
     } catch (error) {
+      if (error.message === USER_404_MESSAGE) {
+        reply.status(404)
+      }
       return {
         error: error.message
       }

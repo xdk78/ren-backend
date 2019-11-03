@@ -2,6 +2,7 @@ import request from 'supertest'
 import api from '../src/index'
 import { mockUser, mockLogin, cleanupAll } from './utils'
 import User from '../src/entity/User'
+import { USER_404_MESSAGE } from '../src/utils/error_messages'
 
 const app = api()
 
@@ -9,6 +10,11 @@ beforeAll(async () => {
   await app.ready()
 
   await cleanupAll(app)
+})
+
+beforeEach(async () => {
+  jest.useFakeTimers()
+  jest.runAllTimers()
 })
 
 describe('GET /users/:id', () => {
@@ -29,6 +35,21 @@ describe('GET /users/:id', () => {
         expect(data.createdAt).toEqual(createdAt)
       })
       .expect(200)
+  })
+  it('should respond with error if user does not exist', async () => {
+    const { token } = await mockLogin(app)
+    const doesNotExist = `dosentexistinguserid${Math.random()}`
+
+    await request(app.server)
+      .get(`/v1/users/${doesNotExist}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json; charset=utf-8')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(res => {
+        const data = res.body
+        expect(data.error).toBe(USER_404_MESSAGE)
+      })
+      .expect(404)
   })
 })
 

@@ -6,6 +6,7 @@ import { getRandomString, generateToken } from '../utils/authUtils'
 import { Ref } from '@hasezoey/typegoose'
 import { AppInstance } from '../'
 import { Connection } from 'mongoose'
+import { USER_404_MESSAGE } from '../utils/error_messages'
 
 export default class AuthService implements BaseService {
   connection: Connection
@@ -31,7 +32,7 @@ export default class AuthService implements BaseService {
         }
         throw new Error('Wrong password')
       } else {
-        throw new Error('Could not find user')
+        throw new Error(USER_404_MESSAGE)
       }
     } catch (error) {
       throw error

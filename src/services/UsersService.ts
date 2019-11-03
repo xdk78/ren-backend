@@ -3,6 +3,7 @@ import User from '../entity/User'
 import { Ref } from '@hasezoey/typegoose'
 import { AppInstance } from '../'
 import { Connection } from 'mongoose'
+import { USER_404_MESSAGE } from '../utils/error_messages'
 
 export default class UsersService implements BaseService {
   connection: Connection
@@ -12,12 +13,12 @@ export default class UsersService implements BaseService {
     this.connection = fastify.mongo.db
   }
 
-  async getUser(userId: Ref<User>): Promise<object> {
+  async getUser(userId: Ref<User>) {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (!user) {
-        throw new Error('Could not find user')
+        throw new Error(USER_404_MESSAGE)
       } else {
         const data = {
           _id: user._id,
@@ -32,7 +33,11 @@ export default class UsersService implements BaseService {
         }
       }
     } catch (error) {
-      throw error
+      if (error.name === 'CastError') {
+        throw new Error(USER_404_MESSAGE)
+      } else {
+        throw error
+      }
     }
   }
 }
