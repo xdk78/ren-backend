@@ -1,6 +1,6 @@
 import request from 'supertest'
 import api from '../src/index'
-import { mockUser, cleanupUsers, mockLogin } from './utils'
+import { mockUser, mockLogin, cleanupAll } from './utils'
 import User from '../src/entity/User'
 
 const app = api()
@@ -8,7 +8,7 @@ const app = api()
 beforeAll(async () => {
   await app.ready()
 
-  await cleanupUsers(app)
+  await cleanupAll(app)
 })
 
 describe('GET /users/:id', () => {

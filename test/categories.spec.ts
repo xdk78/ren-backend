@@ -1,7 +1,7 @@
 import request from 'supertest'
 import api from '../src/index'
 import categoryPostMock from './__mocks__/post/categories-req.json'
-import { mockUser, cleanupUsers, mockLogin, cleanupCategories } from './utils'
+import { mockUser, mockLogin, cleanupAll } from './utils'
 import Category from '../src/entity/series/Category'
 
 const app = api()
@@ -9,8 +9,7 @@ const app = api()
 beforeAll(async () => {
   await app.ready()
 
-  await cleanupCategories(app)
-  await cleanupUsers(app)
+  await cleanupAll(app)
 
   await mockUser(app)
 })

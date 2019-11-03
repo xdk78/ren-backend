@@ -1,7 +1,7 @@
 import request from 'supertest'
 import api from '../src/index'
 import genrePostMock from './__mocks__/post/genres-req.json'
-import { mockUser, cleanupUsers, mockLogin, cleanupGenres } from './utils'
+import { mockUser, mockLogin, cleanupAll } from './utils'
 import Genre from '../src/entity/series/Genre'
 
 const app = api()
@@ -9,8 +9,7 @@ const app = api()
 beforeAll(async () => {
   await app.ready()
 
-  await cleanupGenres(app)
-  await cleanupUsers(app)
+  await cleanupAll(app)
 
   await mockUser(app)
 })

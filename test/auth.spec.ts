@@ -1,13 +1,13 @@
 import request from 'supertest'
 import api from '../src/index'
-import { cleanupUsers, randomUsername, mockUser, randomEmail, randomPassword } from './utils'
+import { randomUsername, mockUser, randomEmail, randomPassword, cleanupAll } from './utils'
 
 const app = api()
 
 beforeAll(async () => {
   await app.ready()
 
-  await cleanupUsers(app)
+  await cleanupAll(app)
 })
 
 describe('GET auth/login', () => {
