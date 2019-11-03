@@ -16,7 +16,7 @@ export default class AuthService implements BaseService {
     this.connection = fastify.mongo.db
   }
 
-  async login(username: string, password: string): Promise<object> {
+  async login(username: string, password: string) {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       const userFromDb = await userModel.findOne({
@@ -38,7 +38,7 @@ export default class AuthService implements BaseService {
     }
   }
 
-  async logout(id: Ref<User>): Promise<object> {
+  async logout(id: Ref<User>) {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       await userModel.destroySessions(id, getRandomString(32))
@@ -50,7 +50,7 @@ export default class AuthService implements BaseService {
     }
   }
 
-  async register(payload: User): Promise<object> {
+  async register(payload: User) {
     try {
       const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
       if (await userModel.findOne({ username: payload.username, email: payload.email })) {
