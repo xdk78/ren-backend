@@ -12,7 +12,7 @@ beforeAll(async () => {
 })
 
 describe('GET /users/:id', () => {
-  it('should respond with json for a given user id', async () => {
+  it('should respond with the same data as mocked user after search by id', async () => {
     const { _id, username, createdAt } = await mockUser(app)
     const { token } = await mockLogin(app)
 

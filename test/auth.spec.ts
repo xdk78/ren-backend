@@ -10,7 +10,7 @@ beforeAll(async () => {
   await cleanupAll(app)
 })
 
-describe('GET auth/login', () => {
+describe('POST auth/login', () => {
   it('should respond with token after successful login', async () => {
     await mockUser(app)
     await request(app.server)
@@ -29,7 +29,7 @@ describe('GET auth/login', () => {
   })
 })
 
-describe('GET auth/register', () => {
+describe('POST auth/register', () => {
   it('should respond with status code 201 after successful register', async () => {
     await request(app.server)
       .post('/v1/auth/register')
