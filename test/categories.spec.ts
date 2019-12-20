@@ -1,6 +1,5 @@
 import request from 'supertest'
 import api from '../src/index'
-import categoryPostMock from './__mocks__/post/categories-req.json'
 import { mockUser, mockLogin, cleanupAll } from './utils'
 import Category from '../src/entity/series/Category'
 
@@ -28,7 +27,9 @@ describe('POST /series/categories', () => {
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
-      .send(categoryPostMock)
+      .send({
+        name: 'tv'
+      })
       .expect(res => {
         const data: Category = res.body.data
         expect(data).toBeDefined()

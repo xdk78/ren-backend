@@ -94,15 +94,13 @@ export default class WatchListService implements BaseService {
             episodeNumber: episodeNumber
           })
 
-          const list = await watchListModel
-            .findOne({ _id: user.watchList })
-            .populate([
-              { path: 'watching', model: seriesStateModel, select: { series: series } },
-              { path: 'completed', model: seriesStateModel, select: { series: series } },
-              { path: 'onHold', model: seriesStateModel, select: { series: series } },
-              { path: 'dropped', model: seriesStateModel, select: { series: series } },
-              { path: 'planToWatch', model: seriesStateModel, select: { series: series } }
-            ])
+          const list = await watchListModel.findOne({ _id: user.watchList }).populate([
+            { path: 'watching', model: seriesStateModel, select: { series: series } },
+            { path: 'completed', model: seriesStateModel, select: { series: series } },
+            { path: 'onHold', model: seriesStateModel, select: { series: series } },
+            { path: 'dropped', model: seriesStateModel, select: { series: series } },
+            { path: 'planToWatch', model: seriesStateModel, select: { series: series } }
+          ])
 
           const reducedList = [].concat(
             ...list.watching,
