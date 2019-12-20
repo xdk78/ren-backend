@@ -1,6 +1,5 @@
 import request from 'supertest'
 import api from '../src/index'
-import genrePostMock from './__mocks__/post/genres-req.json'
 import { mockUser, mockLogin, cleanupAll } from './utils'
 import Genre from '../src/entity/series/Genre'
 
@@ -14,6 +13,11 @@ beforeAll(async () => {
   await mockUser(app)
 })
 
+beforeEach(async () => {
+  jest.useFakeTimers()
+  jest.runAllTimers()
+})
+
 describe('POST /series/genres', () => {
   it('should create new genre and respond with json', async () => {
     const { token } = await mockLogin(app)
@@ -23,7 +27,9 @@ describe('POST /series/genres', () => {
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
-      .send(genrePostMock)
+      .send({
+        name: 'action'
+      })
       .expect(res => {
         const data: Genre = res.body.data
         expect(data).toBeDefined()

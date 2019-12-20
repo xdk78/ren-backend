@@ -6,6 +6,7 @@ import authRegisterSchema from '../../../schema/auth/authRegisterSchema'
 import AuthService from '../../../services/AuthService'
 import isAuthorized from '../middlewares/isAuthorized'
 import { AppInstance } from '../../../'
+import { USER_404_MESSAGE } from '../../../utils/error_messages'
 
 export default async (fastify: AppInstance) => {
   const authService = new AuthService(fastify)
@@ -19,8 +20,10 @@ export default async (fastify: AppInstance) => {
         reply.header('Content-Type', 'application/json').code(200)
         return await authService.login(request.body.username, request.body.password)
       } catch (error) {
+        if (error.message === USER_404_MESSAGE) {
+          reply.status(404)
+        }
         return {
-          data: {},
           error: error.message
         }
       }
