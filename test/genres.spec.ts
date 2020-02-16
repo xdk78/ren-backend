@@ -50,5 +50,5 @@ describe('GET /series/genres', () => {
 })
 
 afterAll(() => {
-  app.close(() => {})
+  app.close()
 })

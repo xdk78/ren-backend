@@ -1,5 +1,5 @@
 import User from '../../../entity/User'
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
 import authLoginSchema from '../../../schema/auth/authLoginSchema'
 import authRegisterSchema from '../../../schema/auth/authRegisterSchema'

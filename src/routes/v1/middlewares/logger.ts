@@ -3,18 +3,6 @@ import consola from 'consola'
 import chalk from 'chalk'
 import { nextCallback } from 'fastify-plugin'
 
-export default () =>
-  function(req: IncomingMessage, res: ServerResponse, next: nextCallback) {
-    if (res.headersSent) {
-      coloredOutput(req, res)
-    } else {
-      res.on('finish', () => {
-        coloredOutput(req, res)
-      })
-    }
-    next()
-  }
-
 function coloredOutput(req: IncomingMessage, res: ServerResponse) {
   let methodColor = 'grey'
   let statusColor = 'bgBlackBright'
@@ -43,3 +31,15 @@ function coloredOutput(req: IncomingMessage, res: ServerResponse) {
     }} {${statusColor}.bold ${res.statusCode.toString()}} {bold ${res.statusMessage}} from ${req.connection.remoteAddress}`
   )
 }
+
+export default () =>
+  function(req: IncomingMessage, res: ServerResponse, next: nextCallback) {
+    if (res.headersSent) {
+      coloredOutput(req, res)
+    } else {
+      res.on('finish', () => {
+        coloredOutput(req, res)
+      })
+    }
+    next()
+  }

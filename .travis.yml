@@ -15,7 +15,7 @@ env:
     - API_SESSION_SECRET_TOKEN=supersecretmusthave32orgreaterlength
     - API_SESSION_COOKIE_SECURE=false
 node_js:
-  - 10
+  - 12
 install:
   - npm install
 script:

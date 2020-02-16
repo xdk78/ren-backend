@@ -45,5 +45,5 @@ describe('POST auth/register', () => {
 })
 
 afterAll(() => {
-  app.close(() => {})
+  app.close()
 })

@@ -49,5 +49,5 @@ describe('GET /users/:id', () => {
 })
 
 afterAll(() => {
-  app.close(() => {})
+  app.close()
 })

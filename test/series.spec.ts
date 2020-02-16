@@ -64,5 +64,5 @@ describe('GET /series', () => {
 })
 
 afterAll(() => {
-  app.close(() => {})
+  app.close()
 })

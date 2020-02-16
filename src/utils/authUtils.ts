@@ -11,7 +11,7 @@ import { IncomingMessage } from 'http'
  * @param  {number} expires    Expiration date (in ms)
  * @return {string}            Signed JSON Web Token
  */
-export function generateToken(userSecret: string, id: string, expires: number = 3600): string {
+export function generateToken(userSecret: string, id: string, expires = 3600): string {
   const serverSecret = String(process.env.API_JWT_SECRET_TOKEN)
   const tokenSecret = `${userSecret}@${serverSecret}`
 
@@ -59,7 +59,7 @@ export function extractToken(req: IncomingMessage): string {
  * @param  {number} length Length of the random string to generate
  * @return {string}        Generated random string
  */
-export function getRandomString(length: number = 32): string {
+export function getRandomString(length = 32): string {
   return crypto
     .randomBytes(Math.ceil(length / 2))
     .toString('hex')
