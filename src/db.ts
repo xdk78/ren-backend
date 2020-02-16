@@ -1,10 +1,10 @@
 import { dbConnURI } from './utils/conn'
-import fp, { nextCallback, PluginOptions } from 'fastify-plugin'
+import fp from 'fastify-plugin'
 import mongoose from 'mongoose'
 import consola from 'consola'
 import { AppInstance } from '../src'
 
-function plugin(fastify: AppInstance, options: PluginOptions, next: nextCallback) {
+function plugin(fastify: AppInstance) {
   return mongoose
     .createConnection(dbConnURI, {
       useNewUrlParser: true,

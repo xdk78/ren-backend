@@ -10,11 +10,6 @@ beforeAll(async () => {
   await cleanupAll(app)
 })
 
-beforeEach(async () => {
-  jest.useFakeTimers()
-  jest.runAllTimers()
-})
-
 describe('POST auth/login', () => {
   it('should respond with token after successful login', async () => {
     await mockUser(app)
@@ -50,5 +45,5 @@ describe('POST auth/register', () => {
 })
 
 afterAll(() => {
-  app.close(() => {})
+  app.close()
 })
