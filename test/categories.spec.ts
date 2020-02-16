@@ -13,11 +13,6 @@ beforeAll(async () => {
   await mockUser(app)
 })
 
-beforeEach(async () => {
-  jest.useFakeTimers()
-  jest.runAllTimers()
-})
-
 describe('POST /series/categories', () => {
   it('should create new category and respond with json', async () => {
     const { token } = await mockLogin(app)

@@ -12,11 +12,6 @@ beforeAll(async () => {
   await cleanupAll(app)
 })
 
-beforeEach(async () => {
-  jest.useFakeTimers()
-  jest.runAllTimers()
-})
-
 describe('GET /users/:id', () => {
   it('should respond with the same data as mocked user after search by id', async () => {
     const { _id, username, createdAt } = await mockUser(app)
