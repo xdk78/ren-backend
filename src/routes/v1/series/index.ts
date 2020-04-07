@@ -18,7 +18,7 @@ export default async (fastify: AppInstance) => {
       return {
         data: {},
 
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -31,7 +31,7 @@ export default async (fastify: AppInstance) => {
       return {
         data: {},
 
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -42,13 +42,13 @@ export default async (fastify: AppInstance) => {
       return await seriesService.createSeries({
         title: request.body.title,
         description: request.body.description,
-        category: request.body.category
+        category: request.body.category,
       } as Series)
     } catch (error) {
       return {
         data: {},
 
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -62,13 +62,13 @@ export default async (fastify: AppInstance) => {
         return await seriesService.updateSeries(request.params.id, {
           title: request.body.title,
           description: request.body.description,
-          category: request.body.category
+          category: request.body.category,
         } as Series)
       } catch (error) {
         return {
           data: {},
 
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -83,7 +83,7 @@ export default async (fastify: AppInstance) => {
       } catch (error) {
         return {
           data: {},
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -98,7 +98,7 @@ export default async (fastify: AppInstance) => {
       } catch (error) {
         return {
           data: {},
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -113,7 +113,7 @@ export default async (fastify: AppInstance) => {
       } catch (error) {
         return {
           data: {},
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -127,7 +127,7 @@ export default async (fastify: AppInstance) => {
       return {
         data: {},
 
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -140,7 +140,7 @@ export default async (fastify: AppInstance) => {
       return {
         data: {},
 
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -152,7 +152,7 @@ export default async (fastify: AppInstance) => {
     } catch (error) {
       return {
         data: {},
-        error: error.message
+        error: error.message,
       }
     }
   })

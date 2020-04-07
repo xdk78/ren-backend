@@ -3,10 +3,11 @@ import WatchList, { StatusNumber } from '../entity/WatchList'
 import BaseService from './BaseService'
 import SeriesService from './SeriesService'
 import SeriesState from '../entity/series/SeriesState'
-import { Ref } from '@hasezoey/typegoose'
 import Series from '../entity/series/Series'
 import { AppInstance } from '../'
 import { Connection } from 'mongoose'
+import { ObjectId } from 'mongodb'
+import { getModelForClass, Ref } from '@typegoose/typegoose'
 
 export default class WatchListService implements BaseService {
   connection: Connection
@@ -18,16 +19,16 @@ export default class WatchListService implements BaseService {
     this.seriesService = new SeriesService(fastify)
   }
 
-  async getWatchList(userId: Ref<User>): Promise<object> {
+  async getWatchList(userId: ObjectId): Promise<object> {
     try {
-      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const userModel = getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (!user) {
         throw new Error('Could not find user')
       } else {
-        const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
-        const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
-        const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+        const watchListModel = getModelForClass(WatchList, { existingConnection: this.connection })
+        const seriesStateModel = getModelForClass(SeriesState, { existingConnection: this.connection })
+        const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
 
         const watchListRefs = await watchListModel.findOne({ _id: user.watchList }).populate([
           {
@@ -35,41 +36,41 @@ export default class WatchListService implements BaseService {
             model: seriesStateModel,
             populate: {
               path: 'series',
-              model: seriesModel
-            }
+              model: seriesModel,
+            },
           },
           {
             path: 'completed',
             model: seriesStateModel,
             populate: {
               path: 'series',
-              model: seriesModel
-            }
+              model: seriesModel,
+            },
           },
           {
             path: 'onHold',
             model: seriesStateModel,
             populate: {
               path: 'series',
-              model: seriesModel
-            }
+              model: seriesModel,
+            },
           },
           {
             path: 'dropped',
             model: seriesStateModel,
             populate: {
               path: 'series',
-              model: seriesModel
-            }
+              model: seriesModel,
+            },
           },
           {
             path: 'planToWatch',
             model: seriesStateModel,
             populate: {
               path: 'series',
-              model: seriesModel
-            }
-          }
+              model: seriesModel,
+            },
+          },
         ])
         return watchListRefs
       }
@@ -78,20 +79,20 @@ export default class WatchListService implements BaseService {
     }
   }
 
-  async addToWatchList(userId: Ref<User>, status: StatusNumber, payload: SeriesState): Promise<any> {
+  async addToWatchList(userId: ObjectId, status: StatusNumber, payload: SeriesState): Promise<any> {
     try {
-      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const userModel = getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (user) {
         const { series, seasonNumber, episodeNumber } = payload
         if (await this.seriesService.doesExist(series)) {
-          const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
-          const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
+          const watchListModel = getModelForClass(WatchList, { existingConnection: this.connection })
+          const seriesStateModel = getModelForClass(SeriesState, { existingConnection: this.connection })
 
-          const seriesState = new seriesStateModel({
+          const seriesState = await seriesStateModel.create({
             series: series,
             seasonNumber: seasonNumber,
-            episodeNumber: episodeNumber
+            episodeNumber: episodeNumber,
           })
 
           const list = await watchListModel.findOne({ _id: user.watchList }).populate([
@@ -99,7 +100,7 @@ export default class WatchListService implements BaseService {
             { path: 'completed', model: seriesStateModel, select: { series: series } },
             { path: 'onHold', model: seriesStateModel, select: { series: series } },
             { path: 'dropped', model: seriesStateModel, select: { series: series } },
-            { path: 'planToWatch', model: seriesStateModel, select: { series: series } }
+            { path: 'planToWatch', model: seriesStateModel, select: { series: series } },
           ])
 
           const reducedList = [].concat(
@@ -110,7 +111,7 @@ export default class WatchListService implements BaseService {
             ...list.planToWatch
           )
 
-          if (reducedList.find(item => (item.series.toString() === series.toString() ? true : false))) {
+          if (reducedList.find((item) => (item.series.toString() === series.toString() ? true : false))) {
             throw new Error('Series exist on the watchlist')
           } else {
             switch (status) {
@@ -149,12 +150,12 @@ export default class WatchListService implements BaseService {
     }
   }
 
-  async removeFromWatchList(userId: Ref<User>, status: StatusNumber, seriesStateId: Ref<SeriesState>): Promise<any> {
+  async removeFromWatchList(userId: ObjectId, status: StatusNumber, seriesStateId: Ref<SeriesState>): Promise<any> {
     try {
-      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const userModel = getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (user) {
-        const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
+        const watchListModel = getModelForClass(WatchList, { existingConnection: this.connection })
 
         switch (status) {
           case StatusNumber.watching:
@@ -204,17 +205,17 @@ export default class WatchListService implements BaseService {
   }
 
   async updateWatchList(
-    userId: Ref<User>,
+    userId: ObjectId,
     status: StatusNumber,
-    seriesStateId: Ref<SeriesState>,
+    seriesStateId: ObjectId,
     payload: SeriesState
   ): Promise<any> {
     try {
-      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const userModel = getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (user) {
-        const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: this.connection })
-        const seriesStateModel = new SeriesState().getModelForClass(SeriesState, { existingConnection: this.connection })
+        const watchListModel = getModelForClass(WatchList, { existingConnection: this.connection })
+        const seriesStateModel = getModelForClass(SeriesState, { existingConnection: this.connection })
         const { series, seasonNumber, episodeNumber } = payload
 
         switch (status) {
@@ -222,14 +223,14 @@ export default class WatchListService implements BaseService {
             if (await watchListModel.findOne({ watching: seriesStateId })) {
               const newSeriesState = await seriesStateModel.findOneAndUpdate(
                 {
-                  _id: seriesStateId
+                  _id: seriesStateId,
                 },
                 {
                   $set: {
                     series: series,
                     seasonNumber: seasonNumber,
-                    episodeNumber: episodeNumber
-                  }
+                    episodeNumber: episodeNumber,
+                  },
                 }
               )
 
@@ -245,14 +246,14 @@ export default class WatchListService implements BaseService {
             if (await watchListModel.findOne({ onHold: payload })) {
               const newSeriesState = await seriesStateModel.findOneAndUpdate(
                 {
-                  _id: seriesStateId
+                  _id: seriesStateId,
                 },
                 {
                   $set: {
                     series: series,
                     seasonNumber: seasonNumber,
-                    episodeNumber: episodeNumber
-                  }
+                    episodeNumber: episodeNumber,
+                  },
                 }
               )
 
@@ -269,14 +270,14 @@ export default class WatchListService implements BaseService {
             if (await watchListModel.findOne({ dropped: payload })) {
               const newSeriesState = await seriesStateModel.findOneAndUpdate(
                 {
-                  _id: seriesStateId
+                  _id: seriesStateId,
                 },
                 {
                   $set: {
                     series: series,
                     seasonNumber: seasonNumber,
-                    episodeNumber: episodeNumber
-                  }
+                    episodeNumber: episodeNumber,
+                  },
                 }
               )
 
@@ -293,14 +294,14 @@ export default class WatchListService implements BaseService {
             if (await watchListModel.findOne({ completed: payload })) {
               const newSeriesState = await seriesStateModel.findOneAndUpdate(
                 {
-                  _id: seriesStateId
+                  _id: seriesStateId,
                 },
                 {
                   $set: {
                     series: series,
                     seasonNumber: seasonNumber,
-                    episodeNumber: episodeNumber
-                  }
+                    episodeNumber: episodeNumber,
+                  },
                 }
               )
 
@@ -317,14 +318,14 @@ export default class WatchListService implements BaseService {
             if (await watchListModel.findOne({ planToWatch: payload })) {
               const newSeriesState = await seriesStateModel.findOneAndUpdate(
                 {
-                  _id: seriesStateId
+                  _id: seriesStateId,
                 },
                 {
                   $set: {
                     series: series,
                     seasonNumber: seasonNumber,
-                    episodeNumber: episodeNumber
-                  }
+                    episodeNumber: episodeNumber,
+                  },
                 }
               )
 

@@ -27,7 +27,7 @@ describe('POST /series', () => {
     const genre = await mockGenre(app)
     const category = await mockCategory(app)
 
-    await request(app.server)
+       await request(app.server)
       .post('/v1/series')
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json; charset=utf-8')
@@ -39,6 +39,7 @@ describe('POST /series', () => {
         genres: [genre._id]
       })
       .expect(201)
+      
   })
 })
 
@@ -46,7 +47,7 @@ describe('GET /series', () => {
   it('should get series and respond with json', async () => {
     await mockSeries(app)
 
-    await request(app.server)
+       await request(app.server)
       .get('/v1/series')
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
@@ -60,6 +61,7 @@ describe('GET /series', () => {
         expect(res.body.data[0].rating).toBeDefined()
       })
       .expect(200)
+      
   })
 })
 

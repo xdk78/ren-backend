@@ -20,11 +20,11 @@ export default async (fastify: AppInstance) => {
         const watchList = await watchListService.getWatchList(request.params.id)
 
         return {
-          data: watchList
+          data: watchList,
         }
       } catch (error) {
         return {
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -38,11 +38,11 @@ export default async (fastify: AppInstance) => {
       const watchList = await watchListService.getWatchList(id)
 
       return {
-        data: watchList
+        data: watchList,
       }
     } catch (error) {
       return {
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -59,11 +59,11 @@ export default async (fastify: AppInstance) => {
 
         await watchListService.addToWatchList(id, status, seriesState)
         return {
-          data: {}
+          data: {},
         }
       } catch (error) {
         return {
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -80,11 +80,11 @@ export default async (fastify: AppInstance) => {
         const seriesStateId = request.body.seriesStateId
         await watchListService.removeFromWatchList(id, status, seriesStateId)
         return {
-          data: {}
+          data: {},
         }
       } catch (error) {
         return {
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -103,11 +103,11 @@ export default async (fastify: AppInstance) => {
 
         const data = await watchListService.updateWatchList(id, status, seriesStateId, seriesState)
         return {
-          data: data
+          data: data,
         }
       } catch (error) {
         return {
-          error: error.message
+          error: error.message,
         }
       }
     }

@@ -24,7 +24,7 @@ export default async (fastify: AppInstance) => {
           reply.status(404)
         }
         return {
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -40,7 +40,7 @@ export default async (fastify: AppInstance) => {
     } catch (error) {
       return {
         data: {},
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -54,12 +54,12 @@ export default async (fastify: AppInstance) => {
         return await authService.register({
           username: request.body.username,
           email: request.body.email,
-          password: request.body.password
+          password: request.body.password,
         } as User)
       } catch (error) {
         return {
           data: {},
-          error: error.message
+          error: error.message,
         }
       }
     }
@@ -70,7 +70,7 @@ export default async (fastify: AppInstance) => {
     reply.header('Content-Type', 'application/json').code(200)
 
     return {
-      data: {}
+      data: {},
     }
   })
   return

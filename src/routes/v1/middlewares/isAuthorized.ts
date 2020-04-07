@@ -3,13 +3,14 @@ import { extractToken, decodeToken, verifyToken } from '../../../utils/authUtils
 import User from '../../../entity/User'
 import { nextCallback } from 'fastify-plugin'
 import { AppInstance } from '../../../'
+import { getModelForClass } from '@typegoose/typegoose'
 
 const defaultMethods = ['GET', 'PUT', 'DELETE', 'POST', 'PATCH']
 
 export default (connection, methods = defaultMethods) =>
-  async function(this: AppInstance, req: IncomingMessage, res: ServerResponse, next: nextCallback) {
+  async function (this: AppInstance, req: IncomingMessage, res: ServerResponse, next: nextCallback) {
     if (methods.includes(req.method)) {
-      const userModel = new User().getModelForClass(User, { existingConnection: connection })
+      const userModel = getModelForClass(User, { existingConnection: connection })
       try {
         const token = extractToken(req)
         const payload = decodeToken(token) as any
@@ -29,7 +30,7 @@ export default (connection, methods = defaultMethods) =>
           JSON.stringify({
             data: {},
             success: false,
-            error: 'Unauthorized'
+            error: 'Unauthorized',
           })
         )
       }

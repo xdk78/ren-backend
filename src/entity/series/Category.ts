@@ -1,6 +1,6 @@
-import { prop, Typegoose } from '@hasezoey/typegoose'
+import { prop } from '@typegoose/typegoose'
 
-export default class Category extends Typegoose {
+export default class Category {
   @prop()
   name: string
 }

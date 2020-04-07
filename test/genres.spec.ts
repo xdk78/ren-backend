@@ -17,7 +17,7 @@ describe('POST /series/genres', () => {
   it('should create new genre and respond with json', async () => {
     const { token } = await mockLogin(app)
 
-    await request(app.server)
+      await request(app.server)
       .post('/v1/series/genres')
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json; charset=utf-8')
@@ -31,12 +31,13 @@ describe('POST /series/genres', () => {
         expect(data.name).toBeDefined()
       })
       .expect(201)
+      
   })
 })
 
 describe('GET /series/genres', () => {
   it('should respond with json with all genres', async () => {
-    await request(app.server)
+     await request(app.server)
       .get('/v1/series/genres')
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
@@ -46,6 +47,7 @@ describe('GET /series/genres', () => {
         expect(data[0].name).toBeDefined()
       })
       .expect(200)
+      
   })
 })
 

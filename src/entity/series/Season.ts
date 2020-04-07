@@ -1,20 +1,20 @@
-import { prop, arrayProp, Typegoose, Ref, staticMethod, ModelType } from '@hasezoey/typegoose'
+import { prop, arrayProp, Ref } from '@typegoose/typegoose'
 import Episode from './Episode'
+import { ObjectId } from 'mongodb'
+import { ModelType } from '@typegoose/typegoose/lib/types'
 
-export default class Season extends Typegoose {
+export default class Season {
   @prop()
   number: number
 
-  @arrayProp({ itemsRef: Episode })
-  episodes: Ref<Episode>[]
+  @arrayProp({ itemsRef: 'Episode' })
+  episodes: Ref<Episode>[] | any
 
-  @staticMethod
-  static addEpisode(this: ModelType<Season> & typeof Season, seasonId: Ref<Season>, episodeId: Ref<Season>) {
+  static addEpisode(this: ModelType<Season> & typeof Season, seasonId: ObjectId, episodeId: Ref<Season>) {
     return this.updateOne({ _id: seasonId }, { $push: { episodes: episodeId } })
   }
 
-  @staticMethod
-  static removeEpisode(this: ModelType<Season> & typeof Season, seasonId: Ref<Season>, episodeId: Ref<Season>) {
+  static removeEpisode(this: ModelType<Season> & typeof Season, seasonId: ObjectId, episodeId: ObjectId) {
     return this.updateOne({ _id: seasonId }, { $pull: { episodes: episodeId } })
   }
 }
