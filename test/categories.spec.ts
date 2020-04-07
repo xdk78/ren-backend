@@ -31,12 +31,13 @@ describe('POST /series/categories', () => {
         expect(data.name).toBeDefined()
       })
       .expect(201)
+      
   })
 })
 
 describe('GET /series/categories', () => {
   it('should respond with json with all categories', async () => {
-    await request(app.server)
+       await request(app.server)
       .get('/v1/series/categories')
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
@@ -46,6 +47,7 @@ describe('GET /series/categories', () => {
         expect(data[0].name).toBeDefined()
       })
       .expect(200)
+      
   })
 })
 

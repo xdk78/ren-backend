@@ -10,39 +10,39 @@ export default {
         type: 'array',
         properties: {
           number: {
-            type: 'number'
+            type: 'number',
           },
           episodes: {
             type: 'array',
             properties: {
               title: { type: 'string' },
-              number: { type: 'number' }
-            }
-          }
-        }
+              number: { type: 'number' },
+            },
+          },
+        },
       },
       category: {
         type: 'object',
         properties: {
-          name: { type: 'string' }
-        }
+          name: { type: 'string' },
+        },
       },
       rating: { type: 'number' },
       genres: {
         type: 'array',
         properties: {
-          name: { type: 'string' }
-        }
-      }
+          name: { type: 'string' },
+        },
+      },
     },
-    additionalProperties: false
+    additionalProperties: false,
   },
   headers: {
     type: 'object',
     properties: {
       // tslint:disable-next-line:object-literal-key-quotes
-      Authorization: { type: 'string' }
+      Authorization: { type: 'string' },
     },
-    required: ['Authorization']
-  }
+    required: ['Authorization'],
+  },
 } as RouteSchema

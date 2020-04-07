@@ -16,7 +16,7 @@ export function generateToken(userSecret: string, id: string, expires = 3600): s
   const tokenSecret = `${userSecret}@${serverSecret}`
 
   return jwt.sign({ id: id }, tokenSecret, {
-    expiresIn: Math.floor(Date.now() / 1000) + expires
+    expiresIn: Math.floor(Date.now() / 1000) + expires,
   })
 }
 
@@ -36,7 +36,7 @@ export function decodeToken(token: string) {
   return {
     header: JSON.parse(base64.decode(encodedToken[0])),
     payload: JSON.parse(base64.decode(encodedToken[1])),
-    signature: encodedToken[2]
+    signature: encodedToken[2],
   }
 }
 

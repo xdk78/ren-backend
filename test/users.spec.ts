@@ -3,6 +3,7 @@ import api from '../src/index'
 import { mockUser, mockLogin, cleanupAll } from './utils'
 import User from '../src/entity/User'
 import { USER_404_MESSAGE } from '../src/utils/error_messages'
+import { ObjectId } from 'mongodb'
 
 const app = api()
 
@@ -22,29 +23,31 @@ describe('GET /users/:id', () => {
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(res => {
-        const data: User = res.body.data
-        // @ts-ignore
+      .expect((res) => {
+        const data: User & { _id: ObjectId } = res.body.data
+
         expect(JSON.stringify(data._id)).toEqual(JSON.stringify(_id))
         expect(data.username).toEqual(username)
         expect(data.createdAt).toEqual(createdAt)
       })
       .expect(200)
+      
   })
   it('should respond with error if user does not exist', async () => {
     const { token } = await mockLogin(app)
     const doesNotExist = `dosentexistinguserid${Math.random()}`
 
-    await request(app.server)
+       await request(app.server)
       .get(`/v1/users/${doesNotExist}`)
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json; charset=utf-8')
       .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(res => {
+      .expect((res) => {
         const data = res.body
         expect(data.error).toBe(USER_404_MESSAGE)
       })
       .expect(404)
+      
   })
 })
 

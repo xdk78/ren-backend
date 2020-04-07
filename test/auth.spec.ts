@@ -26,6 +26,7 @@ describe('POST auth/login', () => {
         expect(data.token).toBeDefined()
       })
       .expect(200)
+      
   })
 })
 
@@ -41,6 +42,7 @@ describe('POST auth/register', () => {
         email: randomEmail
       })
       .expect(201)
+      
   })
 })
 

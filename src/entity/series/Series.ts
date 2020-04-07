@@ -1,79 +1,70 @@
-import { prop, Typegoose, arrayProp, staticMethod, ModelType, Ref } from '@hasezoey/typegoose'
+import { prop, arrayProp, Ref } from '@typegoose/typegoose'
 import Genre from './Genre'
 import Season from './Season'
 import Category from './Category'
+import { ObjectId } from 'mongodb'
+import { ModelType } from '@typegoose/typegoose/lib/types'
 
-export default class Series extends Typegoose {
+export default class Series {
   @prop()
   title: string
 
   @prop()
   description?: string
 
-  @arrayProp({ itemsRef: Season })
+  @arrayProp({ itemsRef: 'Season' })
   seasons: Ref<Season>[]
 
   @prop({ ref: Category })
   category?: Ref<Category>
 
-  @arrayProp({ itemsRef: Genre })
+  @arrayProp({ itemsRef: 'Genre' })
   genres?: Ref<Genre>[]
 
   @prop({ default: 0 })
   rating: number
 
-  @staticMethod
-  static findSeries(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>) {
+  static findSeries(this: ModelType<Series> & typeof Series, seriesId: ObjectId) {
     return this.findOne({ _id: seriesId })
   }
 
-  @staticMethod
-  static addSeason(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, seasonId: Ref<Season>) {
+  static addSeason(this: ModelType<Series> & typeof Series, seriesId: ObjectId, seasonId: Ref<Season>) {
     return this.updateOne({ _id: seriesId }, { $push: { seasons: seasonId } })
   }
 
-  @staticMethod
-  static removeSeason(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, seasonId: Ref<Season>) {
+  static removeSeason(this: ModelType<Series> & typeof Series, seriesId: ObjectId, seasonId: Ref<Season>) {
     return this.updateOne({ _id: seriesId }, { $pull: { seasons: seasonId } })
   }
 
-  @staticMethod
-  static setCategory(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, categoryId: Ref<Category>) {
+  static setCategory(this: ModelType<Series> & typeof Series, seriesId: ObjectId, categoryId: Ref<Category>) {
     return this.updateOne({ _id: seriesId }, { $set: { category: categoryId } })
   }
 
-  @staticMethod
-  static removeCategory(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, categoryId: Ref<Category>) {
+  static removeCategory(this: ModelType<Series> & typeof Series, seriesId: ObjectId, categoryId: Ref<Category>) {
     return this.updateOne({ _id: seriesId }, { $unset: { category: categoryId } })
   }
 
-  @staticMethod
-  static addGenre(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, genreId: Ref<Genre>) {
+  static addGenre(this: ModelType<Series> & typeof Series, seriesId: ObjectId, genreId: Ref<Genre>) {
     return this.updateOne({ _id: seriesId }, { $push: { genres: genreId } })
   }
 
-  @staticMethod
-  static removeGenre(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, genreId: Ref<Genre>) {
+  static removeGenre(this: ModelType<Series> & typeof Series, seriesId: ObjectId, genreId: Ref<Genre>) {
     return this.updateOne({ _id: seriesId }, { $pull: { genres: genreId } })
   }
 
-  @staticMethod
-  static setRating(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, rating: number) {
+  static setRating(this: ModelType<Series> & typeof Series, seriesId: ObjectId, rating: number) {
     return this.updateOne({ _id: seriesId }, { $set: { rating: rating } })
   }
 
-  @staticMethod
-  static incrementRating(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, incrementSize: number) {
+  static incrementRating(this: ModelType<Series> & typeof Series, seriesId: ObjectId, incrementSize: number) {
     return this.updateOne({ _id: seriesId }, { $inc: { rating: incrementSize } })
   }
 
-  @staticMethod
-  static setTitle(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, title: string) {
+  static setTitle(this: ModelType<Series> & typeof Series, seriesId: ObjectId, title: string) {
     return this.updateOne({ _id: seriesId }, { $set: { title: title } })
   }
 
-  @staticMethod
-  static setDescription(this: ModelType<Series> & typeof Series, seriesId: Ref<Series>, description: string) {
+  static setDescription(this: ModelType<Series> & typeof Series, seriesId: ObjectId, description: string) {
     return this.updateOne({ _id: seriesId }, { $set: { description: description } })
   }
 }

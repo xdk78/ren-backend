@@ -10,20 +10,20 @@ function plugin(fastify: AppInstance) {
       useNewUrlParser: true,
       useFindAndModify: false,
       useCreateIndex: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     })
-    .then(connection => {
+    .then((connection) => {
       fastify
         .decorate('mongo', {
           db: connection,
-          ObjectId: mongoose.Types.ObjectId
+          ObjectId: mongoose.Types.ObjectId,
         })
         .addHook('onClose', (fastify: AppInstance, done) => {
           fastify.mongo.db.close(done)
         })
       consola.success('Connected to database')
     })
-    .catch(error => {
+    .catch((error) => {
       consola.error(error)
       process.exit(1)
     })

@@ -1,9 +1,9 @@
-import { prop, Typegoose, Ref } from '@hasezoey/typegoose'
+import { prop } from '@typegoose/typegoose'
 import Series from './Series'
 
-export default class SeriesState extends Typegoose {
-  @prop({ ref: Series, unique: true })
-  series: Ref<Series>
+export default class SeriesState {
+  @prop({ ref: 'Series', unique: true })
+  series: Series | any
 
   @prop()
   seasonNumber: number

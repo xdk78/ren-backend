@@ -16,7 +16,7 @@ export default async (fastify: AppInstance) => {
       return await usersService.getUser(request.raw.user._id)
     } catch (error) {
       return {
-        error: error.message
+        error: error.message,
       }
     }
   })
@@ -29,7 +29,7 @@ export default async (fastify: AppInstance) => {
         reply.status(404)
       }
       return {
-        error: error.message
+        error: error.message,
       }
     }
   })

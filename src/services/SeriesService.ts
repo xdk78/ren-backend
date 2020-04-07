@@ -1,12 +1,13 @@
 import BaseService from './BaseService'
 import Series from '../entity/series/Series'
-import { Ref } from '@hasezoey/typegoose'
+import { getModelForClass, Ref } from '@typegoose/typegoose'
 import Category from '../entity/series/Category'
 import Episode from '../entity/series/Episode'
 import Genre from '../entity/series/Genre'
 import Season from '../entity/series/Season'
 import { AppInstance } from '../'
 import { Connection } from 'mongoose'
+import { ObjectId } from 'mongodb'
 
 export default class SeriesService implements BaseService {
   connection: Connection
@@ -18,31 +19,31 @@ export default class SeriesService implements BaseService {
 
   async getSeries() {
     try {
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+      const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
       const loadedSeries = await seriesModel.find()
       return {
-        data: loadedSeries
+        data: loadedSeries,
       }
     } catch (error) {
       throw error
     }
   }
 
-  async getSeriesById(id: Ref<Series>) {
+  async getSeriesById(id: ObjectId) {
     try {
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+      const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
       const loadedSeries = await seriesModel.findOne({ _id: id })
       return {
-        data: loadedSeries
+        data: loadedSeries,
       }
     } catch (error) {
       throw error
     }
   }
 
-  async doesExist(id: Ref<Series>): Promise<boolean> {
+  async doesExist(id: ObjectId): Promise<boolean> {
     try {
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+      const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
 
       const series = await seriesModel.findById(id)
 
@@ -55,27 +56,27 @@ export default class SeriesService implements BaseService {
 
   async createSeries(payload: Series) {
     try {
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
-      const series = new seriesModel({
+      const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
+      const series = await seriesModel.create({
         title: payload.title,
         description: payload.description,
         seasons: [],
         category: payload.category,
         rating: 0,
-        genres: payload.genres
+        genres: payload.genres,
       })
 
       return {
-        data: await series.save()
+        data: series,
       }
     } catch (error) {
       throw error
     }
   }
 
-  async getAllSeries(refArray: Ref<Series>[]) {
+  async getAllSeries(refArray: ObjectId[]) {
     try {
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+      const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
       const series = []
 
       for (const reference of refArray) {
@@ -87,9 +88,9 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async updateSeries(seriesId: Ref<Series>, payload: Series) {
+  async updateSeries(seriesId: ObjectId, payload: Series) {
     try {
-      const seriesModel = new Series().getModelForClass(Series, { existingConnection: this.connection })
+      const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
 
       await seriesModel.updateOne(
         { _id: seriesId },
@@ -98,13 +99,13 @@ export default class SeriesService implements BaseService {
             title: payload.title,
             description: payload.description,
             category: payload.category,
-            rating: payload.rating
-          }
+            rating: payload.rating,
+          },
         }
       )
 
       return {
-        data: {}
+        data: {},
       }
     } catch (error) {
       throw error
@@ -113,12 +114,12 @@ export default class SeriesService implements BaseService {
 
   async createCategory(name: string) {
     try {
-      const categoryModel = new Category().getModelForClass(Category, { existingConnection: this.connection })
-      const category = new categoryModel({
-        name
+      const categoryModel = getModelForClass(Category, { existingConnection: this.connection })
+      const category = await categoryModel.create({
+        name,
       })
 
-      return { data: await category.save() }
+      return { data: category }
     } catch (error) {
       throw error
     }
@@ -126,7 +127,7 @@ export default class SeriesService implements BaseService {
 
   async getCategories(): Promise<{ data: Category[] }> {
     try {
-      const categoryModel = new Category().getModelForClass(Category, { existingConnection: this.connection })
+      const categoryModel = getModelForClass(Category, { existingConnection: this.connection })
 
       return { data: await categoryModel.find() }
     } catch (error) {
@@ -136,13 +137,13 @@ export default class SeriesService implements BaseService {
 
   async createEpisode(title: string, number: number) {
     try {
-      const episodeModel = new Episode().getModelForClass(Episode, { existingConnection: this.connection })
-      const episode = new episodeModel({
+      const episodeModel = getModelForClass(Episode, { existingConnection: this.connection })
+      const episode = await episodeModel.create({
         title,
-        number
+        number,
       })
 
-      return { data: await episode.save() }
+      return { data: episode }
     } catch (error) {
       throw error
     }
@@ -150,12 +151,12 @@ export default class SeriesService implements BaseService {
 
   async createGenre(name: string) {
     try {
-      const genreModel = new Genre().getModelForClass(Genre, { existingConnection: this.connection })
-      const genre = new genreModel({
-        name
+      const genreModel = getModelForClass(Genre, { existingConnection: this.connection })
+      const genre = await genreModel.create({
+        name,
       })
 
-      return { data: await genre.save() }
+      return { data: genre }
     } catch (error) {
       throw error
     }
@@ -163,7 +164,7 @@ export default class SeriesService implements BaseService {
 
   async getGenres() {
     try {
-      const genreModel = new Genre().getModelForClass(Genre, { existingConnection: this.connection })
+      const genreModel = getModelForClass(Genre, { existingConnection: this.connection })
 
       return { data: await genreModel.find() }
     } catch (error) {
@@ -173,13 +174,13 @@ export default class SeriesService implements BaseService {
 
   async createSeason(number: number, episodes: Ref<Episode>[]) {
     try {
-      const seasonModel = new Season().getModelForClass(Season, { existingConnection: this.connection })
-      const season = new seasonModel({
+      const seasonModel = getModelForClass(Season, { existingConnection: this.connection })
+      const season = await seasonModel.create({
         number,
-        episodes
+        episodes,
       })
 
-      return { data: await season.save() }
+      return { data: season }
     } catch (error) {
       throw error
     }

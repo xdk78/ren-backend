@@ -33,7 +33,7 @@ function coloredOutput(req: IncomingMessage, res: ServerResponse) {
 }
 
 export default () =>
-  function(req: IncomingMessage, res: ServerResponse, next: nextCallback) {
+  function (req: IncomingMessage, res: ServerResponse, next: nextCallback) {
     if (res.headersSent) {
       coloredOutput(req, res)
     } else {

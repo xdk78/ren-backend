@@ -1,9 +1,10 @@
 import BaseService from './BaseService'
 import User from '../entity/User'
-import { Ref } from '@hasezoey/typegoose'
 import { AppInstance } from '../'
 import { Connection } from 'mongoose'
 import { USER_404_MESSAGE } from '../utils/error_messages'
+import { ObjectId } from 'mongodb'
+import { getModelForClass } from '@typegoose/typegoose'
 
 export default class UsersService implements BaseService {
   connection: Connection
@@ -13,23 +14,22 @@ export default class UsersService implements BaseService {
     this.connection = fastify.mongo.db
   }
 
-  async getUser(userId: Ref<User>) {
+  async getUser(userId: ObjectId) {
     try {
-      const userModel = new User().getModelForClass(User, { existingConnection: this.connection })
+      const userModel = getModelForClass(User, { existingConnection: this.connection })
       const user = await userModel.findOne({ _id: userId })
       if (!user) {
         throw new Error(USER_404_MESSAGE)
       } else {
-        const data = {
-          _id: user._id,
-          username: user.username,
-          createdAt: user.createdAt,
-          avatar: user.avatar,
-          gender: user.gender,
-          watchListId: user.watchList
-        }
         return {
-          data: data
+          data: {
+            _id: user._id,
+            username: user.username,
+            createdAt: user.createdAt,
+            avatar: user.avatar,
+            gender: user.gender,
+            watchListId: user.watchList,
+          },
         }
       }
     } catch (error) {

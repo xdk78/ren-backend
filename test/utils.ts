@@ -9,6 +9,7 @@ import mongoose from 'mongoose'
 import AuthService from '../src/services/AuthService'
 import SeriesService from '../src/services/SeriesService'
 import Series from '../src/entity/series/Series'
+import { getModelForClass } from '@typegoose/typegoose'
 
 const saltRounds = 10
 
@@ -23,43 +24,43 @@ export const randomSeriesDescription = `foo_series_description${Math.random() * 
 
 export async function mockUser(app: AppInstance): Promise<User & { _id: mongoose.Types.ObjectId }> {
   const connection = app.mongo.db
-  const userModel = new User().getModelForClass(User, { existingConnection: connection })
-  const watchListModel = new WatchList().getModelForClass(WatchList, { existingConnection: connection })
+  const userModel = getModelForClass(User, { existingConnection: connection })
+  const watchListModel = getModelForClass(WatchList, { existingConnection: connection })
   const userSecret = getRandomString(32)
 
-  const user = new userModel({
+  const user = await userModel.create({
     username: randomUsername,
     email: randomEmail,
     password: await hash(randomPassword, saltRounds),
     createdAt: new Date().toISOString(),
-    watchList: await new watchListModel({}).save(),
-    secret: userSecret
+    watchList: await watchListModel.create({}),
+    secret: userSecret,
   })
-  await user.save()
+
   return user
 }
 
 export async function cleanupUsers(app: AppInstance): Promise<void> {
   const connection = app.mongo.db
-  const userModel = new User().getModelForClass(User, { existingConnection: connection })
+  const userModel = getModelForClass(User, { existingConnection: connection })
   await userModel.deleteMany({})
 }
 
 export async function cleanupCategories(app: AppInstance): Promise<void> {
   const connection = app.mongo.db
-  const categoryModel = new Category().getModelForClass(Category, { existingConnection: connection })
+  const categoryModel = getModelForClass(Category, { existingConnection: connection })
   await categoryModel.deleteMany({})
 }
 
 export async function cleanupGenres(app: AppInstance): Promise<void> {
   const connection = app.mongo.db
-  const genreModel = new Genre().getModelForClass(Genre, { existingConnection: connection })
+  const genreModel = getModelForClass(Genre, { existingConnection: connection })
   await genreModel.deleteMany({})
 }
 
 export async function cleanupSeries(app: AppInstance): Promise<void> {
   const connection = app.mongo.db
-  const seriesModel = new Series().getModelForClass(Series, { existingConnection: connection })
+  const seriesModel = getModelForClass(Series, { existingConnection: connection })
   await seriesModel.deleteMany({})
 }
 
@@ -100,7 +101,7 @@ export async function mockSeries(app: AppInstance) {
     title: randomSeriesTitle,
     description: randomSeriesDescription,
     category: category.data._id,
-    genres: [genre.data._id]
+    genres: [genre.data._id],
   } as Series)
 
   return data

@@ -41,7 +41,7 @@ app.register(db).ready()
 app.register(circuitBreaker, {
   threshold: 5,
   timeout: 15000,
-  resetTimeout: 15000
+  resetTimeout: 15000,
 })
 app.register(helmet)
 app.use(cors())
@@ -53,7 +53,7 @@ app.register(series, { prefix: '/v1' })
 app.register(users, { prefix: '/v1' })
 app.register(auth, { prefix: '/v1' })
 
-app.listen(PORT as number, HOST, err => {
+app.listen(PORT as number, HOST, (err) => {
   if (err) throw err
   // @ts-ignore
   consola.info(`Senren api is listening on ${app.server.address().address}:${app.server.address().port}`)
