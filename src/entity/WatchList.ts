@@ -2,6 +2,7 @@ import { arrayProp, Ref, prop } from '@typegoose/typegoose'
 import SeriesState from './series/SeriesState'
 import { ObjectId } from 'mongodb'
 import { ModelType } from '@typegoose/typegoose/lib/types'
+import User from './User'
 
 export enum StatusNumber {
   watching = 1,
@@ -13,22 +14,22 @@ export enum StatusNumber {
 
 export default class WatchList {
   @prop({ ref: 'User' })
-  userId: ObjectId
+  userId: Ref<User>
 
-  @arrayProp({ itemsRef: 'SeriesState', unique: true })
-  watching: SeriesState[] | any
+  @arrayProp({ itemsRef: 'SeriesState' })
+  watching: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: 'SeriesState', unique: true })
-  completed: SeriesState[] | any
+  @arrayProp({ itemsRef: 'SeriesState' })
+  completed: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: 'SeriesState', unique: true })
-  onHold: SeriesState[] | any
+  @arrayProp({ itemsRef: 'SeriesState' })
+  onHold: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: 'SeriesState', unique: true })
-  dropped: SeriesState[] | any
+  @arrayProp({ itemsRef: 'SeriesState' })
+  dropped: Ref<SeriesState>[]
 
-  @arrayProp({ itemsRef: 'SeriesState', unique: true })
-  planToWatch: SeriesState[] | any
+  @arrayProp({ itemsRef: 'SeriesState' })
+  planToWatch: Ref<SeriesState>[]
 
   static addToWatching(this: ModelType<WatchList> & typeof WatchList, id: ObjectId, item: Ref<SeriesState>) {
     return this.updateOne({ _id: id }, { $push: { watching: item } })

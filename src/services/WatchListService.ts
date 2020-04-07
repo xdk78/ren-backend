@@ -116,23 +116,18 @@ export default class WatchListService implements BaseService {
           } else {
             switch (status) {
               case StatusNumber.watching:
-                await seriesState.save()
                 await watchListModel.addToWatching(user.watchList, seriesState)
                 break
               case StatusNumber.onHold:
-                await seriesState.save()
                 await watchListModel.addToOnHold(user.watchList, seriesState)
                 break
               case StatusNumber.dropped:
-                await seriesState.save()
                 await watchListModel.addToDropped(user.watchList, seriesState)
                 break
               case StatusNumber.completed:
-                await seriesState.save()
                 await watchListModel.addToCompleted(user.watchList, seriesState)
                 break
               case StatusNumber.planToWatch:
-                await seriesState.save()
                 await watchListModel.addToPlanToWatch(user.watchList, seriesState)
                 break
               default:
