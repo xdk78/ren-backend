@@ -116,19 +116,19 @@ export default class WatchListService implements BaseService {
           } else {
             switch (status) {
               case StatusNumber.watching:
-                await watchListModel.addToWatching(user.watchList, seriesState)
+                await watchListModel.addToWatching(user.watchList, seriesState._id)
                 break
               case StatusNumber.onHold:
-                await watchListModel.addToOnHold(user.watchList, seriesState)
+                await watchListModel.addToOnHold(user.watchList, seriesState._id)
                 break
               case StatusNumber.dropped:
-                await watchListModel.addToDropped(user.watchList, seriesState)
+                await watchListModel.addToDropped(user.watchList, seriesState._id)
                 break
               case StatusNumber.completed:
-                await watchListModel.addToCompleted(user.watchList, seriesState)
+                await watchListModel.addToCompleted(user.watchList, seriesState._id)
                 break
               case StatusNumber.planToWatch:
-                await watchListModel.addToPlanToWatch(user.watchList, seriesState)
+                await watchListModel.addToPlanToWatch(user.watchList, seriesState._id)
                 break
               default:
                 throw new Error('Wrong status')

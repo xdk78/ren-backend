@@ -41,7 +41,7 @@ export default class SeriesService implements BaseService {
     }
   }
 
-  async doesExist(id: ObjectId): Promise<boolean> {
+  async doesExist<T>(id: ObjectId | Ref<T>): Promise<boolean> {
     try {
       const seriesModel = getModelForClass(Series, { existingConnection: this.connection })
 

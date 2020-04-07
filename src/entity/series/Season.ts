@@ -8,7 +8,7 @@ export default class Season {
   number: number
 
   @arrayProp({ itemsRef: 'Episode' })
-  episodes: Ref<Episode>[] | any
+  episodes: Ref<Episode>[]
 
   static addEpisode(this: ModelType<Season> & typeof Season, seasonId: ObjectId, episodeId: Ref<Season>) {
     return this.updateOne({ _id: seasonId }, { $push: { episodes: episodeId } })

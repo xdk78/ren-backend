@@ -28,7 +28,7 @@ export default class User {
   createdAt: string
 
   @prop({ ref: 'WatchList' })
-  watchList: WatchList | any
+  watchList: WatchList & ObjectId
 
   @prop()
   avatar?: string
