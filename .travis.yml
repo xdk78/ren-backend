@@ -2,7 +2,7 @@ language: node_js
 sudo: true
 env:
   matrix:
-    - MONGODB=4.2.0
+    - MONGODB=4.2.2
   global:
     - DB_HOST=0.0.0.0
     - DB_PORT=27017
