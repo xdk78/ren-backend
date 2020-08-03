@@ -1,11 +1,11 @@
-# Senren Backend
+# Ren Backend
 
-<img src="https://img.shields.io/github/license/xdk78/senren-backend.svg?style=for-the-badge" alt="GitHub"/> <a href="https://github.com/xdk78/senren-backend/issues"><img src="https://img.shields.io/github/issues/xdk78/senren-backend.svg?style=for-the-badge" alt="GitHub issues" /></a>
-<img src="https://img.shields.io/travis/xdk78/senren-backend.svg?style=for-the-badge" alt="Travis build" /></a>
+<img src="https://img.shields.io/github/license/xdk78/ren-backend.svg?style=for-the-badge" alt="GitHub"/> <a href="https://github.com/xdk78/ren-backend/issues"><img src="https://img.shields.io/github/issues/xdk78/ren-backend.svg?style=for-the-badge" alt="GitHub issues" /></a>
+<img src="https://img.shields.io/travis/xdk78/ren-backend.svg?style=for-the-badge" alt="Travis build" /></a>
 
 ## ✋ Contributing
 
-If you want to help with the project, you can have a look at some [issues](https://github.com/xdk78/senren-backend/issues). All help is much appreciated 🍻
+If you want to help with the project, you can have a look at some [issues](https://github.com/xdk78/ren-backend/issues). All help is much appreciated 🍻
 
 ## 🏃 Running application
 
@@ -19,16 +19,16 @@ If you want to help with the project, you can have a look at some [issues](https
 - Clone repo</br>
    - Via https
     ```
-    git clone https://github.com/xdk78/senren-backend.git
+    git clone https://github.com/xdk78/ren-backend.git
     ```
    - Via ssh
     ```
-    git clone git@github.com:xdk78/senren-backend.git
+    git clone git@github.com:xdk78/ren-backend.git
     ```
 
 - Now enter to app dir
   ```
-  cd senren-backend
+  cd ren-backend
   ```
 - Install depedencies
   ```
