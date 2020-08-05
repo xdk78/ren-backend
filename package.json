@@ -29,7 +29,7 @@
     "bcrypt": "^4.0.1",
     "consola": "^2.11.3",
     "cors": "^2.8.5",
-    "fastify": "^2.13.0",
+    "fastify": "^2.15.1",
     "fastify-circuit-breaker": "^0.1.0",
     "fastify-compress": "^2.0.1",
     "fastify-helmet": "^3.0.2",
